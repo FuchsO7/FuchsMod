@@ -2,6 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
+import de.fuchsmod.features.TPSHud;
 import net.fabricmc.api.ClientModInitializer;
 
 import org.slf4j.Logger;
@@ -16,5 +17,6 @@ public class FuchsMod implements ClientModInitializer {
 		LOGGER.info("Initializing Fuchs Mod!");
 		FuchsModConfigManager.init();
 		Commands.init();
+		TPSHud.init();
 	}
 }
