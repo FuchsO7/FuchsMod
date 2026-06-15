@@ -2,6 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
+import de.fuchsmod.features.PingHud;
 import de.fuchsmod.features.TPSHud;
 import net.fabricmc.api.ClientModInitializer;
 
@@ -18,5 +19,6 @@ public class FuchsMod implements ClientModInitializer {
 		FuchsModConfigManager.init();
 		Commands.init();
 		TPSHud.init();
+		PingHud.init();
 	}
 }

@@ -54,16 +54,16 @@ public class TPSMeasurement {
         this.estimatedMSPT = elapsedTimeMillis / elapsedTicks;
         this.estimatedTPS = 1000.0 / this.estimatedMSPT;
 
-        this.TPSResults.offer((estimatedTPS));
+        this.TPSResults.offer((this.estimatedTPS));
         if (this.TPSResults.size() > 5) {
             this.TPSResults.poll();
         }
 
         double sum = 0.0;
-        for (double TPS : TPSResults) {
+        for (double TPS : this.TPSResults) {
             sum += TPS;
         }
-        this.averageTPS5sec = sum / TPSResults.size();
+        this.averageTPS5sec = sum / this.TPSResults.size();
     }
 
     public void reset() {

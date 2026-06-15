@@ -1,5 +1,6 @@
 package de.fuchsmod.mixin;
 
+import de.fuchsmod.features.PingMeasurement;
 import de.fuchsmod.features.TPSMeasurement;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
@@ -23,8 +24,7 @@ public class ClientPacketListenerMixin {
 			at = @At("RETURN"),
 			method = "handlePongResponse")
 	private void handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
-		long time = packet.time();
-		long ping = Util.getMillis() - time;
+		PingMeasurement.INSTANCE.onPongResponsePacket(packet);
 	}
 }
 

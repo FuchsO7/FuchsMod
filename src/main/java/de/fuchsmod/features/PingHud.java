@@ -11,25 +11,23 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
-import java.lang.Math;
-
-public class TPSHud {
+public class PingHud {
     public static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT,
-                Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "tps_hud"),
-                TPSHud::extract);
+                Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "ping_hud"),
+                PingHud::extract);
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         FuchsModConfig config = FuchsModConfigManager.get();
-        if (config.showTPSHud) {
-            double[] tps = TPSMeasurement.INSTANCE.getTPS();
-            int x = (int) Math.round(config.TPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
-            int y = (int) Math.round(config.TPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-            String text = "TPS: " + ((tps[2] >= 5.0) ? "%.1f".formatted(tps[1]) : "???");
+        if (config.showPingHud) {
+            long[] tps = PingMeasurement.INSTANCE.getPing();
+            int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
+            int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
+            String text = "Ping: " + ((tps[2] >= 100L) ?  "%d ms".formatted(tps[1]) : "???");
             graphics.text(client.font, Component.literal(text), x, y, 0xFFFFFFFF, true);
         }
     }
