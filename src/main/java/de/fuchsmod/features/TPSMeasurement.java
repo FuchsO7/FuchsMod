@@ -2,6 +2,8 @@ package de.fuchsmod.features;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 import net.minecraft.util.Util;
@@ -17,7 +19,8 @@ public class TPSMeasurement {
     private long lastTick = 0L;
     private double estimatedMSPT;
     private double estimatedTPS;
-    private double averageTPS5sec;
+    private double averageTPS;
+    public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
     Queue<Double> TPSResults = new LinkedList<>();
 
     public void onSetTimePacket(ClientboundSetTimePacket packet) {
@@ -55,7 +58,7 @@ public class TPSMeasurement {
         this.estimatedTPS = 1000.0 / this.estimatedMSPT;
 
         this.TPSResults.offer((this.estimatedTPS));
-        if (this.TPSResults.size() > 5) {
+        if (this.TPSResults.size() > AVERAGE_SAMPLE_TIME_SECONDS) {
             this.TPSResults.poll();
         }
 
@@ -63,7 +66,7 @@ public class TPSMeasurement {
         for (double TPS : this.TPSResults) {
             sum += TPS;
         }
-        this.averageTPS5sec = sum / this.TPSResults.size();
+        this.averageTPS = sum / this.TPSResults.size();
     }
 
     public void reset() {
@@ -71,15 +74,33 @@ public class TPSMeasurement {
         this.lastTimeMillis = 0L;
         this.lastTick = 0L;
         this.estimatedMSPT = 0.0;
-        this.averageTPS5sec = 0.0;
+        this.averageTPS = 0.0;
         this.TPSResults = new LinkedList<>();
     }
 
-    public double getCurrentTPS() {
-        return this.estimatedTPS;
+    private static ChatFormatting getTPSColor(double tps) {
+        if (tps > 19.0) {
+            return ChatFormatting.DARK_GREEN;
+        } else if (tps > 17.5) {
+            return ChatFormatting.GREEN;
+        } else if (tps > 15.0) {
+            return ChatFormatting.YELLOW;
+        } else if (tps > 10.0) {
+            return ChatFormatting.GOLD;
+        } else {
+            return ChatFormatting.RED;
+        }
     }
 
-    public double[] getTPS() {
-        return new double[]{this.estimatedTPS, this.averageTPS5sec, (double) this.TPSResults.size()};
+    public Component getCurrentTPSFormatted() {
+        return Component.literal("%.1f".formatted(this.estimatedTPS)).withStyle(getTPSColor(this.estimatedTPS));
+    }
+
+    public Component getAverageTPSFormatted() {
+        if (this.TPSResults.size() >= AVERAGE_SAMPLE_TIME_SECONDS) {
+            return Component.literal("%.1f".formatted(this.averageTPS)).withStyle(getTPSColor(this.averageTPS));
+        } else {
+            return Component.literal("???").withStyle(ChatFormatting.WHITE);
+        }
     }
 }

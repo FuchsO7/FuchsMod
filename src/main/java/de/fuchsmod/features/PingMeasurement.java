@@ -1,9 +1,8 @@
 package de.fuchsmod.features;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
-import net.minecraft.network.protocol.ping.ServerboundPingRequestPacket;
 import net.minecraft.util.Util;
 
 import java.util.LinkedList;
@@ -13,17 +12,9 @@ public class PingMeasurement {
     public static PingMeasurement INSTANCE = new PingMeasurement();
 
     private long estimatedPing;
-    private long averagePing5sec;
+    private long averagePing;
+    public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
     Queue<Long> PingResults = new LinkedList<>();
-
-    public PingMeasurement() {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.getConnection() != null) {
-                ServerboundPingRequestPacket packet = new ServerboundPingRequestPacket(Util.getMillis());
-                client.getConnection().getConnection().send(packet);
-            }
-        });
-    }
 
     public void onPongResponsePacket(ClientboundPongResponsePacket packet) {
         calculatePing(packet.time());
@@ -33,7 +24,7 @@ public class PingMeasurement {
         this.estimatedPing = Util.getMillis() - packetTime;
 
         this.PingResults.offer((this.estimatedPing));
-        if (this.PingResults.size() > 100) {
+        if (this.PingResults.size() > 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
             this.PingResults.poll();
         }
 
@@ -41,19 +32,37 @@ public class PingMeasurement {
         for (long ping : this.PingResults) {
             sum += ping;
         }
-        this.averagePing5sec = sum / this.PingResults.size();
+        this.averagePing = sum / this.PingResults.size();
     }
 
     public void reset() {
-        this.averagePing5sec = 0L;
+        this.averagePing = 0L;
         this.PingResults = new LinkedList<>();
     }
 
-    public long getCurrentPing() {
-        return this.estimatedPing;
+    private static ChatFormatting getPingColor(long ping) {
+        if (ping < 50L) {
+            return ChatFormatting.DARK_GREEN;
+        } else if (ping < 150L) {
+            return ChatFormatting.GREEN;
+        } else if (ping < 250L) {
+            return ChatFormatting.YELLOW;
+        } else if (ping < 500L) {
+            return ChatFormatting.GOLD;
+        } else {
+            return ChatFormatting.RED;
+        }
     }
 
-    public long[] getPing() {
-        return new long[]{this.estimatedPing, this.averagePing5sec, (long) this.PingResults.size()};
+    public Component getCurrentPingFormatted() {
+        return Component.literal("%d".formatted(this.estimatedPing)).withStyle(getPingColor(this.estimatedPing));
+    }
+
+    public Component getAveragePingFormatted() {
+        if (this.PingResults.size() >= 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
+            return Component.literal("%d".formatted(this.averagePing)).withStyle(getPingColor(this.averagePing));
+        } else {
+            return Component.literal("???").withStyle(ChatFormatting.WHITE);
+        }
     }
 }

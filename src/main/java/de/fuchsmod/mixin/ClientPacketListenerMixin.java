@@ -2,13 +2,14 @@ package de.fuchsmod.mixin;
 
 import de.fuchsmod.features.PingMeasurement;
 import de.fuchsmod.features.TPSMeasurement;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
-import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
@@ -25,6 +26,11 @@ public class ClientPacketListenerMixin {
 			method = "handlePongResponse")
 	private void handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
 		PingMeasurement.INSTANCE.onPongResponsePacket(packet);
+	}
+
+	@Redirect(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"))
+	private boolean injected(DebugScreenOverlay instance) {
+		return true;
 	}
 }
 

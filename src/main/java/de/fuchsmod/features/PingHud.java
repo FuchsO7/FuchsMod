@@ -24,11 +24,12 @@ public class PingHud {
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         FuchsModConfig config = FuchsModConfigManager.get();
         if (config.showPingHud) {
-            long[] tps = PingMeasurement.INSTANCE.getPing();
             int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
             int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-            String text = "Ping: " + ((tps[2] >= 100L) ?  "%d ms".formatted(tps[1]) : "???");
-            graphics.text(client.font, Component.literal(text), x, y, 0xFFFFFFFF, true);
+            Component text = Component.literal("Ping: ")
+                    .append(PingMeasurement.INSTANCE.getAveragePingFormatted())
+                    .append(" ms");
+            graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }

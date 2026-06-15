@@ -26,11 +26,11 @@ public class TPSHud {
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         FuchsModConfig config = FuchsModConfigManager.get();
         if (config.showTPSHud) {
-            double[] tps = TPSMeasurement.INSTANCE.getTPS();
             int x = (int) Math.round(config.TPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
             int y = (int) Math.round(config.TPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-            String text = "TPS: " + ((tps[2] >= 5.0) ? "%.1f".formatted(tps[1]) : "???");
-            graphics.text(client.font, Component.literal(text), x, y, 0xFFFFFFFF, true);
+            Component text = Component.literal("TPS: ")
+                    .append(TPSMeasurement.INSTANCE.getAverageTPSFormatted());
+            graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
         }
     }
 }
