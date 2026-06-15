@@ -12,15 +12,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class TPSMeasurement {
-    public static TPSMeasurement INSTANCE = new TPSMeasurement();
+    public static final TPSMeasurement INSTANCE = new TPSMeasurement();
+    public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private int packetCount = 0;
     private long lastTimeMillis = 0L;
     private long lastTick = 0L;
-    private double estimatedMSPT;
-    private double estimatedTPS;
-    private double averageTPS;
-    public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
+    public double estimatedMSPT;
+    public double estimatedTPS;
+    public double averageTPS;
     Queue<Double> TPSResults = new LinkedList<>();
 
     public void onSetTimePacket(ClientboundSetTimePacket packet) {
