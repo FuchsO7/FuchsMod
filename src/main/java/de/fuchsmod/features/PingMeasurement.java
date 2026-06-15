@@ -48,9 +48,9 @@ public class PingMeasurement {
         } else if (ping < 250L) {
             return ChatFormatting.YELLOW;
         } else if (ping < 500L) {
-            return ChatFormatting.GOLD;
-        } else {
             return ChatFormatting.RED;
+        } else {
+            return ChatFormatting.DARK_RED;
         }
     }
 

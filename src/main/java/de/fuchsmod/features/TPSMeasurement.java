@@ -86,9 +86,9 @@ public class TPSMeasurement {
         } else if (tps > 15.0) {
             return ChatFormatting.YELLOW;
         } else if (tps > 10.0) {
-            return ChatFormatting.GOLD;
-        } else {
             return ChatFormatting.RED;
+        } else {
+            return ChatFormatting.DARK_RED;
         }
     }
 
