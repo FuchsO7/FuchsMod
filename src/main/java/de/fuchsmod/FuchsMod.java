@@ -3,9 +3,12 @@ package de.fuchsmod;
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.PingHud;
+import de.fuchsmod.features.PingMeasurement;
 import de.fuchsmod.features.TPSHud;
+import de.fuchsmod.features.TPSMeasurement;
 import net.fabricmc.api.ClientModInitializer;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

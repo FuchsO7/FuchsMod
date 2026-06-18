@@ -2,6 +2,7 @@ package de.fuchsmod.features;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
@@ -22,6 +23,12 @@ public class TPSMeasurement {
     public double estimatedTPS;
     public double averageTPS;
     Queue<Double> TPSResults = new LinkedList<>();
+
+    public TPSMeasurement() {
+        ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
+            TPSMeasurement.getInstance().reset();
+        });
+    }
 
     public static TPSMeasurement getInstance() {
         return INSTANCE;

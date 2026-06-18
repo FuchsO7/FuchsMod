@@ -1,5 +1,6 @@
 package de.fuchsmod.features;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
@@ -15,6 +16,12 @@ public class PingMeasurement {
     public long estimatedPing;
     public long averagePing;
     Queue<Long> PingResults = new LinkedList<>();
+
+    public PingMeasurement() {
+        ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
+            PingMeasurement.getInstance().reset();
+        });
+    }
 
     public static PingMeasurement getInstance() {
         return INSTANCE;
