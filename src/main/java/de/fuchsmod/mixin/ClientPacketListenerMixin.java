@@ -1,5 +1,6 @@
 package de.fuchsmod.mixin;
 
+import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.PingMeasurement;
 import de.fuchsmod.features.TPSMeasurement;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
@@ -18,19 +19,23 @@ public class ClientPacketListenerMixin {
 			at = @At("RETURN"),
 			method = "handleSetTime")
 	private void handleSetTime(ClientboundSetTimePacket packet, CallbackInfo info) {
-		TPSMeasurement.INSTANCE.onSetTimePacket(packet);
+		TPSMeasurement.getInstance().onSetTimePacket(packet);
 	}
 
 	@Inject(
 			at = @At("RETURN"),
 			method = "handlePongResponse")
 	private void handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
-		PingMeasurement.INSTANCE.onPongResponsePacket(packet);
+		PingMeasurement.getInstance().onPongResponsePacket(packet);
 	}
 
 	@Redirect(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"))
 	private boolean injected(DebugScreenOverlay instance) {
-		return true;
+		if (FuchsModConfigManager.getInstance().alwaysSendPingRequest) {
+			return true;
+		} else {
+			return instance.showNetworkCharts();
+		}
 	}
 }
 

@@ -31,17 +31,17 @@ public class Commands {
 
     private static int executeGetTPSCommand(CommandContext<FabricClientCommandSource> context) {
         Component message = Component.literal("Estimated TPS: ")
-                .append(TPSMeasurement.INSTANCE.getCurrentTPSFormatted())
+                .append(TPSMeasurement.getInstance().getCurrentTPSFormatted())
                 .append(", Average (%ds): ".formatted(TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
-                .append(TPSMeasurement.INSTANCE.getAverageTPSFormatted());
+                .append(TPSMeasurement.getInstance().getAverageTPSFormatted());
         context.getSource().sendFeedback(message);
         return Command.SINGLE_SUCCESS;
     }
     private static int executeGetPingCommand(CommandContext<FabricClientCommandSource> context) {
         Component message = Component.literal("Estimated Ping: ")
-                .append(PingMeasurement.INSTANCE.getCurrentPingFormatted())
+                .append(PingMeasurement.getInstance().getCurrentPingFormatted())
                 .append(" ms, Average (%ds): ".formatted(PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
-                .append(PingMeasurement.INSTANCE.getAveragePingFormatted())
+                .append(PingMeasurement.getInstance().getAveragePingFormatted())
                 .append(" ms");
         context.getSource().sendFeedback(message);
         return Command.SINGLE_SUCCESS;

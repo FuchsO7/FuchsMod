@@ -24,12 +24,12 @@ public class TPSHud {
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        FuchsModConfig config = FuchsModConfigManager.get();
+        FuchsModConfig config = FuchsModConfigManager.getInstance();
         if (config.showTPSHud) {
             int x = (int) Math.round(config.TPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
             int y = (int) Math.round(config.TPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
             Component text = Component.literal("TPS: ")
-                    .append(TPSMeasurement.INSTANCE.getAverageTPSFormatted());
+                    .append(TPSMeasurement.getInstance().getAverageTPSFormatted());
             graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
         }
     }

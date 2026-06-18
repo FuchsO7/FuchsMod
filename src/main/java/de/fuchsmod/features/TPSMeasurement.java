@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class TPSMeasurement {
-    public static final TPSMeasurement INSTANCE = new TPSMeasurement();
+    private static final TPSMeasurement INSTANCE = new TPSMeasurement();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private int packetCount = 0;
@@ -23,8 +23,12 @@ public class TPSMeasurement {
     public double averageTPS;
     Queue<Double> TPSResults = new LinkedList<>();
 
+    public static TPSMeasurement getInstance() {
+        return INSTANCE;
+    }
+
     public void onSetTimePacket(ClientboundSetTimePacket packet) {
-        if (FuchsModConfigManager.get().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.SetTime) {
+        if (FuchsModConfigManager.getInstance().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.SetTime) {
             long gameTime = packet.gameTime();
             long packetTimeMillis = Util.getMillis();
 
@@ -38,7 +42,7 @@ public class TPSMeasurement {
     }
 
     public void onPingPacket(ClientboundPingPacket packet) {
-        if (FuchsModConfigManager.get().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.Ping) {
+        if (FuchsModConfigManager.getInstance().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.Ping) {
             this.packetCount++;
             if (this.packetCount >= 20) {
                 this.packetCount = 0;

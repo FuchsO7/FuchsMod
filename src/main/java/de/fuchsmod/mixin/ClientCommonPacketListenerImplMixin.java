@@ -14,6 +14,6 @@ public class ClientCommonPacketListenerImplMixin {
             at = @At("RETURN"),
             method = "handlePing")
     private void handlePing(ClientboundPingPacket packet, CallbackInfo info) {
-        TPSMeasurement.INSTANCE.onPingPacket(packet);
+        TPSMeasurement.getInstance().onPingPacket(packet);
     }
 }

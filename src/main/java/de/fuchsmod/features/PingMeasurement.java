@@ -9,12 +9,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class PingMeasurement {
-    public static final PingMeasurement INSTANCE = new PingMeasurement();
+    private static final PingMeasurement INSTANCE = new PingMeasurement();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     public long estimatedPing;
     public long averagePing;
     Queue<Long> PingResults = new LinkedList<>();
+
+    public static PingMeasurement getInstance() {
+        return INSTANCE;
+    }
 
     public void onPongResponsePacket(ClientboundPongResponsePacket packet) {
         calculatePing(packet.time());

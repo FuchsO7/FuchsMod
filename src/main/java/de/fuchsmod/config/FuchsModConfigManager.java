@@ -27,7 +27,7 @@ public class FuchsModConfigManager {
         HANDLER.load();
     }
 
-    public static FuchsModConfig get() {
+    public static FuchsModConfig getInstance() {
         return HANDLER.instance();
     }
 

@@ -41,6 +41,9 @@ public class FuchsModConfig {
     @SerialEntry
     public double PingHudYPos = 5.0;
 
+    @SerialEntry
+    public boolean alwaysSendPingRequest = true;
+
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
                 .name(Component.literal("General"))
@@ -98,7 +101,7 @@ public class FuchsModConfig {
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
                                         Component.literal("Resets the currently cached TPS results")))
-                                .action((screen, buttonOption) -> TPSMeasurement.INSTANCE.reset())
+                                .action((screen, buttonOption) -> TPSMeasurement.getInstance().reset())
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
@@ -110,6 +113,17 @@ public class FuchsModConfig {
                                 .binding(defaults.showPingHud,
                                         () -> config.showPingHud,
                                         newValue -> config.showPingHud = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Always send ping request"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, a ping request packet will be sent to the server each tick. Required for Ping measurement\n" +
+                                                "If disabled, ping requests will only be sent if the F3 Network Chart is open")))
+                                .binding(defaults.alwaysSendPingRequest,
+                                        () -> config.alwaysSendPingRequest,
+                                        newValue -> config.alwaysSendPingRequest = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
@@ -142,7 +156,7 @@ public class FuchsModConfig {
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
                                         Component.literal("Resets the currently cached Ping results")))
-                                .action((screen, buttonOption) -> PingMeasurement.INSTANCE.reset())
+                                .action((screen, buttonOption) -> PingMeasurement.getInstance().reset())
                                 .build())
                         .build())
                 .build();
