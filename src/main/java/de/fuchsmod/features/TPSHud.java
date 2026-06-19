@@ -25,7 +25,7 @@ public class TPSHud {
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         FuchsModConfig config = FuchsModConfigManager.getInstance();
-        if (config.showTPSHud) {
+        if (config.showTPSHud && !client.getDebugOverlay().showDebugScreen()) {
             int x = (int) Math.round(config.TPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
             int y = (int) Math.round(config.TPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
             Component text = Component.literal("TPS: ")
