@@ -44,7 +44,7 @@ public class TPSMeasurement {
             long elapsedTicks = gameTime - this.lastTick;
             this.lastTick = gameTime;
 
-            calculateTPS((double) elapsedTimeMillis, (double) elapsedTicks);
+            calculateTPS((double) elapsedTimeMillis, elapsedTicks);
         }
     }
 
@@ -59,13 +59,16 @@ public class TPSMeasurement {
                 long elapsedTimeMillis = packetTimeMillis - this.lastTimeMillis;
                 this.lastTimeMillis = packetTimeMillis;
 
-                calculateTPS((double) elapsedTimeMillis, 20.0);
+                calculateTPS((double) elapsedTimeMillis, 20L);
             }
         }
     }
 
-    private void calculateTPS(double elapsedTimeMillis, double elapsedTicks) {
-        this.estimatedMSPT = elapsedTimeMillis / elapsedTicks;
+    private void calculateTPS(double elapsedTimeMillis, long elapsedTicks) {
+        if (elapsedTimeMillis < 10.0 || elapsedTicks == 0L) {
+            return;
+        }
+        this.estimatedMSPT = elapsedTimeMillis / (double) elapsedTicks;
         this.estimatedTPS = 1000.0 / this.estimatedMSPT;
 
         this.TPSResults.offer((this.estimatedTPS));
