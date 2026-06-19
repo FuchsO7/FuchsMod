@@ -33,13 +33,22 @@ public class FuchsModConfig {
     }
 
     @SerialEntry
+    public boolean showFPSHud = false;
+
+    @SerialEntry
+    public double FPSHudXPos = 2.0;
+
+    @SerialEntry
+    public double FPSHudYPos = 5.0;
+
+    @SerialEntry
     public boolean showPingHud = false;
 
     @SerialEntry
     public double PingHudXPos = 2.0;
 
     @SerialEntry
-    public double PingHudYPos = 5.0;
+    public double PingHudYPos = 8.0;
 
     @SerialEntry
     public boolean alwaysSendPingRequest = true;
@@ -102,6 +111,43 @@ public class FuchsModConfig {
                                 .description(OptionDescription.of(
                                         Component.literal("Resets the currently cached TPS results")))
                                 .action((screen, buttonOption) -> TPSMeasurement.getInstance().reset())
+                                .build())
+                        .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.literal("FPS"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Show FPS Hud"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Show a Hud Element, which displays the current FPS")))
+                                .binding(defaults.showFPSHud,
+                                        () -> config.showFPSHud,
+                                        newValue -> config.showFPSHud = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.literal("FPS Hud X Position"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Relative Horizontal Position of the FS Hud")))
+                                .binding(defaults.FPSHudXPos,
+                                        () -> config.FPSHudXPos,
+                                        newValue -> config.FPSHudXPos = newValue)
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.0, 100.0)
+                                        .step(0.1)
+                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.literal("FPS Hud Y Position"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Relative Vertical Position of the FPS Hud")))
+                                .binding(defaults.FPSHudYPos,
+                                        () -> config.FPSHudYPos,
+                                        newValue -> config.FPSHudYPos = newValue)
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.0, 100.0)
+                                        .step(0.1)
+                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()

@@ -2,10 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.PingHud;
-import de.fuchsmod.features.PingMeasurement;
-import de.fuchsmod.features.TPSHud;
-import de.fuchsmod.features.TPSMeasurement;
+import de.fuchsmod.features.*;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -22,6 +19,7 @@ public class FuchsMod implements ClientModInitializer {
 		FuchsModConfigManager.init();
 		Commands.init();
 		TPSHud.init();
+		FPSHud.init();
 		PingHud.init();
 	}
 }
