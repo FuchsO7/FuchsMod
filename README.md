@@ -1,4 +1,4 @@
-# FuchsMod 26.2
+# FuchsMod for 26.2
 
 This Minecraft mod is a clientside utility mod by Fuchs07 featuring random things which might be useful. 
 I made it while learning how to modify Minecraft with Fabric, probably. 
