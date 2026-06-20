@@ -19,11 +19,10 @@ public class TooltipScroll {
             if (config.enableTooltipScroll && client.player != null) {
                 ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
                     if (!consumed) {
-                        int scrollFactor = config.scrollFactor;
                         if (client.hasShiftDown()) {
-                            this.x += scrollFactor * (int) verticalAmount;
+                            this.x += (int) verticalAmount * config.scrollFactor * config.horizontalScrollDirection;
                         } else {
-                            this.y += scrollFactor * (int) verticalAmount;
+                            this.y += (int) verticalAmount * config.scrollFactor * config.verticalScrollDirection;
                         }
                     }
                     return consumed;

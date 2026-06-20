@@ -60,6 +60,12 @@ public class FuchsModConfig {
     @SerialEntry
     public int scrollFactor = 5;
 
+    @SerialEntry
+    public int verticalScrollDirection = -1;
+
+    @SerialEntry
+    public int horizontalScrollDirection = 1;
+
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
                 .name(Component.literal("General"))
@@ -241,6 +247,26 @@ public class FuchsModConfig {
                                         .range(0, 10)
                                         .step(1)
                                         .formatValue(value -> Component.literal("%d".formatted(value))))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Vertical Scroll Direction"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Determine in which direction the tooltip will be scrolled vertically.")))
+                                .binding(defaults.verticalScrollDirection == 1,
+                                        () -> config.verticalScrollDirection == 1,
+                                        newValue -> config.verticalScrollDirection = newValue ? 1 : -1)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .formatValue(value -> Component.literal(value ? "Scroll Up -> Move Down" : "Scroll Up -> Move Up")))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Horizontal Scroll Direction"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Determine in which direction the tooltip will be scrolled horizontally.")))
+                                .binding(defaults.horizontalScrollDirection == 1,
+                                        () -> config.horizontalScrollDirection == 1,
+                                        newValue -> config.horizontalScrollDirection = newValue ? 1 : -1)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .formatValue(value -> Component.literal(value ? "Scroll Up -> Move Right" : "Scroll Up -> Move Left")))
                                 .build())
                         .build())
                 .build();
