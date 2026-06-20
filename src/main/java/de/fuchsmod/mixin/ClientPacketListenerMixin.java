@@ -29,7 +29,9 @@ public class ClientPacketListenerMixin {
 		PingMeasurement.getInstance().onPongResponsePacket(packet);
 	}
 
-	@Redirect(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"))
+	@Redirect(
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"),
+			method = "tick()V")
 	private boolean injected(DebugScreenOverlay instance) {
 		if (FuchsModConfigManager.getInstance().alwaysSendPingRequest) {
 			return true;

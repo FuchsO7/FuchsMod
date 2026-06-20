@@ -1,16 +1,16 @@
 {
-	"required": true,
-	"package": "de.fuchsmod.mixin",
-	"compatibilityLevel": "JAVA_25",
-
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	},
-	"client": [
-		"ClientCommonPacketListenerImplMixin",
-		"ClientPacketListenerMixin"
-	]
+  "required": true,
+  "package": "de.fuchsmod.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "ClientCommonPacketListenerImplMixin",
+    "ClientPacketListenerMixin",
+    "DefaultTooltipPositionerMixin"
+    ]
 }

@@ -6,6 +6,7 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.network.chat.Component;
 
@@ -52,6 +53,12 @@ public class FuchsModConfig {
 
     @SerialEntry
     public boolean alwaysSendPingRequest = true;
+
+    @SerialEntry
+    public boolean enableTooltipScroll = true;
+
+    @SerialEntry
+    public int scrollFactor = 5;
 
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
@@ -203,6 +210,31 @@ public class FuchsModConfig {
                                 .description(OptionDescription.of(
                                         Component.literal("Resets the currently cached Ping results")))
                                 .action((screen, buttonOption) -> PingMeasurement.getInstance().reset())
+                                .build())
+                        .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.literal("Tooltip Scroll"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Enable Tooltip Scroll"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Allows to move tooltips with the mouse wheel")))
+                                .binding(defaults.enableTooltipScroll,
+                                        () -> config.enableTooltipScroll,
+                                        newValue -> config.enableTooltipScroll = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Integer>createBuilder()
+                                .name(Component.literal("Scroll Factor"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Determine by how much a tooltip should be moved each scroll")))
+                                .binding(defaults.scrollFactor,
+                                        () -> config.scrollFactor,
+                                        newValue -> config.scrollFactor = newValue)
+                                .controller(opt -> IntegerSliderControllerBuilder.create(opt)
+                                        .range(0, 10)
+                                        .step(1)
+                                        .formatValue(value -> Component.literal("%d".formatted(value))))
                                 .build())
                         .build())
                 .build();
