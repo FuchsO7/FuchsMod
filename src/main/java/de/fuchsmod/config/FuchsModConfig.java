@@ -115,8 +115,8 @@ public class FuchsModConfig {
                                 .binding(defaults.packetTypeForTPSMeasurement,
                                         () -> config.packetTypeForTPSMeasurement,
                                         newValue -> {
-                                    config.packetTypeForTPSMeasurement = newValue;
-                                    TPSMeasurement.getInstance().reset();
+                                            config.packetTypeForTPSMeasurement = newValue;
+                                            TPSMeasurement.getInstance().reset();
                                 })
                                 .controller(opt -> EnumControllerBuilder.create(opt)
                                         .enumClass(TPSPacketTypes.class))

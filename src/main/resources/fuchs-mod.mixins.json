@@ -9,8 +9,9 @@
     "requireAnnotations": true
   },
   "client": [
+    "ChatComponentMixin",
     "ClientCommonPacketListenerImplMixin",
     "ClientPacketListenerMixin",
     "DefaultTooltipPositionerMixin"
-    ]
+  ]
 }

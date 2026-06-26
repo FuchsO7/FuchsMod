@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 public class FPSHud {
-    public static final Minecraft client = Minecraft.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(

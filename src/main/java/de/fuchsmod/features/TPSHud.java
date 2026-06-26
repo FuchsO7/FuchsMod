@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
 import java.lang.Math;
 
 public class TPSHud {
-    public static final Minecraft client = Minecraft.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(

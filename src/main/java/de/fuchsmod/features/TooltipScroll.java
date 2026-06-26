@@ -7,13 +7,13 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import org.joml.Vector2i;
 
 public class TooltipScroll {
-    public static final TooltipScroll INSTANCE = new TooltipScroll();
-    public static final FuchsModConfig config = FuchsModConfigManager.getInstance();
+    private static final TooltipScroll INSTANCE = new TooltipScroll();
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
-    public int x = 0;
-    public int y = 0;
+    private int x = 0;
+    private int y = 0;
 
-    public TooltipScroll() {
+    private TooltipScroll() {
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             resetOffset();
             if (config.enableTooltipScroll && client.player != null) {

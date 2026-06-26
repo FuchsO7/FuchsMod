@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public class DefaultTooltipPositionerMixin {
     @ModifyReturnValue(
             at = @At("RETURN"),
-            method = "positionTooltip(IIIIII)Lorg/joml/Vector2ic;")
+            method = "positionTooltip(IIIIII)Lorg/joml/Vector2ic;"
+    )
     private Vector2ic moveTooltip(Vector2ic original) {
         if (FuchsModConfigManager.getInstance().enableTooltipScroll) {
             return new Vector2i(original.x(), original.y()).add(TooltipScroll.getInstance().getOffset());
