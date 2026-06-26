@@ -16,9 +16,10 @@ public class FuchsMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		LOGGER.info("Initializing Fuchs Mod!");
 		FuchsModConfigManager.init();
-		Commands.init();
 		TPSHud.init();
 		FPSHud.init();
 		PingHud.init();
+		TooltipScroll.init();
+		Commands.init();
 	}
 }

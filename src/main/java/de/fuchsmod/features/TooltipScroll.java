@@ -13,17 +13,13 @@ public class TooltipScroll {
     private int x = 0;
     private int y = 0;
 
-    private TooltipScroll() {
-        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            resetOffset();
+    public static void init() {
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            TooltipScroll.getInstance().resetOffset();
             if (config.enableTooltipScroll && client.player != null) {
                 ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
                     if (!consumed) {
-                        if (client.hasShiftDown()) {
-                            this.x += (int) verticalAmount * config.scrollFactor * config.horizontalScrollDirection;
-                        } else {
-                            this.y += (int) verticalAmount * config.scrollFactor * config.verticalScrollDirection;
-                        }
+                        getInstance().moveOffset((int) verticalAmount, client.hasShiftDown());
                     }
                     return consumed;
                 });
@@ -33,6 +29,14 @@ public class TooltipScroll {
 
     public static TooltipScroll getInstance() {
         return INSTANCE;
+    }
+
+    public void moveOffset(int distance, boolean moveVertical) {
+        if (moveVertical) {
+            this.x += distance * config.scrollFactor * config.horizontalScrollDirection;
+        } else {
+            this.y += distance * config.scrollFactor * config.verticalScrollDirection;
+        }
     }
 
     public Vector2i getOffset() {
