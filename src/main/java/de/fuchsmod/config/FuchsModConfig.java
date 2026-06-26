@@ -2,6 +2,7 @@ package de.fuchsmod.config;
 
 import de.fuchsmod.features.TPSMeasurement;
 import de.fuchsmod.features.PingMeasurement;
+import de.fuchsmod.features.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
@@ -232,7 +233,10 @@ public class FuchsModConfig {
                                                 Hold shift to scroll horizontally.""")))
                                 .binding(defaults.enableTooltipScroll,
                                         () -> config.enableTooltipScroll,
-                                        newValue -> config.enableTooltipScroll = newValue)
+                                        newValue -> {
+                                            config.enableTooltipScroll = newValue;
+                                            TooltipScroll.getInstance().resetOffset();
+                                })
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
