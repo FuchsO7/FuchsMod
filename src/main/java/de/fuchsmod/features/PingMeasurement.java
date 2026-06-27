@@ -13,11 +13,11 @@ public class PingMeasurement {
     private static final PingMeasurement INSTANCE = new PingMeasurement();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
-    public long estimatedPing;
-    public long averagePing;
-    Queue<Long> PingResults = new LinkedList<>();
+    private long estimatedPing;
+    private long averagePing;
+    private Queue<Long> PingResults = new LinkedList<>();
 
-    public PingMeasurement() {
+    private PingMeasurement() {
         ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
             PingMeasurement.getInstance().reset();
         });
@@ -63,6 +63,14 @@ public class PingMeasurement {
         } else {
             return ChatFormatting.DARK_RED;
         }
+    }
+
+    public long getPing() {
+        return this.estimatedPing;
+    }
+
+    public long getAveragePing() {
+        return this.averagePing;
     }
 
     public Component getCurrentPingFormatted() {

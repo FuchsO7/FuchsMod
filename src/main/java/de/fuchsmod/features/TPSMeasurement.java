@@ -19,12 +19,12 @@ public class TPSMeasurement {
     private int packetCount = 0;
     private long lastTimeMillis = 0L;
     private long lastTick = 0L;
-    public double estimatedMSPT;
-    public double estimatedTPS;
-    public double averageTPS;
-    Queue<Double> TPSResults = new LinkedList<>();
+    private double estimatedMSPT;
+    private double estimatedTPS;
+    private double averageTPS;
+    private Queue<Double> TPSResults = new LinkedList<>();
 
-    public TPSMeasurement() {
+    private TPSMeasurement() {
         ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
             TPSMeasurement.getInstance().reset();
         });
@@ -104,6 +104,18 @@ public class TPSMeasurement {
         } else {
             return ChatFormatting.DARK_RED;
         }
+    }
+
+    public double getMSPT() {
+        return this.estimatedMSPT;
+    }
+
+    public double getTPS() {
+        return this.estimatedTPS;
+    }
+
+    public double getAverageTPS() {
+        return this.averageTPS;
     }
 
     public Component getCurrentTPSFormatted() {

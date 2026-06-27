@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientCommonPacketListenerImplMixin {
     @Inject(
             at = @At("RETURN"),
-            method = "handlePing")
+            method = "handlePing"
+    )
     private void handlePing(ClientboundPingPacket packet, CallbackInfo info) {
         TPSMeasurement.getInstance().onPingPacket(packet);
     }

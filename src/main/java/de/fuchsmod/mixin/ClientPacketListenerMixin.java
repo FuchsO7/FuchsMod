@@ -17,21 +17,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientPacketListenerMixin {
 	@Inject(
 			at = @At("RETURN"),
-			method = "handleSetTime")
+			method = "handleSetTime"
+	)
 	private void handleSetTime(ClientboundSetTimePacket packet, CallbackInfo info) {
 		TPSMeasurement.getInstance().onSetTimePacket(packet);
 	}
 
 	@Inject(
 			at = @At("RETURN"),
-			method = "handlePongResponse")
+			method = "handlePongResponse"
+	)
 	private void handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
 		PingMeasurement.getInstance().onPongResponsePacket(packet);
 	}
 
 	@Redirect(
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"),
-			method = "tick()V")
+			method = "tick()V"
+	)
 	private boolean injected(DebugScreenOverlay instance) {
 		if (FuchsModConfigManager.getInstance().alwaysSendPingRequest) {
 			return true;

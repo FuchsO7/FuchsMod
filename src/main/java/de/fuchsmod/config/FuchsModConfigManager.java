@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import java.nio.file.Path;
 
 public class FuchsModConfigManager {
-    public static final Minecraft client = Minecraft.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("fuchsmod.json5");
     protected static ConfigClassHandler<FuchsModConfig> HANDLER = ConfigClassHandler.createBuilder(FuchsModConfig.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
@@ -35,7 +35,7 @@ public class FuchsModConfigManager {
         HANDLER.save();
     }
 
-    public static Screen createGui(Screen parent) {
+    private static Screen createGui(Screen parent) {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
                 .title(Component.literal("Test Mod"))
                 .category(FuchsModConfig.create(defaults, config))
