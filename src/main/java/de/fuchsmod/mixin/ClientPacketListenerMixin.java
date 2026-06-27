@@ -35,7 +35,7 @@ public class ClientPacketListenerMixin {
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"),
 			method = "tick()V"
 	)
-	private boolean injected(DebugScreenOverlay instance) {
+	private boolean shouldSendPingRequest(DebugScreenOverlay instance) {
 		if (FuchsModConfigManager.getInstance().alwaysSendPingRequest) {
 			return true;
 		} else {

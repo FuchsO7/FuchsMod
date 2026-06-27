@@ -3,6 +3,7 @@ package de.fuchsmod;
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.*;
+import de.fuchsmod.features.Partycommands.PartyCommands;
 import net.fabricmc.api.ClientModInitializer;
 
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ public class FuchsMod implements ClientModInitializer {
 		FPSHud.init();
 		PingHud.init();
 		TooltipScroll.init();
+		PartyCommands.init();
 		Commands.init();
 	}
 }
