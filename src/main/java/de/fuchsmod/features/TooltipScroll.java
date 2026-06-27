@@ -16,14 +16,14 @@ public class TooltipScroll {
     public static void init() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             TooltipScroll.getInstance().resetOffset();
-            if (config.enableTooltipScroll && client.player != null) {
-                ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
-                    if (!consumed) {
-                        getInstance().moveOffset((int) verticalAmount, client.hasShiftDown());
-                    }
-                    return consumed;
-                });
-            }
+            if (!config.enableTooltipScroll || client.player == null)
+                return;
+            ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
+                if (!consumed) {
+                    getInstance().moveOffset((int) verticalAmount, client.hasShiftDown());
+                }
+                return consumed;
+            });
         });
     }
 

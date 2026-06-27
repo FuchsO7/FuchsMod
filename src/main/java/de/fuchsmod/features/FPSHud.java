@@ -14,6 +14,7 @@ import net.minecraft.resources.Identifier;
 
 public class FPSHud {
     private static final Minecraft client = Minecraft.getInstance();
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
@@ -23,14 +24,13 @@ public class FPSHud {
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        FuchsModConfig config = FuchsModConfigManager.getInstance();
-        if (config.showFPSHud && !client.getDebugOverlay().showDebugScreen()) {
-            int x = (int) Math.round(config.FPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
-            int y = (int) Math.round(config.FPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-            Component text = Component.literal("FPS: ")
-                    .append(getCurrentFPSFormatted());
-            graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
-        }
+        if (config.showFPSHud && !client.getDebugOverlay().showDebugScreen())
+            return;
+        int x = (int) Math.round(config.FPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
+        int y = (int) Math.round(config.FPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
+        Component text = Component.literal("FPS: ")
+                .append(getCurrentFPSFormatted());
+        graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
     }
 
     private static ChatFormatting getFPSColor(int fps) {
