@@ -24,7 +24,7 @@ public class FPSHud {
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        if (config.showFPSHud && !client.getDebugOverlay().showDebugScreen())
+        if (!config.showFPSHud || client.getDebugOverlay().showDebugScreen())
             return;
         int x = (int) Math.round(config.FPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
         int y = (int) Math.round(config.FPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());

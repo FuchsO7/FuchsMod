@@ -19,7 +19,7 @@ public class PingMeasurement {
 
     private PingMeasurement() {
         ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
-            PingMeasurement.getInstance().reset();
+            INSTANCE.reset();
         });
     }
 
