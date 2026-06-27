@@ -1,6 +1,8 @@
 package de.fuchsmod.config;
 
 import com.google.gson.FieldNamingPolicy;
+import de.fuchsmod.config.categories.GeneralCategory;
+import de.fuchsmod.config.categories.PartyCommandsCategory;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
@@ -37,8 +39,9 @@ public class FuchsModConfigManager {
 
     private static Screen createGui(Screen parent) {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
-                .title(Component.literal("Test Mod"))
-                .category(FuchsModConfig.create(defaults, config))
+                .title(Component.literal("Fuchs Mod"))
+                .category(GeneralCategory.create(defaults, config))
+                .category(PartyCommandsCategory.create(defaults, config))
                 .save(FuchsModConfigManager::save)
         ).generateScreen(parent);
     }
