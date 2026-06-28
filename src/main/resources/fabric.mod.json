@@ -16,6 +16,9 @@
 	"entrypoints": {
 		"client": [
 			"de.fuchsmod.FuchsMod"
+		],
+		"modmenu": [
+			"de.fuchsmod.compatibility.ModMenuEntry"
 		]
 	},
 	"mixins": [

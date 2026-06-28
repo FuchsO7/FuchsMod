@@ -37,7 +37,7 @@ public class FuchsModConfigManager {
         HANDLER.save();
     }
 
-    private static Screen createGui(Screen parent) {
+    public static Screen createGui(Screen parent) {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
                 .title(Component.literal("Fuchs Mod"))
                 .category(GeneralCategory.create(defaults, config))
