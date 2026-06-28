@@ -7,18 +7,21 @@ import de.fuchsmod.features.TPSMeasurement;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.function.TriFunction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PartyCommandUtils {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static final Minecraft client = Minecraft.getInstance();
     private static final TPSMeasurement tps = TPSMeasurement.getInstance();
     private static final PingMeasurement ping = PingMeasurement.getInstance();
 
-    private static int randomNumber(int min, int max) {
+    private static int getRandomInteger(int min, int max) {
         return (int) ((max - min + 1) * Math.random()) + min;
     }
+
+    /* TriFunction arguments:
+    - scope: String
+    - senderName: String
+    - arguments: String[]
+    */
 
     public static TriFunction<String, String, String[], String> getTPS = (_, _, _) -> "" + tps.getTPS();
 
@@ -28,9 +31,11 @@ public class PartyCommandUtils {
 
     public static TriFunction<String, String, String[], String> diceRoll = (_, _, arguments) -> {
         try {
-            return "" + randomNumber(Integer.parseInt(arguments[0]), Integer.parseInt(arguments[1]));
+            int a = Integer.parseInt(arguments[0]);
+            int b = Integer.parseInt(arguments[1]);
+            return "" + getRandomInteger(Integer.min(a, b), Integer.max(a, b));
         } catch (Exception e) {
-            return "" + randomNumber(1, 6);
+            return "" + getRandomInteger(1, 6);
         }
     };
 
