@@ -31,16 +31,7 @@ public class PartyCommand {
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);
         if (replacementFunction != null)
             messageToSend = messageToSend.replace("{function}", replacementFunction.apply(scope, senderName, arguments));
-        sendChatMessage(getScopeCommand(scope) + messageToSend);
-    }
-
-    private String getScopeCommand(String scope) {
-        return switch (scope) {
-            case "party" -> "/pc ";
-            case "guild" -> "/gc";
-            case "officer" -> "/oc";
-            default -> "";
-        };
+        sendChatMessage(messageToSend);
     }
 
     private static void sendChatMessage(String message) {

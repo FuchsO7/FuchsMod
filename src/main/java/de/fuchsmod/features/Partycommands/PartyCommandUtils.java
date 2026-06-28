@@ -17,6 +17,15 @@ public class PartyCommandUtils {
         return (int) ((max - min + 1) * Math.random()) + min;
     }
 
+    public String getScopeChatCommand(String scope) {
+        return switch (scope) {
+            case "party" -> "/pc ";
+            case "guild" -> "/gc";
+            case "officer" -> "/oc";
+            default -> "";
+        };
+    }
+
     /* TriFunction arguments:
     - scope: String
     - senderName: String
