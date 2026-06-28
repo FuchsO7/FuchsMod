@@ -7,6 +7,7 @@ If you find any problems or have suggestions, feel free to open an issue.
 ### Current Features
 - FPS, TPS and Ping Measurement
 - Tooltip Scrolling
+- Hypixel Party Commands (experimental, not fully implemented yet)
 
 Open the config with `/fuchsmod config`
 
