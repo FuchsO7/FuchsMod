@@ -38,6 +38,7 @@ dependencies {
 	// YACL
 	implementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
+	// Mod Menu
 	implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
