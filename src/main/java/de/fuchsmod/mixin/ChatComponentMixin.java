@@ -1,6 +1,6 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.features.Partycommands.PartyCommands;
+import de.fuchsmod.features.partycommands.PartyCommands;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.multiplayer.chat.GuiMessage;
 import org.spongepowered.asm.mixin.Mixin;

@@ -3,6 +3,7 @@ package de.fuchsmod.config;
 import com.google.gson.FieldNamingPolicy;
 import de.fuchsmod.config.categories.GeneralCategory;
 import de.fuchsmod.config.categories.PartyCommandsCategory;
+import de.fuchsmod.features.partycommands.PartyCommands;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
@@ -35,6 +36,7 @@ public class FuchsModConfigManager {
 
     public static void save() {
         HANDLER.save();
+        PartyCommands.loadCommands();
     }
 
     public static Screen createGui(Screen parent) {

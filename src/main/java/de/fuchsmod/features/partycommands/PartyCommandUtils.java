@@ -1,4 +1,4 @@
-package de.fuchsmod.features.Partycommands;
+package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
@@ -6,6 +6,8 @@ import de.fuchsmod.features.PingMeasurement;
 import de.fuchsmod.features.TPSMeasurement;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.function.TriFunction;
+
+import java.util.LinkedHashMap;
 
 public class PartyCommandUtils {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
@@ -26,17 +28,28 @@ public class PartyCommandUtils {
         };
     }
 
+    public static final LinkedHashMap<String, TriFunction<String, String, String[], String>> replacementCommands = new LinkedHashMap<>();
+
+    public static void init() {
+        replacementCommands.put("None", null);
+        replacementCommands.put("Get TPS", getTPS);
+        replacementCommands.put("Get FPS", getFPS);
+        replacementCommands.put("Get Ping", getPing);
+        replacementCommands.put("Dice Roll", diceRoll);
+        replacementCommands.put("Bedwars Dream", getDream);
+    }
+
     /* TriFunction arguments:
     - scope: String
     - senderName: String
     - arguments: String[]
     */
 
-    public static TriFunction<String, String, String[], String> getTPS = (_, _, _) -> "" + tps.getTPS();
+    public static TriFunction<String, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
 
-    public static TriFunction<String, String, String[], String> getFPS = (_, _, _) -> "" + client.getFps();
+    public static TriFunction<String, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(client.getFps());
 
-    public static TriFunction<String, String, String[], String> getPing = (_, _, _) -> "" + ping.getPing();
+    public static TriFunction<String, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
 
     public static TriFunction<String, String, String[], String> diceRoll = (_, _, arguments) -> {
         try {

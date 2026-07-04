@@ -1,4 +1,4 @@
-package de.fuchsmod.features.Partycommands;
+package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;

@@ -1,10 +1,9 @@
 package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
-import dev.isxander.yacl3.api.OptionGroup;
+import de.fuchsmod.config.controllers.PartyCommandControllerBuilder;
+import de.fuchsmod.config.controllers.PartyCommandRecord;
+import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import net.minecraft.network.chat.Component;
 
@@ -24,6 +23,15 @@ public class PartyCommandsCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
+                        .build())
+                .group(ListOption.<PartyCommandRecord>createBuilder()
+                        .name(Component.literal("Configure Commands"))
+                        .binding(defaults.partyCommandsList,
+                                () -> config.partyCommandsList,
+                                newValue -> config.partyCommandsList = newValue)
+                        .controller(PartyCommandControllerBuilder::create)
+                        .initial(new PartyCommandRecord(0, "", "", "None"))
+                        .insertEntriesAtEnd(true)
                         .build())
                 .build();
     }
