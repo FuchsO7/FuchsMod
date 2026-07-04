@@ -13,6 +13,7 @@ import net.minecraft.resources.Identifier;
 
 public class PingHud {
     private static final Minecraft client = Minecraft.getInstance();
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
@@ -22,14 +23,13 @@ public class PingHud {
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        FuchsModConfig config = FuchsModConfigManager.getInstance();
-        if (config.showPingHud && !client.getDebugOverlay().showDebugScreen()) {
-            int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
-            int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-            Component text = Component.literal("Ping: ")
-                    .append(PingMeasurement.getInstance().getAveragePingFormatted())
-                    .append(" ms");
-            graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
-        }
+        if (!config.showPingHud || client.getDebugOverlay().showDebugScreen())
+            return;
+        int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
+        int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
+        Component text = Component.literal("Ping: ")
+                .append(PingMeasurement.getInstance().getAveragePingFormatted())
+                .append(" ms");
+        graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
     }
 }

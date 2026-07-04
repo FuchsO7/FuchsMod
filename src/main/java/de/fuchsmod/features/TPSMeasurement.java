@@ -14,6 +14,7 @@ import java.util.Queue;
 
 public class TPSMeasurement {
     private static final TPSMeasurement INSTANCE = new TPSMeasurement();
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private int packetCount = 0;
@@ -35,39 +36,38 @@ public class TPSMeasurement {
     }
 
     public void onSetTimePacket(ClientboundSetTimePacket packet) {
-        if (FuchsModConfigManager.getInstance().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.SetTime) {
-            long gameTime = packet.gameTime();
+        if (config.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.SetTime)
+            return;
+        long gameTime = packet.gameTime();
+        long packetTimeMillis = Util.getMillis();
+
+        long elapsedTimeMillis = packetTimeMillis - this.lastTimeMillis;
+        this.lastTimeMillis = packetTimeMillis;
+        long elapsedTicks = gameTime - this.lastTick;
+        this.lastTick = gameTime;
+
+        calculateTPS((double) elapsedTimeMillis, elapsedTicks);
+    }
+
+    public void onPingPacket(ClientboundPingPacket packet) {
+        if (config.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.Ping)
+            return;
+        this.packetCount++;
+        if (this.packetCount >= 20) {
+            this.packetCount = 0;
+
             long packetTimeMillis = Util.getMillis();
 
             long elapsedTimeMillis = packetTimeMillis - this.lastTimeMillis;
             this.lastTimeMillis = packetTimeMillis;
-            long elapsedTicks = gameTime - this.lastTick;
-            this.lastTick = gameTime;
 
-            calculateTPS((double) elapsedTimeMillis, elapsedTicks);
-        }
-    }
-
-    public void onPingPacket(ClientboundPingPacket packet) {
-        if (FuchsModConfigManager.getInstance().packetTypeForTPSMeasurement == FuchsModConfig.TPSPacketTypes.Ping) {
-            this.packetCount++;
-            if (this.packetCount >= 20) {
-                this.packetCount = 0;
-
-                long packetTimeMillis = Util.getMillis();
-
-                long elapsedTimeMillis = packetTimeMillis - this.lastTimeMillis;
-                this.lastTimeMillis = packetTimeMillis;
-
-                calculateTPS((double) elapsedTimeMillis, 20L);
-            }
+            calculateTPS((double) elapsedTimeMillis, 20L);
         }
     }
 
     private void calculateTPS(double elapsedTimeMillis, long elapsedTicks) {
-        if (elapsedTimeMillis < 10.0 || elapsedTicks == 0L) {
+        if (elapsedTimeMillis < 10.0 || elapsedTicks == 0L)
             return;
-        }
         this.estimatedMSPT = elapsedTimeMillis / (double) elapsedTicks;
         this.estimatedTPS = 1000.0 / this.estimatedMSPT;
 

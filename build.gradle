@@ -18,6 +18,12 @@ repositories {
 		name 'Xander Maven'
 		url 'https://maven.isxander.dev/releases'
 	}
+
+	// ModMenu
+	maven {
+		name = "Terraformers"
+		url = "https://maven.terraformersmc.com/"
+	}
 }
 
 dependencies {
@@ -31,6 +37,9 @@ dependencies {
 
 	// YACL
 	implementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+
+	// Mod Menu
+	implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
