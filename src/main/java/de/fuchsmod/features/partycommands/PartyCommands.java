@@ -1,6 +1,5 @@
 package de.fuchsmod.features.partycommands;
 
-import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
