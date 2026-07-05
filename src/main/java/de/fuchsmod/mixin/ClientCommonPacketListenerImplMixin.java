@@ -1,6 +1,6 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.features.TPSMeasurement;
+import de.fuchsmod.features.general.TPSMeasurement;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import org.spongepowered.asm.mixin.Mixin;

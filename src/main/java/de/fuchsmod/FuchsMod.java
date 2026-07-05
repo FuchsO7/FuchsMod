@@ -2,7 +2,10 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.*;
+import de.fuchsmod.features.general.FPSHud;
+import de.fuchsmod.features.general.PingHud;
+import de.fuchsmod.features.general.TPSHud;
+import de.fuchsmod.features.general.TooltipScroll;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.api.ClientModInitializer;

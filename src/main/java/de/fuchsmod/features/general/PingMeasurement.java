@@ -1,4 +1,4 @@
-package de.fuchsmod.features;
+package de.fuchsmod.features.general;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.ChatFormatting;

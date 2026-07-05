@@ -1,4 +1,4 @@
-package de.fuchsmod.features;
+package de.fuchsmod.features.general;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;

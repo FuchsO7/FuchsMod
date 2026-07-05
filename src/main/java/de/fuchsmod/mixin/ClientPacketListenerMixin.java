@@ -1,8 +1,8 @@
 package de.fuchsmod.mixin;
 
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.PingMeasurement;
-import de.fuchsmod.features.TPSMeasurement;
+import de.fuchsmod.features.general.PingMeasurement;
+import de.fuchsmod.features.general.TPSMeasurement;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;

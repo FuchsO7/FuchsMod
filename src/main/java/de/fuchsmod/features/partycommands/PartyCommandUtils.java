@@ -2,8 +2,8 @@ package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.PingMeasurement;
-import de.fuchsmod.features.TPSMeasurement;
+import de.fuchsmod.features.general.PingMeasurement;
+import de.fuchsmod.features.general.TPSMeasurement;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.function.TriFunction;
 

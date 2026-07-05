@@ -1,9 +1,9 @@
 package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.features.PingMeasurement;
-import de.fuchsmod.features.TPSMeasurement;
-import de.fuchsmod.features.TooltipScroll;
+import de.fuchsmod.features.general.PingMeasurement;
+import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
