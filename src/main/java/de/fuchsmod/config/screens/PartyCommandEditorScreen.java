@@ -89,18 +89,18 @@ public class PartyCommandEditorScreen extends Screen {
         LinearLayout triggerRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         triggerRow.addChild(this.triggerLabel);
         this.triggerText = new EditBox(font, Component.literal(""));
+        this.triggerText.setWidth(width / 2);
         this.triggerText.setMaxLength(255);
         this.triggerText.setValue(this.trigger);
-        this.triggerText.setWidth(width / 2);
         this.triggerText.setTooltip(Tooltip.create(Component.literal("The command will be executed if this string is found in chat.")));
         triggerRow.addChild(this.triggerText);
 
         LinearLayout commandRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         commandRow.addChild(this.commandLabel);
         this.commandText = new EditBox(font, Component.literal(""));
+        this.commandText.setWidth(width / 2);
         this.commandText.setMaxLength(255);
         this.commandText.setValue(this.command);
-        this.commandText.setWidth(width / 2);
         this.commandText.setTooltip(Tooltip.create(Component.literal("This is the command to be executed. " +
                 "The {player} placeholder will be replaced with the senders name. " +
                 "Use the {args[i]} placeholders to add arguments given after the trigger.")));
