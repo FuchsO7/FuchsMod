@@ -6,13 +6,14 @@ import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
-import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
-import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
-import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
+import dev.isxander.yacl3.api.controller.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 
 public class GeneralCategory {
+    private static final Minecraft client = Minecraft.getInstance();
+
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
                 .name(Component.literal("General"))
@@ -247,6 +248,58 @@ public class GeneralCategory {
                                         .range(0.0, 15.0)
                                         .step(0.1)
                                         .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
+                                .build())
+                        .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.literal("Zoom"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Enable Zoom"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, allows to zoom by holding control and scrolling with the mouse wheel.")))
+                                .binding(defaults.enableZoom,
+                                        () -> config.enableZoom,
+                                        newValue -> {
+                                            config.enableZoom = newValue;
+                                            Fullbright.setGamma();})
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.literal("Zoom Factor"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Determine by how much a scroll should zoom.")))
+                                .binding(defaults.zoomFactor,
+                                        () -> config.zoomFactor,
+                                        newValue -> {
+                                            config.zoomFactor = newValue;
+                                            Fullbright.setGamma();
+                                        })
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.0, 2.0)
+                                        .step(0.01)
+                                        .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
+                                .build())
+                        .option(Option.<Float>createBuilder()
+                                .name(Component.literal("Immediate Zoom"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Determine by how much the zoom hotkey scales.")))
+                                .binding(defaults.immediateZoomFactor,
+                                        () -> config.immediateZoomFactor,
+                                        newValue -> {
+                                            config.immediateZoomFactor = newValue;
+                                            Fullbright.setGamma();
+                                        })
+                                .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                        .range(1.0f, 32.0f)
+                                        .step(1f)
+                                        .formatValue(value -> Component.literal("%.0fx".formatted(value))))
+                                .build())
+                        .option(ButtonOption.createBuilder()
+                                .name(Component.literal("Open Key Binds"))
+                                .text(Component.literal(""))
+                                .action((screen, buttonOption) -> {
+                                    client.gui.setScreen(new KeyBindsScreen(screen, client.options));
+                                })
                                 .build())
                         .build())
                 .build();

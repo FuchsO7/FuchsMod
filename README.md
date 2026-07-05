@@ -8,6 +8,7 @@ If you find any problems or have suggestions, feel free to open an issue.
 - FPS, TPS and Ping Measurement
 - Tooltip Scrolling
 - Fullbright
+- Zoom
 - Hypixel Party Commands
 
 Open the config with `/fuchsmod config`

@@ -72,6 +72,15 @@ public class FuchsModConfig {
     @SerialEntry
     public double customGamma = 1.0;
 
+    @SerialEntry
+    public boolean enableZoom = false;
+
+    @SerialEntry
+    public double zoomFactor = 0.2;
+
+    @SerialEntry
+    public float immediateZoomFactor = 4.0f;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;
