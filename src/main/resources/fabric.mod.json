@@ -24,6 +24,7 @@
 	"mixins": [
 		"fuchs-mod.mixins.json"
 	],
+	"accessWidener": "fuchsmod.classtweaker",
 	"depends": {
 		"fabricloader": ">=0.19.2",
 		"minecraft": "~26.2",
