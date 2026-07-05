@@ -19,7 +19,7 @@ public class PartyCommandUtils {
         return (int) ((max - min + 1) * Math.random()) + min;
     }
 
-    public String getScopeChatCommand(String scope) {
+    public static String getScopeChatCommand(String scope) {
         return switch (scope) {
             case "party" -> "/pc ";
             case "guild" -> "/gc";

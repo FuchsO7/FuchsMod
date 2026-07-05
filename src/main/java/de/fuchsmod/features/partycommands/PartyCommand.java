@@ -26,7 +26,9 @@ public class PartyCommand {
     public void run(String scope, String senderName, String[] arguments) {
         if (!scopes.contains(scope))
             return;
-        String messageToSend = message.replace("{player}", senderName);
+        String messageToSend = message
+                .replace("{player}", senderName)
+                .replace("{chat}", PartyCommandUtils.getScopeChatCommand(scope));
         for(int i = 0; i < arguments.length; i++)
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);
         if (replacementFunction != null)

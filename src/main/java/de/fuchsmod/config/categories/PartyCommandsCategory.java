@@ -26,6 +26,18 @@ public class PartyCommandsCategory {
                         .build())
                 .group(ListOption.<PartyCommandRecord>createBuilder()
                         .name(Component.literal("Configure Commands"))
+                        .description(OptionDescription.of(
+                                Component.literal("""
+                                        Configure Party Commands here.
+                                        A command will be executed if the trigger is found in a chat message with matching scope.
+                                        Placeholders allow to modify the command depending on variables:
+                                        - {player} The senders player name
+                                        - {chat} The slash command for the chat of the scope
+                                            - AS example, if the scope is 'party', this placeholder becomes '/pc'
+                                        - {args[i]} Arguments after trigger, starting at index 0
+                                            - As example, {args[0]} refers to the first argument
+                                        - {function} Return value of a selectable replacement function
+                                        """)))
                         .binding(defaults.partyCommandsList,
                                 () -> config.partyCommandsList,
                                 newValue -> config.partyCommandsList = newValue)
