@@ -3,7 +3,7 @@ package de.fuchsmod.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.TooltipScroll;
+import de.fuchsmod.features.general.TooltipScroll;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;

@@ -2,7 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.*;
+import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.api.ClientModInitializer;
@@ -26,6 +26,8 @@ public class FuchsMod implements ClientModInitializer {
 		PingHud.init();
 		LOGGER.info("Initialized Ping Measurement!");
 		TooltipScroll.init();
+		LOGGER.info("Initialized Tooltip Scrolling!");
+		Fullbright.init();
 		LOGGER.info("Initialized Tooltip Scrolling!");
 		PartyCommandUtils.init();
 		PartyCommands.init();

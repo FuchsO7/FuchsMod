@@ -1,9 +1,10 @@
 package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.features.PingMeasurement;
-import de.fuchsmod.features.TPSMeasurement;
-import de.fuchsmod.features.TooltipScroll;
+import de.fuchsmod.features.general.Fullbright;
+import de.fuchsmod.features.general.PingMeasurement;
+import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
@@ -216,6 +217,36 @@ public class GeneralCategory {
                                         newValue -> config.horizontalScrollDirection = newValue ? 1 : -1)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .formatValue(value -> Component.literal(value ? "Scroll Up -> Move Right" : "Scroll Up -> Move Left")))
+                                .build())
+                        .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.literal("Fullbright"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Use Custom Brightness"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, the custom brightness will be set as brightness. Otherwise, the vanilla brightness setting is used.")))
+                                .binding(defaults.enableCustomGamma,
+                                        () -> config.enableCustomGamma,
+                                        newValue -> {
+                                            config.enableCustomGamma = newValue;
+                                            Fullbright.setGamma();})
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.literal("Custom Brightness"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Set a custom brightness. 100% is the normal Brightness.")))
+                                .binding(defaults.customGamma,
+                                        () -> config.customGamma,
+                                        newValue -> {
+                                            config.customGamma = newValue;
+                                            Fullbright.setGamma();
+                                        })
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.0, 15.0)
+                                        .step(0.1)
+                                        .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
                                 .build())
                         .build())
                 .build();

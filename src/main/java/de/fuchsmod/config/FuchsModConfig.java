@@ -66,9 +66,18 @@ public class FuchsModConfig {
     @SerialEntry
     public int horizontalScrollDirection = 1;
 
+    @SerialEntry
+    public boolean enableCustomGamma = false;
+
+    @SerialEntry
+    public double customGamma = 1.0;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;
+
+    @SerialEntry
+    public int commandDelay = 500;
 
     @SerialEntry
     public List<PartyCommandRecord> partyCommandsList = new ArrayList<>(List.of(

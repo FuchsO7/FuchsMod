@@ -26,15 +26,13 @@ public class PartyCommand {
     public void run(String scope, String senderName, String[] arguments) {
         if (!scopes.contains(scope))
             return;
-        String messageToSend = message.replace("{player}", senderName);
+        String messageToSend = message
+                .replace("{player}", senderName)
+                .replace("{chat}", PartyCommandUtils.getScopeChatCommand(scope));
         for(int i = 0; i < arguments.length; i++)
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);
         if (replacementFunction != null)
             messageToSend = messageToSend.replace("{function}", replacementFunction.apply(scope, senderName, arguments));
-        sendChatMessage(messageToSend);
-    }
-
-    private static void sendChatMessage(String message) {
-        new ChatScreen("", false).handleChatInput(message, false);
+        PartyCommands.sendChatMessage(messageToSend);
     }
 }
