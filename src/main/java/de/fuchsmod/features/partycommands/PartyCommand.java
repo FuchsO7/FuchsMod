@@ -33,10 +33,6 @@ public class PartyCommand {
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);
         if (replacementFunction != null)
             messageToSend = messageToSend.replace("{function}", replacementFunction.apply(scope, senderName, arguments));
-        sendChatMessage(messageToSend);
-    }
-
-    private static void sendChatMessage(String message) {
-        new ChatScreen("", false).handleChatInput(message, false);
+        PartyCommands.sendChatMessage(messageToSend);
     }
 }

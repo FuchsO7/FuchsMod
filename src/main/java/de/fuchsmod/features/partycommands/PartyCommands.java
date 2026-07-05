@@ -1,19 +1,40 @@
 package de.fuchsmod.features.partycommands;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
+    private static final List<ScheduledMessage> scheduledMessages = new LinkedList<>();
+
+    private record ScheduledMessage(long time, String message) {
+    }
 
     public static void init() {
         loadCommands();
+        ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
+            for (ScheduledMessage scheduledMessage : scheduledMessages) {
+                if (scheduledMessage.time < Util.getMillis()) {
+                    new ChatScreen("", false).handleChatInput(scheduledMessage.message(), false);
+                    scheduledMessages.remove(scheduledMessage);
+                }
+            }
+        });
+    }
+
+    public static void sendChatMessage(String message) {
+        scheduledMessages.add(new ScheduledMessage(Util.getMillis() + (long) config.commandDelay, message));
     }
 
     public static List<String> getScopes(int scopesInteger) {

@@ -77,6 +77,9 @@ public class FuchsModConfig {
     public boolean enablePartyCommands = false;
 
     @SerialEntry
+    public int commandDelay = 500;
+
+    @SerialEntry
     public List<PartyCommandRecord> partyCommandsList = new ArrayList<>(List.of(
             new PartyCommandRecord(2, "!warp", "/party warp", "None"),
             new PartyCommandRecord(2, "!allinv", "/party settings allinvite true", "None"),
