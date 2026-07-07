@@ -12,6 +12,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class FPSHud {
     private static final Minecraft client = Minecraft.getInstance();
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
@@ -21,6 +23,7 @@ public class FPSHud {
                 VanillaHudElements.CHAT,
                 Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "fps_hud"),
                 FPSHud::extract);
+        LOGGER.info("Initialized FPS Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {

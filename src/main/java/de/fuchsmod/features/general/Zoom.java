@@ -11,6 +11,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class Zoom {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static final Minecraft client = Minecraft.getInstance();
@@ -40,6 +42,7 @@ public class Zoom {
             onMouseScroll(yOffset);
             return false;
         });
+        LOGGER.info("Initialized Zoom!");
     }
 
     public static void onMouseScroll(double direction) {

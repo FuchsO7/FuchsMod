@@ -10,6 +10,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.network.chat.Component;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class Commands {
     public static void init() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess)-> {
@@ -22,6 +24,7 @@ public class Commands {
                         .executes(Commands::executeGetPingCommand))
             );
         });
+        LOGGER.info("Initialized Fuchs Mod Commands!");
     }
 
     private static int executeConfigCommand(CommandContext<FabricClientCommandSource> context) {

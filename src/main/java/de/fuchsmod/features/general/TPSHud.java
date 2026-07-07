@@ -13,6 +13,8 @@ import net.minecraft.resources.Identifier;
 
 import java.lang.Math;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class TPSHud {
     private static final Minecraft client = Minecraft.getInstance();
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
@@ -22,6 +24,7 @@ public class TPSHud {
                 VanillaHudElements.CHAT,
                 Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "tps_hud"),
                 TPSHud::extract);
+        LOGGER.info("Initialized TPS Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {

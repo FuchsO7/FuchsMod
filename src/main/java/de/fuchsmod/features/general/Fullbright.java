@@ -5,6 +5,8 @@ import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class Fullbright {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static final Minecraft client = Minecraft.getInstance();
@@ -13,6 +15,7 @@ public class Fullbright {
         ClientPlayConnectionEvents.JOIN.register((packetListener, packetSender, client) -> {
             setGamma();
         });
+        LOGGER.info("Initialized Fullbright!");
     }
 
     public static void setGamma() {

@@ -23,24 +23,15 @@ public class FuchsMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		LOGGER.info("Initializing Fuchs Mod!");
 		FuchsModConfigManager.init();
-		LOGGER.info("Initialized Config Manager!");
 		TPSHud.init();
-		LOGGER.info("Initialized TPS Measurement!");
 		FPSHud.init();
-		LOGGER.info("Initialized FPS Measurement!");
 		PingHud.init();
-		LOGGER.info("Initialized Ping Measurement!");
 		TooltipScroll.init();
-		LOGGER.info("Initialized Tooltip Scrolling!");
 		Fullbright.init();
-		LOGGER.info("Initialized Fullbright!");
 		Zoom.init();
-		LOGGER.info("Initialized Zoom!");
 		PartyCommandUtils.init();
 		PartyCommands.init();
-		LOGGER.info("Initialized Party Commands!");
 		Commands.init();
-		LOGGER.info("Initialized Fuchs Mod Commands!");
 		LOGGER.info("Initializing Fuchs Mod completed!");
 	}
 }
