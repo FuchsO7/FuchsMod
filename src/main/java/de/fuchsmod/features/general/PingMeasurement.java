@@ -103,7 +103,7 @@ public class PingMeasurement {
 
     public Component getAveragePingFormatted() {
         if (this.PingResults.size() >= 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
-            return Component.literal("%d".formatted(this.averagePing)).withColor(getPingColor(this.estimatedPing));
+            return Component.literal("%d".formatted(this.averagePing)).withColor(getPingColor(this.averagePing));
         } else {
             return Component.literal("???").withColor(TextColor.WHITE);
         }
