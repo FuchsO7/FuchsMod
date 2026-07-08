@@ -15,6 +15,9 @@ public class FuchsModConfig {
     public boolean showTPSHud = false;
 
     @SerialEntry
+    public boolean useContinuousColorsForTPSHud = false;
+
+    @SerialEntry
     public double TPSHudXPos = 2.0;
 
     @SerialEntry
@@ -37,6 +40,9 @@ public class FuchsModConfig {
     public boolean showFPSHud = false;
 
     @SerialEntry
+    public boolean useContinuousColorsForFPSHud = false;
+
+    @SerialEntry
     public double FPSHudXPos = 2.0;
 
     @SerialEntry
@@ -44,6 +50,9 @@ public class FuchsModConfig {
 
     @SerialEntry
     public boolean showPingHud = false;
+
+    @SerialEntry
+    public boolean useContinuousColorsForPingHud = false;
 
     @SerialEntry
     public double PingHudXPos = 2.0;

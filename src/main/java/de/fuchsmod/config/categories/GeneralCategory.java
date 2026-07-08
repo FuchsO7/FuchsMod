@@ -29,6 +29,16 @@ public class GeneralCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Color TPS Hud continuous"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Use a continuous coloring of the TPS Hud instead of discrete colors.")))
+                                .binding(defaults.useContinuousColorsForTPSHud,
+                                        () -> config.useContinuousColorsForTPSHud,
+                                        newValue -> config.useContinuousColorsForTPSHud = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
                         .option(Option.<Double>createBuilder()
                                 .name(Component.literal("TPS Hud X Position"))
                                 .description(OptionDescription.of(
@@ -89,10 +99,20 @@ public class GeneralCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Color FPS Hud continuous"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Use a continuous coloring of the FPS Hud instead of discrete colors.")))
+                                .binding(defaults.useContinuousColorsForFPSHud,
+                                        () -> config.useContinuousColorsForFPSHud,
+                                        newValue -> config.useContinuousColorsForFPSHud = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
                         .option(Option.<Double>createBuilder()
                                 .name(Component.literal("FPS Hud X Position"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Horizontal Position of the FS Hud.")))
+                                        Component.literal("Relative Horizontal Position of the FPS Hud.")))
                                 .binding(defaults.FPSHudXPos,
                                         () -> config.FPSHudXPos,
                                         newValue -> config.FPSHudXPos = newValue)
@@ -123,6 +143,16 @@ public class GeneralCategory {
                                 .binding(defaults.showPingHud,
                                         () -> config.showPingHud,
                                         newValue -> config.showPingHud = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Color Ping Hud continuous"))
+                                .description(OptionDescription.of(
+                                        Component.literal("Use a continuous coloring of the Ping Hud instead of discrete colors.")))
+                                .binding(defaults.useContinuousColorsForPingHud,
+                                        () -> config.useContinuousColorsForPingHud,
+                                        newValue -> config.useContinuousColorsForPingHud = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())

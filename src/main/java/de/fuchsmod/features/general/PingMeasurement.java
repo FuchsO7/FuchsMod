@@ -1,8 +1,10 @@
 package de.fuchsmod.features.general;
 
+import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
 import net.minecraft.util.Util;
 
@@ -11,6 +13,7 @@ import java.util.Queue;
 
 public class PingMeasurement {
     private static final PingMeasurement INSTANCE = new PingMeasurement();
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private long estimatedPing;
@@ -51,18 +54,39 @@ public class PingMeasurement {
         this.PingResults = new LinkedList<>();
     }
 
-    private static ChatFormatting getPingColor(long ping) {
+    private static TextColor getDiscretePingColor(long ping) {
         if (ping < 50L) {
-            return ChatFormatting.DARK_GREEN;
+            return TextColor.DARK_GREEN;
         } else if (ping < 150L) {
-            return ChatFormatting.GREEN;
+            return TextColor.GREEN;
         } else if (ping < 250L) {
-            return ChatFormatting.YELLOW;
-        } else if (ping < 500L) {
-            return ChatFormatting.RED;
+            return TextColor.YELLOW;
+        } else if (ping < 400L) {
+            return TextColor.RED;
         } else {
-            return ChatFormatting.DARK_RED;
+            return TextColor.DARK_RED;
         }
+    }
+
+    private static int getContinuousPingColor(long ping) {
+        final int BREAKPOINT = 150;
+        int red = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
+                        1.7f * ping :
+                        -0.34f * ping + 340
+                ), 255), 0);
+        int green = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
+                        1.7f * ping + 170 :
+                        -1.7f * ping + 510
+                ), 255), ping <= BREAKPOINT ? 170 : 0);
+        int blue = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
+                        1.7f * ping :
+                        -0.34f * ping + 170
+                ), 85), 0);
+        return 256 * 256 * red + 256 * green + blue;
+    }
+
+    private static int getPingColor(long ping) {
+        return config.useContinuousColorsForPingHud ? getContinuousPingColor(ping) : getDiscretePingColor(ping).getValue();
     }
 
     public long getPing() {
@@ -74,14 +98,14 @@ public class PingMeasurement {
     }
 
     public Component getCurrentPingFormatted() {
-        return Component.literal("%d".formatted(this.estimatedPing)).withStyle(getPingColor(this.estimatedPing));
+        return Component.literal("%d".formatted(this.estimatedPing)).withColor(getPingColor(this.estimatedPing));
     }
 
     public Component getAveragePingFormatted() {
         if (this.PingResults.size() >= 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
-            return Component.literal("%d".formatted(this.averagePing)).withStyle(getPingColor(this.averagePing));
+            return Component.literal("%d".formatted(this.averagePing)).withColor(getPingColor(this.estimatedPing));
         } else {
-            return Component.literal("???").withStyle(ChatFormatting.WHITE);
+            return Component.literal("???").withColor(TextColor.WHITE);
         }
     }
 }
