@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
@@ -30,6 +32,7 @@ public class PartyCommands {
                 }
             }
         });
+        LOGGER.info("Initialized Party Commands!");
     }
 
     public static void sendChatMessage(String message) {

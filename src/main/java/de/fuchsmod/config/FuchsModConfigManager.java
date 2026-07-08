@@ -14,6 +14,8 @@ import net.minecraft.network.chat.Component;
 
 import java.nio.file.Path;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class FuchsModConfigManager {
     private static final Minecraft client = Minecraft.getInstance();
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("fuchsmod.json5");
@@ -28,6 +30,7 @@ public class FuchsModConfigManager {
 
     public static void init() {
         HANDLER.load();
+        LOGGER.info("Initialized Config Manager!");
     }
 
     public static FuchsModConfig getInstance() {

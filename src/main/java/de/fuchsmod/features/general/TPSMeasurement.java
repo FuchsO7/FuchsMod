@@ -3,8 +3,8 @@ package de.fuchsmod.features.general;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 import net.minecraft.util.Util;
@@ -92,18 +92,39 @@ public class TPSMeasurement {
         this.TPSResults = new LinkedList<>();
     }
 
-    private static ChatFormatting getTPSColor(double tps) {
+    private static TextColor getDiscreteTPSColor(double tps) {
         if (tps > 19.0) {
-            return ChatFormatting.DARK_GREEN;
+            return TextColor.DARK_GREEN;
         } else if (tps > 17.5) {
-            return ChatFormatting.GREEN;
+            return TextColor.GREEN;
         } else if (tps > 15.0) {
-            return ChatFormatting.YELLOW;
+            return TextColor.YELLOW;
         } else if (tps > 10.0) {
-            return ChatFormatting.RED;
+            return TextColor.RED;
         } else {
-            return ChatFormatting.DARK_RED;
+            return TextColor.DARK_RED;
         }
+    }
+
+    private static int getContinuousTPSColor(double tps) {
+        final int BREAKPOINT = 15;
+        int red = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
+                8.5 * tps + 170 :
+                -51.0 * tps + 1020
+        ), 255), 0);
+        int green = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
+                34.0 * tps - 255 :
+                -51.0 * tps + 1150
+        ), 255), tps <= BREAKPOINT ? 0 : 170);
+        int blue = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
+                8.5 * tps :
+                -51.0 * tps + 1020
+        ), 85), 0);
+        return 256 * 256 * red + 256 * green + blue;
+    }
+
+    private static int getTPSColor(double tps) {
+        return config.useContinuousColorsForTPSHud ? getContinuousTPSColor(tps) : getDiscreteTPSColor(tps).getValue();
     }
 
     public double getMSPT() {
@@ -119,14 +140,14 @@ public class TPSMeasurement {
     }
 
     public Component getCurrentTPSFormatted() {
-        return Component.literal("%.1f".formatted(this.estimatedTPS)).withStyle(getTPSColor(this.estimatedTPS));
+        return Component.literal("%.1f".formatted(this.estimatedTPS)).withColor(getTPSColor(this.estimatedTPS));
     }
 
     public Component getAverageTPSFormatted() {
         if (this.TPSResults.size() >= AVERAGE_SAMPLE_TIME_SECONDS) {
-            return Component.literal("%.1f".formatted(this.averageTPS)).withStyle(getTPSColor(this.averageTPS));
+            return Component.literal("%.1f".formatted(this.averageTPS)).withColor(getTPSColor(this.averageTPS));
         } else {
-            return Component.literal("???").withStyle(ChatFormatting.WHITE);
+            return Component.literal("???").withColor(TextColor.WHITE);
         }
     }
 }

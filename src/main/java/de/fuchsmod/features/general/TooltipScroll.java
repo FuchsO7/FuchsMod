@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import org.joml.Vector2i;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class TooltipScroll {
     private static final TooltipScroll INSTANCE = new TooltipScroll();
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
@@ -25,6 +27,7 @@ public class TooltipScroll {
                 return consumed;
             });
         });
+        LOGGER.info("Initialized Tooltip Scrolling!");
     }
 
     public static TooltipScroll getInstance() {
