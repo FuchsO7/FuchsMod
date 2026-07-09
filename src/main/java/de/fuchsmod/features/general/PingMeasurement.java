@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
 
 import java.util.LinkedList;
@@ -70,19 +71,14 @@ public class PingMeasurement {
 
     private static int getContinuousPingColor(long ping) {
         final int BREAKPOINT = 150;
-        int red = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
-                        1.7f * ping :
-                        -0.34f * ping + 340
-                ), 255), 0);
-        int green = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
-                        1.7f * ping + 170 :
-                        -1.7f * ping + 510
-                ), 255), ping <= BREAKPOINT ? 170 : 0);
-        int blue = Integer.max(Integer.min((int) (ping <= BREAKPOINT ?
-                        1.7f * ping :
-                        -0.34f * ping + 170
-                ), 85), 0);
-        return 256 * 256 * red + 256 * green + blue;
+        final int darK_green = 0xFF00AA00;
+        final int yellow = 0xFFFFFF55;
+        final int dark_red = 0xFFAA0000;
+        if (ping <= BREAKPOINT) {
+            return ARGB.linearLerp((float) ping / BREAKPOINT, darK_green, yellow);
+        } else {
+            return ARGB.linearLerp(Float.min((float) (ping - BREAKPOINT) / 250, 1f), yellow, dark_red);
+        }
     }
 
     private static int getPingColor(long ping) {

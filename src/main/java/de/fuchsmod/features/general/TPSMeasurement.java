@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
 
 import java.util.LinkedList;
@@ -107,20 +108,15 @@ public class TPSMeasurement {
     }
 
     private static int getContinuousTPSColor(double tps) {
-        final int BREAKPOINT = 15;
-        int red = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
-                8.5 * tps + 170 :
-                -51.0 * tps + 1020
-        ), 255), 0);
-        int green = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
-                34.0 * tps - 255 :
-                -51.0 * tps + 1150
-        ), 255), tps <= BREAKPOINT ? 0 : 170);
-        int blue = Integer.max(Integer.min((int) (tps <= BREAKPOINT ?
-                8.5 * tps :
-                -51.0 * tps + 1020
-        ), 85), 0);
-        return 256 * 256 * red + 256 * green + blue;
+        final double BREAKPOINT = 17.5;
+        final int darK_green = 0xFF00AA00;
+        final int yellow = 0xFFFFFF55;
+        final int dark_red = 0xFFAA0000;
+        if (tps <= BREAKPOINT) {
+            return ARGB.linearLerp((float) Double.max(tps - 10, 0) / 7.5f, dark_red, yellow);
+        } else {
+            return ARGB.linearLerp(Float.min((float) (tps - BREAKPOINT) / 2.5f, 1f), yellow, darK_green);
+        }
     }
 
     private static int getTPSColor(double tps) {

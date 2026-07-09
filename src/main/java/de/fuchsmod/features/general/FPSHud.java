@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
 
@@ -52,19 +53,14 @@ public class FPSHud {
 
     private static int getContinuousFPSColor(int fps) {
         final int BREAKPOINT = 20;
-        int red = Integer.max(Integer.min((int) (fps <= BREAKPOINT ?
-                8.5 * fps + 170 :
-                -17.0 * fps + 595
-        ), 255), 0);
-        int green = Integer.max(Integer.min((int) (fps <= BREAKPOINT ?
-                17.0 * fps - 85 :
-                -2.83 * fps + 340
-        ), 255), fps <= BREAKPOINT ? 0 : 170);
-        int blue = Integer.max(Integer.min((int) (fps <= BREAKPOINT ?
-                8.5 * fps :
-                -2.83 * fps + 170
-        ), 85), 0);
-        return 256 * 256 * red + 256 * green + blue;
+        final int darK_green = 0xFF00AA00;
+        final int yellow = 0xFFFFFF55;
+        final int dark_red = 0xFFAA0000;
+        if (fps <= BREAKPOINT) {
+            return ARGB.linearLerp((float) fps / BREAKPOINT, dark_red, yellow);
+        } else {
+            return ARGB.linearLerp(Float.min((float) (fps - BREAKPOINT) / 40, 1f), yellow, darK_green);
+        }
     }
 
     private static int getFPSColor(int fps) {
