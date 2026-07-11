@@ -1,8 +1,7 @@
 package de.fuchsmod.mixin;
 
 import de.fuchsmod.config.FuchsModConfigManager;
-import de.fuchsmod.features.general.PingMeasurement;
-import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.events.ClientPacketEvents;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
@@ -19,23 +18,23 @@ public class ClientPacketListenerMixin {
 			at = @At("RETURN"),
 			method = "handleSetTime"
 	)
-	private void handleSetTime(ClientboundSetTimePacket packet, CallbackInfo info) {
-		TPSMeasurement.getInstance().onSetTimePacket(packet);
+	private void fuchsmod$handleSetTime(ClientboundSetTimePacket packet, CallbackInfo info) {
+		ClientPacketEvents.SET_TIME_PACKET.invoker().onSetTimePacket(packet);
 	}
 
 	@Inject(
 			at = @At("RETURN"),
 			method = "handlePongResponse"
 	)
-	private void handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
-		PingMeasurement.getInstance().onPongResponsePacket(packet);
+	private void fuchsmod$handlePong(ClientboundPongResponsePacket packet, CallbackInfo info) {
+		ClientPacketEvents.PONG_RESPONSE_PACKET.invoker().onPongResponsePacket(packet);
 	}
 
 	@Redirect(
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showNetworkCharts()Z"),
 			method = "tick()V"
 	)
-	private boolean shouldSendPingRequest(DebugScreenOverlay instance) {
+	private boolean fuchsmod$shouldSendPingRequest(DebugScreenOverlay instance) {
 		if (FuchsModConfigManager.getInstance().alwaysSendPingRequest) {
 			return true;
 		} else {

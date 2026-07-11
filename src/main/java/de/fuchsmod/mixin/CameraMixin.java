@@ -12,7 +12,7 @@ public class CameraMixin {
             at = @At("RETURN"),
             method = "calculateFov"
     )
-    private float calculateNewFov(float fov) {
+    private float fuchsmod$calculateNewFov(float fov) {
         return fov * Zoom.fovModifier;
     }
 }

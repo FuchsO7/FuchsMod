@@ -3,6 +3,7 @@ package de.fuchsmod.features.partycommands;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
+import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.util.Util;
@@ -24,6 +25,13 @@ public class PartyCommands {
 
     public static void init() {
         loadCommands();
+        ChatEvents.MESSAGE.register(message -> {
+            String messageString = message.content().getString()
+                    .replaceAll("\r", "\\\\r")
+                    .replaceAll("\n", "\\\\n")
+                    .replaceAll("§.", "");
+            onChatMessage(messageString);
+        });
         ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
             for (ScheduledMessage scheduledMessage : scheduledMessages) {
                 if (scheduledMessage.time < Util.getMillis()) {
