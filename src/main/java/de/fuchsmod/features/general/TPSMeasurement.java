@@ -2,7 +2,8 @@ package de.fuchsmod.features.general;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import de.fuchsmod.events.ClientPacketEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
@@ -27,8 +28,14 @@ public class TPSMeasurement {
     private Queue<Double> TPSResults = new LinkedList<>();
 
     private TPSMeasurement() {
-        ClientPlayConnectionEvents.DISCONNECT.register((listener, client) -> {
-            TPSMeasurement.getInstance().reset();
+        ClientPacketEvents.SET_TIME_PACKET.register(packet -> {
+            INSTANCE.onSetTimePacket(packet);
+        });
+        ClientPacketEvents.PING_PACKET.register(packet -> {
+            INSTANCE.onPingPacket(packet);
+        });
+        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {
+            INSTANCE.reset();
         });
     }
 

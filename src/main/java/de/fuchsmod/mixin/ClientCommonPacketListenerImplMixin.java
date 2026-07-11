@@ -1,6 +1,6 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.events.ClientPacketEvents;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public class ClientCommonPacketListenerImplMixin {
             at = @At("RETURN"),
             method = "handlePing"
     )
-    private void handlePing(ClientboundPingPacket packet, CallbackInfo info) {
-        TPSMeasurement.getInstance().onPingPacket(packet);
+    private void fuchsmod$handlePing(ClientboundPingPacket packet, CallbackInfo info) {
+        ClientPacketEvents.PING_PACKET.invoker().onPingPacket(packet);
     }
 }

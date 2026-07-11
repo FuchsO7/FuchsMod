@@ -1,6 +1,6 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.features.partycommands.PartyCommands;
+import de.fuchsmod.events.ChatEvents;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.multiplayer.chat.GuiMessage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,11 +14,7 @@ public class ChatComponentMixin {
             at = @At("RETURN"),
             method = "logChatMessage"
     )
-    private void onChatMessage(GuiMessage message, CallbackInfo ci) {
-        String messageString = message.content().getString()
-                .replaceAll("\r", "\\\\r")
-                .replaceAll("\n", "\\\\n")
-                .replaceAll("§.", "");
-        PartyCommands.onChatMessage(messageString);
+    private void fuchsmod$onChatMessage(GuiMessage message, CallbackInfo ci) {
+        ChatEvents.MESSAGE.invoker().onMessage(message);
     }
 }
