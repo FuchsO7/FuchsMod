@@ -156,18 +156,6 @@ public class GeneralCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Always send ping requests"))
-                                .description(OptionDescription.of(
-                                        Component.literal("""
-                                                If enabled, a ping request packet will be sent to the server each tick. Required for Ping measurement.
-                                                If disabled, ping requests will only be sent if the F3 Network Chart is open.""")))
-                                .binding(defaults.alwaysSendPingRequest,
-                                        () -> config.alwaysSendPingRequest,
-                                        newValue -> config.alwaysSendPingRequest = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
                         .option(Option.<Double>createBuilder()
                                 .name(Component.literal("Ping Hud X Position"))
                                 .description(OptionDescription.of(
@@ -191,6 +179,18 @@ public class GeneralCategory {
                                         .range(0.0, 100.0)
                                         .step(0.1)
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Always send ping requests"))
+                                .description(OptionDescription.of(
+                                        Component.literal("""
+                                                If enabled, a ping request packet will be sent to the server each tick. Required for Ping measurement.
+                                                If disabled, ping requests will only be sent if the F3 Network Chart is open.""")))
+                                .binding(defaults.alwaysSendPingRequest,
+                                        () -> config.alwaysSendPingRequest,
+                                        newValue -> config.alwaysSendPingRequest = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
                                 .build())
                         .option(ButtonOption.createBuilder()
                                 .name(Component.literal("Reset Data"))
