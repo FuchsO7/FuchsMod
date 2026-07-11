@@ -18,7 +18,8 @@ public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static final Minecraft client = Minecraft.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
-    private static final List<ScheduledMessage> scheduledMessages = new LinkedList<>();
+    private static final Queue<ScheduledMessage> scheduledMessages = new LinkedList<>();
+    private static long lastMessageSentMillis = 0;
     public static boolean enablePartyCommandsDebug = false;
 
     private record ScheduledMessage(long time, String message) {
@@ -34,18 +35,20 @@ public class PartyCommands {
             onChatMessage(messageString);
         });
         ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
-            for (ScheduledMessage scheduledMessage : scheduledMessages) {
-                if (scheduledMessage.time < Util.getMillis()) {
-                    new ChatScreen("", false).handleChatInput(scheduledMessage.message(), false);
-                    scheduledMessages.remove(scheduledMessage);
-                }
+            ScheduledMessage scheduledMessage = scheduledMessages.peek();
+            if (scheduledMessage == null)
+                return;
+            if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + config.commandDelay < Util.getMillis()) {
+                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), false);
+                scheduledMessages.poll();
+                lastMessageSentMillis = Util.getMillis();
             }
         });
         LOGGER.info("Initialized Party Commands!");
     }
 
     public static void sendChatMessage(String message) {
-        scheduledMessages.add(new ScheduledMessage(Util.getMillis() + (long) config.commandDelay, message));
+        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + (long) config.commandDelay, message));
     }
 
     public static List<String> getScopes(int scopesInteger) {
