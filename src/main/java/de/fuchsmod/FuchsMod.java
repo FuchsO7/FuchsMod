@@ -1,6 +1,7 @@
 package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
+import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
@@ -31,6 +32,7 @@ public class FuchsMod implements ClientModInitializer {
 		Zoom.init();
 		PartyCommandUtils.init();
 		PartyCommands.init();
+		Debug.init();
 		Commands.init();
 		LOGGER.info("Initializing Fuchs Mod completed!");
 	}

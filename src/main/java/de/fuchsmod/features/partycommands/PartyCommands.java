@@ -5,20 +5,21 @@ import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
     private static final List<ScheduledMessage> scheduledMessages = new LinkedList<>();
+    public static boolean enablePartyCommandsDebug = false;
 
     private record ScheduledMessage(long time, String message) {
     }
@@ -84,6 +85,11 @@ public class PartyCommands {
         String scope = prefix.contains(">") ? prefixSplit[0].toLowerCase().strip() : "public";
         String command = content.split(" ")[0];
         String[] arguments = content.substring(command.length()).strip().split(" ");
+
+        if (enablePartyCommandsDebug && client.player != null)
+            client.player.sendSystemMessage(Component.literal("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
+                    command, scope, senderName, Arrays.toString(arguments)
+            )));
 
         var partyCommand = commands.get(command);
         if (partyCommand != null)
