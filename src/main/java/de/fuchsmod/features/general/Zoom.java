@@ -53,10 +53,14 @@ public class Zoom {
     }
 
     public static void setZoom(float factor) {
+        if (config.smoothCameraOnZoom)
+            client.options.smoothCamera = factor > 1.0f;
         fovModifier = 1.0f / factor;
     }
 
     public static void resetZoom() {
+        if (config.smoothCameraOnZoom)
+            client.options.smoothCamera = false;
         scrolls = 1.0;
         fovModifier = 1.0f;
     }

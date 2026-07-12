@@ -294,6 +294,18 @@ public class GeneralCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Smooth Camera on Zoom"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, the camera is set to move smoothly while zooming.")))
+                                .binding(defaults.smoothCameraOnZoom,
+                                        () -> config.smoothCameraOnZoom,
+                                        newValue -> {
+                                            config.smoothCameraOnZoom = newValue;
+                                            Fullbright.setGamma();})
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
                         .option(Option.<Double>createBuilder()
                                 .name(Component.literal("Zoom Factor"))
                                 .description(OptionDescription.of(
