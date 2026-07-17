@@ -34,6 +34,9 @@ public class Commands {
                     .then(ClientCommands.literal("PongResponsePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
                             .executes(Commands::executePongResponseListenerDebugToggle)))
+                    .then(ClientCommands.literal("ResourcePackPacketsListener")
+                        .then(ClientCommands.argument("enable", BoolArgumentType.bool())
+                            .executes(Commands::executeResourcePackListenerDebugToggle)))
                     .then(ClientCommands.literal("PartyCommands")
                             .then(ClientCommands.argument("enable", BoolArgumentType.bool())
                                     .executes(Commands::executePartyCommandsDebugToggle))))
@@ -79,6 +82,12 @@ public class Commands {
         Debug.enablePongResponsePacketListenerDebug = BoolArgumentType.getBool(context, "enable");
         return Command.SINGLE_SUCCESS;
     }
+
+    private static int executeResourcePackListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
+        Debug.enableResourcePackPacketsListenerDebug = BoolArgumentType.getBool(context, "enable");
+        return Command.SINGLE_SUCCESS;
+    }
+
 
     private static int executePartyCommandsDebugToggle(CommandContext<FabricClientCommandSource> context) {
         PartyCommands.enablePartyCommandsDebug = BoolArgumentType.getBool(context, "enable");

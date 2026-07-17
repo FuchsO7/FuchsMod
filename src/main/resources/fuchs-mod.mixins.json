@@ -13,6 +13,8 @@
     "ChatComponentMixin",
     "ClientCommonPacketListenerImplMixin",
     "ClientPacketListenerMixin",
-    "DefaultTooltipPositionerMixin"
+    "ConfirmScreenMixin",
+    "DefaultTooltipPositionerMixin",
+    "ConnectionMixin"
   ]
 }
