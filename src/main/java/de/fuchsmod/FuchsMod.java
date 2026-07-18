@@ -32,6 +32,7 @@ public class FuchsMod implements ClientModInitializer {
 		Zoom.init();
 		PartyCommandUtils.init();
 		PartyCommands.init();
+		ResourcePackIgnore.init();
 		Debug.init();
 		Commands.init();
 		LOGGER.info("Initializing Fuchs Mod completed!");
