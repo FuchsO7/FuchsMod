@@ -10,6 +10,7 @@ If you find any problems or have suggestions, feel free to open an issue.
 - Fullbright
 - Zoom
 - Hypixel Party Commands
+- Server Resource Pack Ignoring
 
 Open the config with `/fuchsmod config`
 
