@@ -344,6 +344,41 @@ public class GeneralCategory {
                                 })
                                 .build())
                         .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.literal("Server Resource Pack"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Auto Ignore"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, the Server Resource Pack will be ignored automatically.")))
+                                .binding(defaults.autoIgnoreServerResourcePacks,
+                                        () -> config.autoIgnoreServerResourcePacks,
+                                        newValue -> config.autoIgnoreServerResourcePacks = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Long>createBuilder()
+                                .name(Component.literal("Ignore Delay"))
+                                .description(OptionDescription.of(
+                                        Component.literal("The server is notified that you 'successfully loaded' the resource pack after this time in milliseconds.")))
+                                .binding(defaults.serverResourcePackIgnoreTimeMillis,
+                                        () -> config.serverResourcePackIgnoreTimeMillis,
+                                        newValue -> config.serverResourcePackIgnoreTimeMillis = newValue)
+                                .controller(opt -> LongSliderControllerBuilder.create(opt)
+                                        .range(0L, 10000L)
+                                        .step(100L)
+                                        .formatValue(value -> Component.literal("%d ms".formatted(value))))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.literal("Send Download Link"))
+                                .description(OptionDescription.of(
+                                        Component.literal("If enabled, the link to the download source of the resource pack will be sent in chat. Be careful with suspicious links.")))
+                                .binding(defaults.sendServerResourcePackDownloadLink,
+                                        () -> config.sendServerResourcePackDownloadLink,
+                                        newValue -> config.sendServerResourcePackDownloadLink = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .build())
                 .build();
     }
 }

@@ -93,6 +93,15 @@ public class FuchsModConfig {
     @SerialEntry
     public float immediateZoomFactor = 4.0f;
 
+    @SerialEntry
+    public boolean autoIgnoreServerResourcePacks = false;
+
+    @SerialEntry
+    public long serverResourcePackIgnoreTimeMillis = 5000L;
+
+    @SerialEntry
+    public boolean sendServerResourcePackDownloadLink = false;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;

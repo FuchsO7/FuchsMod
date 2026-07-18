@@ -1,5 +1,7 @@
 package de.fuchsmod.mixin;
 
+import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.ResourcePackIgnore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -17,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ConfirmScreen.class)
 public class ConfirmScreenMixin {
     @Unique
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
+    @Unique
     private static final Minecraft client = Minecraft.getInstance();
     @Unique
     protected Component ignoreButtonComponent = Component.literal("Ignore");
@@ -29,6 +33,11 @@ public class ConfirmScreenMixin {
     )
     protected void fuchsmod$addIgnoreButton(LinearLayout buttonLayout, CallbackInfo ci) {
         if ((Object) this instanceof ClientCommonPacketListenerImpl.PackConfirmScreen packConfirmScreen) {
+            if (config.autoIgnoreServerResourcePacks) {
+                client.gui.setScreen(packConfirmScreen.parentScreen);
+                ResourcePackIgnore.imitateResourcePackDownload();
+                return;
+            }
             this.ignoreButton = buttonLayout.addChild(Button.builder(this.ignoreButtonComponent, button -> {
                 client.gui.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
