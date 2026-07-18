@@ -5,7 +5,7 @@ import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -26,16 +26,17 @@ public class ResourcePackIgnore {
     private static String url;
     private static final Queue<ScheduledPacket> packetsToSend = new LinkedList<>();
     private static Component scheduledMessage;
-    private static ClientPacketListener connection;
+    private static Connection connection;
 
     public static void init() {
         ClientPacketEvents.RESOURCE_PACK_PUSH_PACKET.register(packet -> {
             packID = packet.id();
             url = packet.url();
         });
+        ClientPacketEvents.NEW_CONNECTION.register(newConnection -> {
+            connection = newConnection;
+        });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.getConnection() != null && connection != client.getConnection())
-                connection = client.getConnection();
             ScheduledPacket scheduledPacket = packetsToSend.peek();
             if (scheduledPacket == null) {
                 if (client.player != null && scheduledMessage != null) {

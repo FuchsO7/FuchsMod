@@ -2,6 +2,7 @@ package de.fuchsmod.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
 import net.minecraft.network.protocol.common.ClientboundResourcePackPopPacket;
 import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
@@ -10,6 +11,12 @@ import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
 
 public class ClientPacketEvents {
+
+    public static final Event<NewConnection> NEW_CONNECTION = EventFactory.createArrayBacked(NewConnection.class, callbacks -> connection -> {
+        for (NewConnection event : callbacks) {
+            event.onNewConnection(connection);
+        }
+    });
 
     public static final Event<SetTimePacket> SET_TIME_PACKET = EventFactory.createArrayBacked(SetTimePacket.class, callbacks -> packet -> {
         for (SetTimePacket event : callbacks) {
@@ -46,6 +53,11 @@ public class ClientPacketEvents {
             event.onResourcePackActionPacket(packet);
         }
     });
+
+    @FunctionalInterface
+    public interface NewConnection {
+        void onNewConnection(Connection connection);
+    }
 
     @FunctionalInterface
     public interface SetTimePacket {
