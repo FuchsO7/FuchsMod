@@ -2,8 +2,11 @@ package de.fuchsmod.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.fuchsmod.config.FuchsModConfigManager;
+import de.fuchsmod.features.general.Calculator;
 import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.partycommands.PartyCommands;
@@ -24,6 +27,9 @@ public class Commands {
                     .executes(Commands::executeGetTPSCommand))
                 .then(ClientCommands.literal("ping")
                     .executes(Commands::executeGetPingCommand))
+                .then(ClientCommands.literal("calculate")
+                    .then(ClientCommands.argument("expression", StringArgumentType.greedyString())
+                        .executes(Commands::executeCalculateCommand)))
                 .then(ClientCommands.literal("debug")
                     .then(ClientCommands.literal("SetTimePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
@@ -37,6 +43,9 @@ public class Commands {
                     .then(ClientCommands.literal("ResourcePackPacketsListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
                             .executes(Commands::executeResourcePackListenerDebugToggle)))
+                    .then(ClientCommands.literal("CalculatorDebug")
+                        .then(ClientCommands.argument("enable", BoolArgumentType.bool())
+                            .executes(Commands::executeCalculatorDebugToggle)))
                     .then(ClientCommands.literal("PartyCommands")
                             .then(ClientCommands.argument("enable", BoolArgumentType.bool())
                                     .executes(Commands::executePartyCommandsDebugToggle))))
@@ -68,6 +77,12 @@ public class Commands {
         return Command.SINGLE_SUCCESS;
     }
 
+    private static int executeCalculateCommand(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
+        double result = Calculator.evaluateExpression(StringArgumentType.getString(context, "expression"));
+        context.getSource().sendFeedback(Component.literal("Result: %s".formatted(result)));
+        return Command.SINGLE_SUCCESS;
+    }
+
     private static int executeSetTimeListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Debug.enableSetTimePacketListenerDebug = BoolArgumentType.getBool(context, "enable");
         return Command.SINGLE_SUCCESS;
@@ -88,9 +103,13 @@ public class Commands {
         return Command.SINGLE_SUCCESS;
     }
 
-
     private static int executePartyCommandsDebugToggle(CommandContext<FabricClientCommandSource> context) {
         PartyCommands.enablePartyCommandsDebug = BoolArgumentType.getBool(context, "enable");
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeCalculatorDebugToggle(CommandContext<FabricClientCommandSource> context) {
+        Calculator.enableCalculatorCommandsDebug = BoolArgumentType.getBool(context, "enable");
         return Command.SINGLE_SUCCESS;
     }
 }
