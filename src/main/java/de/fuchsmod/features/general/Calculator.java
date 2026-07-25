@@ -70,7 +70,6 @@ public class Calculator {
     private enum MathFunction implements MathOperation {
         SQRT,
         SIGN,
-        LOG,
         LN,
         LG,
         SIN,
@@ -79,6 +78,15 @@ public class Calculator {
         ASIN,
         ACOS,
         ATAN;
+
+        @Override
+        public int getPriority() {
+            return 5;
+        }
+    }
+
+    private enum MathBifunction implements MathOperation {
+        LOG;
 
         @Override
         public int getPriority() {
@@ -102,17 +110,21 @@ public class Calculator {
         return number;
     }
 
-    private static MathFunction parseFunction() throws CommandSyntaxException {
+    private static MathOperation parseFunction() throws CommandSyntaxException {
         sendCalculatorDebugMessage("Parsing function in %s".formatted(expression.substring(index)));
         for (int endIndex = index; endIndex < expression.length(); endIndex++) {
             if (!Character.isLetter(expression.charAt(endIndex))) {
                 String function = expression.substring(index, endIndex).toUpperCase();
                 index = endIndex;
+                sendCalculatorDebugMessage("Found function %s".formatted(function));
                 try {
-                    sendCalculatorDebugMessage("Found function %s".formatted(function));
                     return MathFunction.valueOf(function);
-                } catch (Exception e) {
-                    throw new SimpleCommandExceptionType(Component.literal("Unknown Function %s".formatted(e))).create();
+                } catch (Exception _) {}
+                try {
+                    return MathBifunction.valueOf(function);
+                }
+                catch (Exception _) {
+                    throw new SimpleCommandExceptionType(Component.literal("Unknown Function %s".formatted(function))).create();
                 }
             }
         }
@@ -143,7 +155,11 @@ public class Calculator {
             case ADD -> a + b;
             case SUB -> a - b;
             case MUL -> a * b;
-            case DIV -> a / b;
+            case DIV -> {
+                if (b == 0.0)
+                    throw new SimpleCommandExceptionType(Component.literal("Division by 0")).create();
+                yield a / b;
+            }
             case MOD -> a % b;
             case POW -> Math.pow(a, b);
             default ->
@@ -169,6 +185,15 @@ public class Calculator {
         };
     }
 
+    private static double evaluateBifunction(double a, double b, MathBifunction function) throws CommandSyntaxException {
+        sendCalculatorDebugMessage("Evaluating function %s: %s, %s".formatted(function, a, b));
+        return switch (function) {
+            case LOG -> Math.log(a) / Math.log(b);
+            default ->
+                    throw new SimpleCommandExceptionType(Component.literal("Unknown Function %s".formatted(function))).create();
+        };
+    }
+
     private static void reset() {
         index = 0;
         equation.clear();
@@ -178,17 +203,23 @@ public class Calculator {
 
     private static void parseExpression() throws CommandSyntaxException {
         while (index < expression.length()) {
-            if (Character.isDigit(expression.charAt(index))) {
+            if (expression.charAt(index) == ',') {
+                index++;
+                continue;
+            }
+            else if (Character.isDigit(expression.charAt(index))) {
                 double number = parseNumber();
                 sendCalculatorDebugMessage("Adding %s to equation".formatted(number));
                 equation.add(number);
             } else if (Character.isLetter(expression.charAt(index))) {
-                MathFunction function = parseFunction();
+                MathOperation function = parseFunction();
                 sendCalculatorDebugMessage("Pushing %s to stack".formatted(function));
                 operations.push(function);
             } else {
                 MathOperation operation = parseOperator();
                 while (operations.peek() != null && operation.getPriority() <= operations.peek().getPriority()) {
+                    if (operations.peek() == Brackets.OPENING && operation != Brackets.CLOSING)
+                        break;
                     MathOperation op = operations.pop();
                     sendCalculatorDebugMessage("Popped %s from stack".formatted(op));
                     if (!(op instanceof Brackets)) {
@@ -214,15 +245,23 @@ public class Calculator {
         for (Object symbol : equation.toArray()) {
             if (symbol instanceof MathOperator operator) {
                 sendCalculatorDebugMessage("Found operation %s".formatted(operator));
-                double b = results.pop();
-                double a = Objects.requireNonNullElse(results.pop(), 0.0);
+                double b = Objects.requireNonNull(results.poll(), "No number found for operator %s".formatted(operator));
+                double a = operator == MathOperator.SUB ? Objects.requireNonNullElse(results.poll(), 0.0) :
+                        Objects.requireNonNull(results.poll(), "No number found for operator %s".formatted(operator));
                 double result = evaluateOperation(a, b, operator);
                 sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
                 results.push(result);
             } else if (symbol instanceof MathFunction function) {
                 sendCalculatorDebugMessage("Found function %s".formatted(function));
-                double a = results.pop();
+                double a = Objects.requireNonNull(results.poll(), "No number found for function %s".formatted(function));
                 double result = evaluateFunction(a, function);
+                sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
+                results.push(result);
+            } else if (symbol instanceof MathBifunction function) {
+                sendCalculatorDebugMessage("Found operation %s".formatted(function));
+                double b = Objects.requireNonNull(results.poll(), "No number found for operator %s".formatted(function));
+                double a = Objects.requireNonNull(results.poll(), "No number found for operator %s".formatted(function));
+                double result = evaluateBifunction(a, b, function);
                 sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
                 results.push(result);
             } else {
@@ -230,6 +269,7 @@ public class Calculator {
                 results.push((double) symbol);
             }
         }
+        sendCalculatorDebugMessage("Calculation done, Results: %s".formatted(Arrays.toString(results.toArray())));
         return results.peek();
     }
 
