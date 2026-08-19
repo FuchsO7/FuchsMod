@@ -102,6 +102,9 @@ public class FuchsModConfig {
     @SerialEntry
     public boolean sendServerResourcePackDownloadLink = false;
 
+    @SerialEntry
+    public int calculatorPrecision = 3;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;

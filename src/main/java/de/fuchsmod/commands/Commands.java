@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.Calculator;
 import de.fuchsmod.features.general.PingMeasurement;
@@ -15,9 +16,13 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.network.chat.Component;
 
+import java.math.*;
+
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class Commands {
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
+
     public static void init() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess)-> {
             dispatcher.register(ClientCommands.literal("fuchsmod")
@@ -78,8 +83,11 @@ public class Commands {
     }
 
     private static int executeCalculateCommand(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
-        double result = Calculator.evaluateExpression(StringArgumentType.getString(context, "expression"));
-        context.getSource().sendFeedback(Component.literal("Result: %s".formatted(result)));
+        double result = Calculator.calculateExpression(StringArgumentType.getString(context, "expression"));
+        BigDecimal roundedResult = new BigDecimal(Double.toString(result))
+                .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(result)), 0), RoundingMode.HALF_UP))
+                .stripTrailingZeros();
+        context.getSource().sendFeedback(Component.literal("Result: %s".formatted(roundedResult.toPlainString())));
         return Command.SINGLE_SUCCESS;
     }
 
