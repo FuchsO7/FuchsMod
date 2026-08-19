@@ -10,15 +10,8 @@ import java.util.*;
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class Calculator {
-    // FIXME: Add proper exception handling
-    // FIXME: Maybe replace the fields index and expression with arguments for the methods?
-
     private static final Minecraft client = Minecraft.getInstance();
-    private static final Queue<Object> equation = new LinkedList<>();
-    private static final Deque<MathOperation> operations = new ArrayDeque<>();
-    private static final Deque<Double> results = new ArrayDeque<>();
-    private static int index = 0;
-    private static String expression;
+    // FIXME: Add proper exception handling
 
     public static boolean enableCalculatorCommandsDebug = false;
 
@@ -94,133 +87,145 @@ public class Calculator {
         }
     }
 
-    private static double parseNumber() {
-        sendCalculatorDebugMessage("Parsing number in %s".formatted(expression.substring(index)));
-        int startIndex = index;
-        while (index < expression.length() && (Character.isDigit(expression.charAt(index)) || expression.charAt(index) == '.')) {
-            index++;
+    public static class ExpressionParser {
+        private int index = 0;
+        private final String expression;
+
+        public ExpressionParser(String expr) {
+            expression = expr;
         }
-        double number = Double.parseDouble(expression.substring(startIndex, index));
-        sendCalculatorDebugMessage("Found number %s".formatted(number));
-        return number;
-    }
 
-    private static MathOperation parseFunction() throws CommandSyntaxException {
-        sendCalculatorDebugMessage("Parsing function in %s".formatted(expression.substring(index)));
-        int startIndex = index;
-        while (index < expression.length() && Character.isLetter(expression.charAt(index))) {
-            index++;
-        }
-        String function = expression.substring(startIndex, index).toUpperCase();
-        sendCalculatorDebugMessage("Found function %s".formatted(function));
+        private Queue<Object> parseExpression() throws CommandSyntaxException {
+            final Deque<MathOperation> operations = new ArrayDeque<>();
+            final Queue<Object> equation = new LinkedList<>();
+            boolean expectOperand = true;
 
-        try {
-            return MathFunction.valueOf(function);
-        } catch (IllegalArgumentException _) {}
-        try {
-            return MathBifunction.valueOf(function);
-        }
-        catch (IllegalArgumentException _) {
-            throw new SimpleCommandExceptionType(Component.literal("Unknown Function %s".formatted(function))).create();
-        }
-    }
-
-    private static MathOperation parseOperator(boolean expectOperand) throws CommandSyntaxException {
-        sendCalculatorDebugMessage("Parsing Operation in %s".formatted(expression.substring(index)));
-        char operator = expression.charAt(index++);
-        if (expectOperand && operator == '-') {
-            return MathOperator.NEG;
-        }
-        sendCalculatorDebugMessage("Found operator %s".formatted(operator));
-        return switch (operator) {
-            case '+' -> MathOperator.ADD;
-            case '-' -> MathOperator.SUB;
-            case '*' -> MathOperator.MUL;
-            case '/' -> MathOperator.DIV;
-            case '%' -> MathOperator.MOD;
-            case '^' -> MathOperator.POW;
-            case '(' -> Brackets.OPENING;
-            case ')' -> Brackets.CLOSING;
-            default ->
-                    throw new SimpleCommandExceptionType(Component.literal("Unknown Operator %s".formatted(operator))).create();
-        };
-    }
-
-    private static void parseExpression() throws CommandSyntaxException {
-        boolean expectOperand = true;
-
-        while (index < expression.length()) {
-            char character = expression.charAt(index);
-            if (character == ',') {
-                while (!operations.isEmpty() && operations.peek() != Brackets.OPENING) {
-                    equation.add(operations.pop());
-                }
-                index++;
-                expectOperand = true;
-            }
-            else if (Character.isDigit(character)) {
-                double number = parseNumber();
-                sendCalculatorDebugMessage("Adding %s to equation".formatted(number));
-                equation.add(number);
-                expectOperand = false;
-            } else if (Character.isLetter(character)) {
-                MathOperation function = parseFunction();
-                sendCalculatorDebugMessage("Pushing %s to stack".formatted(function));
-                operations.push(function);
-                expectOperand = true;
-            } else {
-                MathOperation operation = parseOperator(expectOperand);
-
-                if (operation == Brackets.OPENING) {
-                    operations.push(operation);
-                    expectOperand = true;
-                } else if (operation == Brackets.CLOSING) {
+            while (index < expression.length()) {
+                char character = expression.charAt(index);
+                if (character == ',') {
                     while (!operations.isEmpty() && operations.peek() != Brackets.OPENING) {
                         equation.add(operations.pop());
                     }
-                    try {
-                        operations.pop();
-                    } catch (NoSuchElementException _) {
-                        throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
-                    }
-                    if (operations.peek() instanceof MathFunction || operations.peek() instanceof MathBifunction) {
-                        equation.add(operations.pop());
-                    }
+                    index++;
+                    expectOperand = true;
+                } else if (Character.isDigit(character)) {
+                    double number = parseNumber();
+                    sendCalculatorDebugMessage("Adding %s to equation".formatted(number));
+                    equation.add(number);
                     expectOperand = false;
+                } else if (Character.isLetter(character)) {
+                    MathOperation function = parseFunction();
+                    sendCalculatorDebugMessage("Pushing %s to stack".formatted(function));
+                    operations.push(function);
+                    expectOperand = true;
                 } else {
-                    while (!operations.isEmpty()) {
-                        MathOperation top = operations.peek();
-                        if (top == Brackets.OPENING)
-                            break;
+                    MathOperation operation = parseOperator(expectOperand);
 
-                        boolean lowerOrEqualPriority = operation == MathOperator.NEG || operation == MathOperator.POW ?
-                                operation.getPriority() < top.getPriority() : operation.getPriority() <= top.getPriority();
-                        if (!lowerOrEqualPriority)
-                            break;
-
-                        MathOperation op = operations.pop();
-                        sendCalculatorDebugMessage("Popped %s from stack".formatted(op));
-                        if (op instanceof Brackets) {
+                    if (operation == Brackets.OPENING) {
+                        operations.push(operation);
+                        expectOperand = true;
+                    } else if (operation == Brackets.CLOSING) {
+                        while (!operations.isEmpty() && operations.peek() != Brackets.OPENING) {
+                            equation.add(operations.pop());
+                        }
+                        try {
+                            operations.pop();
+                        } catch (NoSuchElementException _) {
                             throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
                         }
-                        equation.add(op);
-                        sendCalculatorDebugMessage("Added %s to equation".formatted(op));
+                        if (operations.peek() instanceof MathFunction || operations.peek() instanceof MathBifunction) {
+                            equation.add(operations.pop());
+                        }
+                        expectOperand = false;
+                    } else {
+                        while (!operations.isEmpty()) {
+                            MathOperation top = operations.peek();
+                            if (top == Brackets.OPENING)
+                                break;
+
+                            boolean lowerOrEqualPriority = operation == MathOperator.NEG || operation == MathOperator.POW ?
+                                    operation.getPriority() < top.getPriority() : operation.getPriority() <= top.getPriority();
+                            if (!lowerOrEqualPriority)
+                                break;
+
+                            MathOperation op = operations.pop();
+                            sendCalculatorDebugMessage("Popped %s from stack".formatted(op));
+                            if (op instanceof Brackets) {
+                                throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+                            }
+                            equation.add(op);
+                            sendCalculatorDebugMessage("Added %s to equation".formatted(op));
+                        }
+                        sendCalculatorDebugMessage("Pushing %s to stack".formatted(operation));
+                        operations.push(operation);
+                        expectOperand = true;
                     }
-                    sendCalculatorDebugMessage("Pushing %s to stack".formatted(operation));
-                    operations.push(operation);
-                    expectOperand = true;
                 }
+            }
+
+            sendCalculatorDebugMessage("Clearing stack, adding to equation");
+            while (!operations.isEmpty()) {
+                MathOperation operation = operations.pop();
+                if (operation instanceof Brackets) {
+                    throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+                }
+                sendCalculatorDebugMessage("Added %s to equation".formatted(operation));
+                equation.add(operation);
+            }
+
+            return equation;
+        }
+
+        private double parseNumber() {
+            sendCalculatorDebugMessage("Parsing number in %s".formatted(expression.substring(index)));
+            int startIndex = index;
+            while (index < expression.length() && (Character.isDigit(expression.charAt(index)) || expression.charAt(index) == '.')) {
+                index++;
+            }
+            double number = Double.parseDouble(expression.substring(startIndex, index));
+            sendCalculatorDebugMessage("Found number %s".formatted(number));
+            return number;
+        }
+
+        private MathOperation parseFunction() throws CommandSyntaxException {
+            sendCalculatorDebugMessage("Parsing function in %s".formatted(expression.substring(index)));
+            int startIndex = index;
+            while (index < expression.length() && Character.isLetter(expression.charAt(index))) {
+                index++;
+            }
+            String function = expression.substring(startIndex, index).toUpperCase();
+            sendCalculatorDebugMessage("Found function %s".formatted(function));
+
+            try {
+                return MathFunction.valueOf(function);
+            } catch (IllegalArgumentException _) {
+            }
+            try {
+                return MathBifunction.valueOf(function);
+            } catch (IllegalArgumentException _) {
+                throw new SimpleCommandExceptionType(Component.literal("Unknown Function %s".formatted(function))).create();
             }
         }
 
-        sendCalculatorDebugMessage("Clearing stack, adding to equation");
-        while (!operations.isEmpty()) {
-            MathOperation operation = operations.pop();
-            if (operation instanceof Brackets) {
-                throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+        private MathOperation parseOperator(boolean expectOperand) throws CommandSyntaxException {
+            sendCalculatorDebugMessage("Parsing Operation in %s".formatted(expression.substring(index)));
+            char operator = expression.charAt(index++);
+            if (expectOperand && operator == '-') {
+                return MathOperator.NEG;
             }
-            sendCalculatorDebugMessage("Added %s to equation".formatted(operation));
-            equation.add(operation);
+            sendCalculatorDebugMessage("Found operator %s".formatted(operator));
+            return switch (operator) {
+                case '+' -> MathOperator.ADD;
+                case '-' -> MathOperator.SUB;
+                case '*' -> MathOperator.MUL;
+                case '/' -> MathOperator.DIV;
+                case '%' -> MathOperator.MOD;
+                case '^' -> MathOperator.POW;
+                case '(' -> Brackets.OPENING;
+                case ')' -> Brackets.CLOSING;
+                default ->
+                        throw new SimpleCommandExceptionType(Component.literal("Unknown Operator %s".formatted(operator))).create();
+            };
         }
     }
 
@@ -271,7 +276,9 @@ public class Calculator {
         };
     }
 
-    private static double evaluateExpression() throws CommandSyntaxException {
+    private static double evaluateEquation(Queue<Object> equation) throws CommandSyntaxException {
+        final Deque<Double> results = new ArrayDeque<>();
+
         for (Object symbol : equation) {
             if (symbol instanceof Double number) {
                 sendCalculatorDebugMessage("Pushing %s to result stack".formatted(symbol));
@@ -318,19 +325,11 @@ public class Calculator {
         return results.pop();
     }
 
-    private static void reset() {
-        index = 0;
-        equation.clear();
-        operations.clear();
-        results.clear();
-    }
-
-    public static double calculateExpression(String expr) throws CommandSyntaxException {
-        reset();
-        expression = expr.replace(" ", "");
+    public static double calculateExpression(String expression) throws CommandSyntaxException {
+        expression = expression.replace(" ", "");
         sendCalculatorDebugMessage("Calculating Expression %s".formatted(expression));
-        parseExpression();
+        Queue<Object> equation = new ExpressionParser(expression).parseExpression();
         sendCalculatorDebugMessage("Parsed Expression into %s".formatted(Arrays.toString(equation.toArray())));
-        return evaluateExpression();
+        return evaluateEquation(equation);
     }
 }

@@ -85,7 +85,7 @@ public class Commands {
     private static int executeCalculateCommand(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
         double result = Calculator.calculateExpression(StringArgumentType.getString(context, "expression"));
         BigDecimal roundedResult = new BigDecimal(Double.toString(result))
-                .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(result)), 0), RoundingMode.HALF_UP))
+                .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(Math.abs(result))), 0), RoundingMode.HALF_UP))
                 .stripTrailingZeros();
         context.getSource().sendFeedback(Component.literal("Result: %s".formatted(roundedResult.toPlainString())));
         return Command.SINGLE_SUCCESS;
