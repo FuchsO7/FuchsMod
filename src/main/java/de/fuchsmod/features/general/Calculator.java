@@ -11,8 +11,9 @@ import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class Calculator {
     private static final Minecraft client = Minecraft.getInstance();
-    // FIXME: Add proper exception handling
-
+    private static final SimpleCommandExceptionType BRACKET_MISMATCH_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Mismatched brackets"));
+    private static final SimpleCommandExceptionType INVALID_EXPRESSION_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Invalid Expression"));
+    private static final SimpleCommandExceptionType DIVISION_BY_ZERO = new SimpleCommandExceptionType(Component.literal("Division by 0"));
     public static boolean enableCalculatorCommandsDebug = false;
 
     private static void sendCalculatorDebugMessage(String message) {
@@ -87,7 +88,7 @@ public class Calculator {
         }
     }
 
-    public static class ExpressionParser {
+    private static class ExpressionParser {
         private int index = 0;
         private final String expression;
 
@@ -131,7 +132,7 @@ public class Calculator {
                         try {
                             operations.pop();
                         } catch (NoSuchElementException _) {
-                            throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+                            throw BRACKET_MISMATCH_EXCEPTION.create();
                         }
                         if (operations.peek() instanceof MathFunction || operations.peek() instanceof MathBifunction) {
                             equation.add(operations.pop());
@@ -151,7 +152,7 @@ public class Calculator {
                             MathOperation op = operations.pop();
                             sendCalculatorDebugMessage("Popped %s from stack".formatted(op));
                             if (op instanceof Brackets) {
-                                throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+                                throw BRACKET_MISMATCH_EXCEPTION.create();
                             }
                             equation.add(op);
                             sendCalculatorDebugMessage("Added %s to equation".formatted(op));
@@ -167,7 +168,7 @@ public class Calculator {
             while (!operations.isEmpty()) {
                 MathOperation operation = operations.pop();
                 if (operation instanceof Brackets) {
-                    throw new SimpleCommandExceptionType(Component.literal("Mismatched brackets")).create();
+                    throw BRACKET_MISMATCH_EXCEPTION.create();
                 }
                 sendCalculatorDebugMessage("Added %s to equation".formatted(operation));
                 equation.add(operation);
@@ -237,7 +238,7 @@ public class Calculator {
             case MUL -> a * b;
             case DIV -> {
                 if (b == 0.0)
-                    throw new SimpleCommandExceptionType(Component.literal("Division by 0")).create();
+                    throw DIVISION_BY_ZERO.create();
                 yield a / b;
             }
             case MOD -> a % b;
@@ -288,11 +289,11 @@ public class Calculator {
                 double result;
                 if (operator == MathOperator.NEG) {
                     if (results.isEmpty())
-                        throw new SimpleCommandExceptionType(Component.literal("Invalid expression")).create();
+                        throw INVALID_EXPRESSION_EXCEPTION.create();
                     result = -results.pop();
                 } else {
                     if (results.size() < 2)
-                        throw new SimpleCommandExceptionType(Component.literal("Invalid expression")).create();
+                        throw INVALID_EXPRESSION_EXCEPTION.create();
                     double b = results.pop();
                     double a = results.pop();
                     result = evaluateOperation(a, b, operator);
@@ -302,7 +303,7 @@ public class Calculator {
             } else if (symbol instanceof MathFunction function) {
                 sendCalculatorDebugMessage("Found function %s".formatted(function));
                 if (results.isEmpty())
-                    throw new SimpleCommandExceptionType(Component.literal("Invalid expression")).create();
+                    throw INVALID_EXPRESSION_EXCEPTION.create();
                 double a = results.pop();
                 double result = evaluateFunction(a, function);
                 sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
@@ -310,7 +311,7 @@ public class Calculator {
             } else if (symbol instanceof MathBifunction function) {
                 sendCalculatorDebugMessage("Found operation %s".formatted(function));
                 if (results.size() < 2)
-                    throw new SimpleCommandExceptionType(Component.literal("Invalid expression")).create();
+                    throw INVALID_EXPRESSION_EXCEPTION.create();
                 double b = results.pop();
                 double a = results.pop();
                 double result = evaluateBifunction(a, b, function);
@@ -320,7 +321,7 @@ public class Calculator {
         }
         sendCalculatorDebugMessage("Calculation done, Results: %s".formatted(Arrays.toString(results.toArray())));
         if (results.size() != 1) {
-            throw new SimpleCommandExceptionType(Component.literal("Invalid expression result")).create();
+            throw INVALID_EXPRESSION_EXCEPTION.create();
         }
         return results.pop();
     }
