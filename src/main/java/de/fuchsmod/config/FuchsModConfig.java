@@ -107,7 +107,7 @@ public class FuchsModConfig {
     public boolean enablePartyCommands = false;
 
     @SerialEntry
-    public int commandDelay = 500;
+    public long commandDelay = 500;
 
     @SerialEntry
     public List<PartyCommandRecord> partyCommandsList = new ArrayList<>(List.of(

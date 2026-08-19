@@ -5,7 +5,7 @@ import de.fuchsmod.config.controllers.PartyCommandControllerBuilder;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
+import dev.isxander.yacl3.api.controller.LongSliderControllerBuilder;
 import net.minecraft.network.chat.Component;
 
 public class PartyCommandsCategory {
@@ -24,16 +24,16 @@ public class PartyCommandsCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
-                        .option(Option.<Integer>createBuilder()
+                        .option(Option.<Long>createBuilder()
                                 .name(Component.literal("Command Delay"))
                                 .description(OptionDescription.of(
                                         Component.literal("A command execution is delayed by this time in milliseconds.")))
                                 .binding(defaults.commandDelay,
                                         () -> config.commandDelay,
                                         newValue -> config.commandDelay = newValue)
-                                .controller(opt -> IntegerSliderControllerBuilder.create(opt)
-                                        .range(0, 3000)
-                                        .step(50)
+                                .controller(opt -> LongSliderControllerBuilder.create(opt)
+                                        .range(0L, 3000L)
+                                        .step(50L)
                                         .formatValue(value -> Component.literal("%d ms".formatted(value))))
                                 .build())
                         .build())

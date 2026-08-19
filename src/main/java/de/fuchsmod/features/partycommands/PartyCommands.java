@@ -39,7 +39,7 @@ public class PartyCommands {
             if (scheduledMessage == null)
                 return;
             if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + config.commandDelay < Util.getMillis()) {
-                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), false);
+                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), enablePartyCommandsDebug);
                 scheduledMessages.poll();
                 lastMessageSentMillis = Util.getMillis();
             }
@@ -48,7 +48,11 @@ public class PartyCommands {
     }
 
     public static void sendChatMessage(String message) {
-        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + (long) config.commandDelay, message));
+        if (enablePartyCommandsDebug && client.player != null)
+            client.player.sendSystemMessage(Component.literal("Scheduling Message to send: %s\nSending in %s ms".formatted(
+                    message, config.commandDelay
+            )));
+        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + config.commandDelay, message));
     }
 
     public static List<String> getScopes(int scopesInteger) {
