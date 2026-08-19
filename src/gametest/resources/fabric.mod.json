@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "fuchs-mod-test",
+  "version": "1.0.0",
+  "name": "Fuchs Mod",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-gametest": [],
+    "fabric-client-gametest": ["de.fuchsmod.features.partycommands.PartyCommandsTest"]
+  }
+}

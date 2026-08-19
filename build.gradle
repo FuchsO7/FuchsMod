@@ -87,6 +87,16 @@ test {
 	useJUnitPlatform()
 }
 
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "fuchs-mod-test"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true
+	}
+}
+
 // configure the maven publication
 publishing {
 	publications {
