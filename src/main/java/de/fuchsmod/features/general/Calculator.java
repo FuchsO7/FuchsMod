@@ -2,27 +2,16 @@ package de.fuchsmod.features.general;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.minecraft.client.Minecraft;
+import de.fuchsmod.commands.Debug;
 import net.minecraft.network.chat.Component;
 
 import java.util.*;
 
-import static de.fuchsmod.FuchsMod.LOGGER;
-
 public class Calculator {
-    private static final Minecraft client = Minecraft.getInstance();
     private static final SimpleCommandExceptionType BRACKET_MISMATCH_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Mismatched brackets"));
     private static final SimpleCommandExceptionType INVALID_EXPRESSION_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Invalid Expression"));
     private static final SimpleCommandExceptionType DIVISION_BY_ZERO = new SimpleCommandExceptionType(Component.literal("Division by 0"));
     public static boolean enableCalculatorCommandsDebug = false;
-
-    private static void sendCalculatorDebugMessage(String message) {
-        if (enableCalculatorCommandsDebug) {
-            if (client.player != null)
-                client.player.sendSystemMessage(Component.literal(message));
-            LOGGER.info(message);
-        }
-    }
 
     private interface MathOperation {
         int getPriority();
@@ -111,12 +100,12 @@ public class Calculator {
                     expectOperand = true;
                 } else if (Character.isDigit(character)) {
                     double number = parseNumber();
-                    sendCalculatorDebugMessage("Adding %s to equation".formatted(number));
+                    Debug.sendDebugMessage("Adding %s to equation".formatted(number), enableCalculatorCommandsDebug);
                     equation.add(number);
                     expectOperand = false;
                 } else if (Character.isLetter(character)) {
                     MathOperation function = parseFunction();
-                    sendCalculatorDebugMessage("Pushing %s to stack".formatted(function));
+                    Debug.sendDebugMessage("Pushing %s to stack".formatted(function), enableCalculatorCommandsDebug);
                     operations.push(function);
                     expectOperand = true;
                 } else {
@@ -150,27 +139,27 @@ public class Calculator {
                                 break;
 
                             MathOperation op = operations.pop();
-                            sendCalculatorDebugMessage("Popped %s from stack".formatted(op));
+                            Debug.sendDebugMessage("Popped %s from stack".formatted(op), enableCalculatorCommandsDebug);
                             if (op instanceof Brackets) {
                                 throw BRACKET_MISMATCH_EXCEPTION.create();
                             }
                             equation.add(op);
-                            sendCalculatorDebugMessage("Added %s to equation".formatted(op));
+                            Debug.sendDebugMessage("Added %s to equation".formatted(op), enableCalculatorCommandsDebug);
                         }
-                        sendCalculatorDebugMessage("Pushing %s to stack".formatted(operation));
+                        Debug.sendDebugMessage("Pushing %s to stack".formatted(operation), enableCalculatorCommandsDebug);
                         operations.push(operation);
                         expectOperand = true;
                     }
                 }
             }
 
-            sendCalculatorDebugMessage("Clearing stack, adding to equation");
+            Debug.sendDebugMessage("Clearing stack, adding to equation", enableCalculatorCommandsDebug);
             while (!operations.isEmpty()) {
                 MathOperation operation = operations.pop();
                 if (operation instanceof Brackets) {
                     throw BRACKET_MISMATCH_EXCEPTION.create();
                 }
-                sendCalculatorDebugMessage("Added %s to equation".formatted(operation));
+                Debug.sendDebugMessage("Added %s to equation".formatted(operation), enableCalculatorCommandsDebug);
                 equation.add(operation);
             }
 
@@ -178,24 +167,24 @@ public class Calculator {
         }
 
         private double parseNumber() {
-            sendCalculatorDebugMessage("Parsing number in %s".formatted(expression.substring(index)));
+            Debug.sendDebugMessage("Parsing number in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
             int startIndex = index;
             while (index < expression.length() && (Character.isDigit(expression.charAt(index)) || expression.charAt(index) == '.')) {
                 index++;
             }
             double number = Double.parseDouble(expression.substring(startIndex, index));
-            sendCalculatorDebugMessage("Found number %s".formatted(number));
+            Debug.sendDebugMessage("Found number %s".formatted(number), enableCalculatorCommandsDebug);
             return number;
         }
 
         private MathOperation parseFunction() throws CommandSyntaxException {
-            sendCalculatorDebugMessage("Parsing function in %s".formatted(expression.substring(index)));
+            Debug.sendDebugMessage("Parsing function in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
             int startIndex = index;
             while (index < expression.length() && Character.isLetter(expression.charAt(index))) {
                 index++;
             }
             String function = expression.substring(startIndex, index).toUpperCase();
-            sendCalculatorDebugMessage("Found function %s".formatted(function));
+            Debug.sendDebugMessage("Found function %s".formatted(function), enableCalculatorCommandsDebug);
 
             try {
                 return MathFunction.valueOf(function);
@@ -209,12 +198,12 @@ public class Calculator {
         }
 
         private MathOperation parseOperator(boolean expectOperand) throws CommandSyntaxException {
-            sendCalculatorDebugMessage("Parsing Operation in %s".formatted(expression.substring(index)));
+            Debug.sendDebugMessage("Parsing Operation in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
             char operator = expression.charAt(index++);
             if (expectOperand && operator == '-') {
                 return MathOperator.NEG;
             }
-            sendCalculatorDebugMessage("Found operator %s".formatted(operator));
+            Debug.sendDebugMessage("Found operator %s".formatted(operator), enableCalculatorCommandsDebug);
             return switch (operator) {
                 case '+' -> MathOperator.ADD;
                 case '-' -> MathOperator.SUB;
@@ -231,7 +220,7 @@ public class Calculator {
     }
 
     private static double evaluateOperation(double a, double b, MathOperator operator) throws CommandSyntaxException {
-        sendCalculatorDebugMessage("Evaluating operation %s: %s, %s".formatted(operator, a ,b));
+        Debug.sendDebugMessage("Evaluating operation %s: %s, %s".formatted(operator, a ,b), enableCalculatorCommandsDebug);
         return switch (operator) {
             case ADD -> a + b;
             case SUB -> a - b;
@@ -249,7 +238,7 @@ public class Calculator {
     }
 
     private static double evaluateFunction(double a, MathFunction function) throws CommandSyntaxException {
-        sendCalculatorDebugMessage("Evaluating function %s: %s".formatted(function, a));
+        Debug.sendDebugMessage("Evaluating function %s: %s".formatted(function, a), enableCalculatorCommandsDebug);
         return switch (function) {
             case SQRT -> Math.sqrt(a);
             case ROUND -> Math.round(a);
@@ -269,7 +258,7 @@ public class Calculator {
     }
 
     private static double evaluateBifunction(double a, double b, MathBifunction function) throws CommandSyntaxException {
-        sendCalculatorDebugMessage("Evaluating function %s: %s, %s".formatted(function, a, b));
+        Debug.sendDebugMessage("Evaluating function %s: %s, %s".formatted(function, a, b), enableCalculatorCommandsDebug);
         return switch (function) {
             case LOG -> Math.log(a) / Math.log(b);
             default ->
@@ -282,10 +271,10 @@ public class Calculator {
 
         for (Object symbol : equation) {
             if (symbol instanceof Double number) {
-                sendCalculatorDebugMessage("Pushing %s to result stack".formatted(symbol));
+                Debug.sendDebugMessage("Pushing %s to result stack".formatted(symbol), enableCalculatorCommandsDebug);
                 results.push(number);
             } else if (symbol instanceof MathOperator operator) {
-                sendCalculatorDebugMessage("Found operation %s".formatted(operator));
+                Debug.sendDebugMessage("Found operation %s".formatted(operator), enableCalculatorCommandsDebug);
                 double result;
                 if (operator == MathOperator.NEG) {
                     if (results.isEmpty())
@@ -298,28 +287,28 @@ public class Calculator {
                     double a = results.pop();
                     result = evaluateOperation(a, b, operator);
                 }
-                sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
+                Debug.sendDebugMessage("Pushing %s to result stack".formatted(result), enableCalculatorCommandsDebug);
                 results.push(result);
             } else if (symbol instanceof MathFunction function) {
-                sendCalculatorDebugMessage("Found function %s".formatted(function));
+                Debug.sendDebugMessage("Found function %s".formatted(function), enableCalculatorCommandsDebug);
                 if (results.isEmpty())
                     throw INVALID_EXPRESSION_EXCEPTION.create();
                 double a = results.pop();
                 double result = evaluateFunction(a, function);
-                sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
+                Debug.sendDebugMessage("Pushing %s to result stack".formatted(result), enableCalculatorCommandsDebug);
                 results.push(result);
             } else if (symbol instanceof MathBifunction function) {
-                sendCalculatorDebugMessage("Found operation %s".formatted(function));
+                Debug.sendDebugMessage("Found operation %s".formatted(function), enableCalculatorCommandsDebug);
                 if (results.size() < 2)
                     throw INVALID_EXPRESSION_EXCEPTION.create();
                 double b = results.pop();
                 double a = results.pop();
                 double result = evaluateBifunction(a, b, function);
-                sendCalculatorDebugMessage("Pushing %s to result stack".formatted(result));
+                Debug.sendDebugMessage("Pushing %s to result stack".formatted(result), enableCalculatorCommandsDebug);
                 results.push(result);
             }
         }
-        sendCalculatorDebugMessage("Calculation done, Results: %s".formatted(Arrays.toString(results.toArray())));
+        Debug.sendDebugMessage("Calculation done, Results: %s".formatted(Arrays.toString(results.toArray())), enableCalculatorCommandsDebug);
         if (results.size() != 1) {
             throw INVALID_EXPRESSION_EXCEPTION.create();
         }
@@ -328,9 +317,9 @@ public class Calculator {
 
     public static double calculateExpression(String expression) throws CommandSyntaxException {
         expression = expression.replace(" ", "");
-        sendCalculatorDebugMessage("Calculating Expression %s".formatted(expression));
+        Debug.sendDebugMessage("Calculating Expression %s".formatted(expression), enableCalculatorCommandsDebug);
         Queue<Object> equation = new ExpressionParser(expression).parseExpression();
-        sendCalculatorDebugMessage("Parsed Expression into %s".formatted(Arrays.toString(equation.toArray())));
+        Debug.sendDebugMessage("Parsed Expression into %s".formatted(Arrays.toString(equation.toArray())), enableCalculatorCommandsDebug);
         return evaluateEquation(equation);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
 import net.minecraft.util.Util;
@@ -71,7 +72,8 @@ public class ResourcePackIgnore {
         packetsToSend.offer(new ScheduledPacket(time + config.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
         LOGGER.info("Scheduled Serverbound Packets for Pack Download Imitation");
         if (config.sendServerResourcePackDownloadLink)
-            scheduledMessage = Component.literal("The ignored Server Resource Pack is available at: %s".formatted(url))
-                    .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
+            scheduledMessage = Component.literal("[FuchsMod]: ").withColor(TextColor.GOLD)
+                    .append(Component.literal("The ignored Server Resource Pack is available at: %s".formatted(url))
+                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url)))));
     }
 }

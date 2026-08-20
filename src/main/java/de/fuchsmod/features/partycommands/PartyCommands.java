@@ -1,5 +1,6 @@
 package de.fuchsmod.features.partycommands;
 
+import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
@@ -7,7 +8,6 @@ import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
 import java.util.*;
@@ -48,10 +48,7 @@ public class PartyCommands {
     }
 
     public static void sendChatMessage(String message) {
-        if (enablePartyCommandsDebug && client.player != null)
-            client.player.sendSystemMessage(Component.literal("Scheduling Message to send: %s\nSending in %s ms".formatted(
-                    message, config.commandDelay
-            )));
+        Debug.sendDebugMessage("Scheduling Message to send in %s: %s".formatted(config.commandDelay, message), enablePartyCommandsDebug);
         scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + config.commandDelay, message));
     }
 
@@ -70,7 +67,7 @@ public class PartyCommands {
 
     public static void loadCommands() {
         commands.clear();
-        for(PartyCommandRecord command : config.partyCommandsList) {
+        for (PartyCommandRecord command : config.partyCommandsList) {
             commands.put(command.trigger(), new PartyCommand(
                     getScopes(command.scopes()),
                     command.command(),
@@ -93,10 +90,8 @@ public class PartyCommands {
         String command = content.split(" ")[0];
         String[] arguments = content.substring(command.length()).strip().split(" ");
 
-        if (enablePartyCommandsDebug && client.player != null)
-            client.player.sendSystemMessage(Component.literal("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
-                    command, scope, senderName, Arrays.toString(arguments)
-            )));
+        Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
+                command, scope, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
 
         var partyCommand = commands.get(command);
         if (partyCommand != null)
