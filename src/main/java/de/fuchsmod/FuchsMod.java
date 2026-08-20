@@ -8,17 +8,26 @@ import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.api.ClientModInitializer;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Supplier;
+
 public class FuchsMod implements ClientModInitializer {
 	public static final String MOD_ID = "fuchs-mod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(
+	public static final KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(
 			Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "fuchsmod_category")
 	);
+	public static final Supplier<MutableComponent> FUCHSMOD_CHAT_MESSAGE_PREFIX = () -> Component.empty()
+			.append(Component.literal("[FuchsMod]: ").withStyle(ChatFormatting.GOLD));
+	public static final Supplier<MutableComponent> FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX = () -> Component.empty()
+			.append(Component.literal("[FuchsMod Debug]: ").withStyle(ChatFormatting.GOLD));
 
 	@Override
 	public void onInitializeClient() {

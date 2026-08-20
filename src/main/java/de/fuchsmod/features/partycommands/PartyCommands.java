@@ -6,7 +6,6 @@ import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.util.Util;
 
@@ -16,7 +15,6 @@ import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
-    private static final Minecraft client = Minecraft.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
     private static final Queue<ScheduledMessage> scheduledMessages = new LinkedList<>();
     private static long lastMessageSentMillis = 0;

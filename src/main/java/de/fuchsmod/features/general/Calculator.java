@@ -3,11 +3,15 @@ package de.fuchsmod.features.general;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.fuchsmod.commands.Debug;
+import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.FuchsModConfigManager;
 import net.minecraft.network.chat.Component;
 
+import java.math.*;
 import java.util.*;
 
 public class Calculator {
+    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static final SimpleCommandExceptionType BRACKET_MISMATCH_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Mismatched brackets"));
     private static final SimpleCommandExceptionType INVALID_EXPRESSION_EXCEPTION = new SimpleCommandExceptionType(Component.literal("Invalid Expression"));
     private static final SimpleCommandExceptionType DIVISION_BY_ZERO = new SimpleCommandExceptionType(Component.literal("Division by 0"));
@@ -321,5 +325,12 @@ public class Calculator {
         Queue<Object> equation = new ExpressionParser(expression).parseExpression();
         Debug.sendDebugMessage("Parsed Expression into %s".formatted(Arrays.toString(equation.toArray())), enableCalculatorCommandsDebug);
         return evaluateEquation(equation);
+    }
+
+    public static String roundResult(double result) {
+        return Double.isInfinite(result) || Double.isNaN(result) ? Double.toString(result) :
+                new BigDecimal(Double.toString(result))
+                        .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(Math.abs(result))), 0), RoundingMode.HALF_UP))
+                        .stripTrailingZeros().toPlainString();
     }
 }

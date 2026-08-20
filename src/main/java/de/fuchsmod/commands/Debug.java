@@ -3,8 +3,8 @@ package de.fuchsmod.commands;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 
+import static de.fuchsmod.FuchsMod.FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class Debug {
@@ -55,8 +55,7 @@ public class Debug {
     }
 
     public static void sendDebugMessage(String message) {
-        Component debugMessage = Component.literal("[FuchsMod Debug]: ").withColor(TextColor.GOLD)
-                .append(Component.literal(message).withColor(TextColor.WHITE));
+        Component debugMessage = FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX.get().append(message);
         if (client.player != null)
             client.player.sendSystemMessage(debugMessage);
         LOGGER.info(message);

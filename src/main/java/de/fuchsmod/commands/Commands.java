@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.Calculator;
 import de.fuchsmod.features.general.PingMeasurement;
@@ -16,12 +15,10 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.network.chat.Component;
 
-import java.math.*;
-
+import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class Commands {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     public static void init() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess)-> {
@@ -65,7 +62,8 @@ public class Commands {
     }
 
     private static int executeGetTPSCommand(CommandContext<FabricClientCommandSource> context) {
-        Component message = Component.literal("Estimated TPS: ")
+        Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+                .append("Estimated TPS: ")
                 .append(TPSMeasurement.getInstance().getCurrentTPSFormatted())
                 .append(", Average (%ds): ".formatted(TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
                 .append(TPSMeasurement.getInstance().getAverageTPSFormatted());
@@ -73,7 +71,8 @@ public class Commands {
         return Command.SINGLE_SUCCESS;
     }
     private static int executeGetPingCommand(CommandContext<FabricClientCommandSource> context) {
-        Component message = Component.literal("Estimated Ping: ")
+        Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+                .append("Estimated Ping: ")
                 .append(PingMeasurement.getInstance().getCurrentPingFormatted())
                 .append(" ms, Average (%ds): ".formatted(PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
                 .append(PingMeasurement.getInstance().getAveragePingFormatted())
@@ -84,11 +83,7 @@ public class Commands {
 
     private static int executeCalculateCommand(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
         double result = Calculator.calculateExpression(StringArgumentType.getString(context, "expression"));
-        String roundedResult = Double.isInfinite(result) || Double.isNaN(result) ? Double.toString(result) :
-                new BigDecimal(Double.toString(result))
-                .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(Math.abs(result))), 0), RoundingMode.HALF_UP))
-                .stripTrailingZeros().toPlainString();
-        context.getSource().sendFeedback(Component.literal("Result: %s".formatted(roundedResult)));
+        context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append("Result: %s".formatted(Calculator.roundResult(result))));
         return Command.SINGLE_SUCCESS;
     }
 
