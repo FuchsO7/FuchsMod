@@ -46,7 +46,7 @@ public class PartyCommands {
     }
 
     public static void sendChatMessage(String message) {
-        Debug.sendDebugMessage("Scheduling Message to send in %s: %s".formatted(config.commandDelay, message), enablePartyCommandsDebug);
+        Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(config.commandDelay, message), enablePartyCommandsDebug);
         scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + config.commandDelay, message));
     }
 
