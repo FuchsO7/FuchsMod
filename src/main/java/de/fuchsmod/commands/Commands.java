@@ -86,7 +86,8 @@ public class Commands {
         try {
             result = Calculator.calculateExpression(expression);
         } catch (Calculator.CalculatorException exception) {
-            throw new SimpleCommandExceptionType(Component.literal(exception.getMessage())).create();
+            SimpleCommandExceptionType commandException = new SimpleCommandExceptionType(Component.literal(exception.getMessage()));
+            throw exception.reader == null ? commandException.create() : commandException.createWithContext(exception.reader);
         }
         context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.calculator_result",

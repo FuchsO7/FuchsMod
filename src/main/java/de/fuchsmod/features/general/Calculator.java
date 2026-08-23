@@ -1,5 +1,6 @@
 package de.fuchsmod.features.general;
 
+import com.mojang.brigadier.StringReader;
 import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
@@ -12,8 +13,15 @@ public class Calculator {
     public static boolean enableCalculatorCommandsDebug = false;
 
     public static class CalculatorException extends Exception {
+        public StringReader reader;
+
         public CalculatorException(String message) {
+            this(message, null);
+        }
+
+        public CalculatorException(String message, StringReader reader) {
             super(message);
+            this.reader = reader;
         }
     }
 
@@ -82,11 +90,10 @@ public class Calculator {
     }
 
     private static class ExpressionParser {
-        private int index = 0;
-        private final String expression;
+        private final StringReader reader;
 
-        public ExpressionParser(String expr) {
-            expression = expr;
+        public ExpressionParser(String expression) {
+            reader = new StringReader(expression);
         }
 
         private Queue<Object> parseExpression() throws CalculatorException {
@@ -94,13 +101,13 @@ public class Calculator {
             final Queue<Object> equation = new LinkedList<>();
             boolean expectOperand = true;
 
-            while (index < expression.length()) {
-                char character = expression.charAt(index);
+            while (reader.canRead()) {
+                char character = reader.peek();
                 if (character == ',') {
                     while (!operations.isEmpty() && operations.peek() != Brackets.OPENING) {
                         equation.add(operations.pop());
                     }
-                    index++;
+                    reader.skip();
                     expectOperand = true;
                 } else if (Character.isDigit(character)) {
                     double number = parseNumber();
@@ -125,7 +132,7 @@ public class Calculator {
                         try {
                             operations.pop();
                         } catch (NoSuchElementException _) {
-                            throw new CalculatorException("Mismatched brackets");
+                            throw new CalculatorException("Mismatched brackets", reader);
                         }
                         if (operations.peek() instanceof MathFunction || operations.peek() instanceof MathBifunction) {
                             equation.add(operations.pop());
@@ -145,7 +152,7 @@ public class Calculator {
                             MathOperation op = operations.pop();
                             Debug.sendDebugMessage("Popped %s from stack".formatted(op), enableCalculatorCommandsDebug);
                             if (op instanceof Brackets) {
-                                throw new CalculatorException("Mismatched brackets");
+                                throw new CalculatorException("Mismatched brackets", reader);
                             }
                             equation.add(op);
                             Debug.sendDebugMessage("Added %s to equation".formatted(op), enableCalculatorCommandsDebug);
@@ -161,7 +168,7 @@ public class Calculator {
             while (!operations.isEmpty()) {
                 MathOperation operation = operations.pop();
                 if (operation instanceof Brackets) {
-                    throw new CalculatorException("Mismatched brackets");
+                    throw new CalculatorException("Mismatched brackets", reader);
                 }
                 Debug.sendDebugMessage("Added %s to equation".formatted(operation), enableCalculatorCommandsDebug);
                 equation.add(operation);
@@ -170,24 +177,30 @@ public class Calculator {
             return equation;
         }
 
-        private double parseNumber() {
-            Debug.sendDebugMessage("Parsing number in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
-            int startIndex = index;
-            while (index < expression.length() && (Character.isDigit(expression.charAt(index)) || expression.charAt(index) == '.')) {
-                index++;
+        private double parseNumber() throws CalculatorException {
+            Debug.sendDebugMessage("Parsing number in %s".formatted(reader.getRemaining()), enableCalculatorCommandsDebug);
+            int startIndex = reader.getCursor();
+            while (reader.canRead() && (Character.isDigit(reader.peek()) || reader.peek() == '.')) {
+                reader.skip();
             }
-            double number = Double.parseDouble(expression.substring(startIndex, index));
+
+            double number;
+            try {
+                number = Double.parseDouble(reader.getString().substring(startIndex, reader.getCursor()));
+            } catch (Exception exception) {
+                throw new CalculatorException("Failed parsing a number", reader);
+            }
             Debug.sendDebugMessage("Found number %s".formatted(number), enableCalculatorCommandsDebug);
             return number;
         }
 
         private MathOperation parseFunction() throws CalculatorException {
-            Debug.sendDebugMessage("Parsing function in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
-            int startIndex = index;
-            while (index < expression.length() && Character.isLetter(expression.charAt(index))) {
-                index++;
+            Debug.sendDebugMessage("Parsing function in %s".formatted(reader.getRemaining()), enableCalculatorCommandsDebug);
+            int startIndex = reader.getCursor();
+            while (reader.canRead() && Character.isLetter(reader.peek())) {
+                reader.skip();
             }
-            String function = expression.substring(startIndex, index).toUpperCase();
+            String function = reader.getString().substring(startIndex, reader.getCursor()).toUpperCase();
             Debug.sendDebugMessage("Found function %s".formatted(function), enableCalculatorCommandsDebug);
 
             try {
@@ -197,13 +210,13 @@ public class Calculator {
             try {
                 return MathBifunction.valueOf(function);
             } catch (IllegalArgumentException _) {
-                throw new CalculatorException("Unknown Function %s".formatted(function));
+                throw new CalculatorException("Unknown Function %s".formatted(function), reader);
             }
         }
 
         private MathOperation parseOperator(boolean expectOperand) throws CalculatorException {
-            Debug.sendDebugMessage("Parsing Operation in %s".formatted(expression.substring(index)), enableCalculatorCommandsDebug);
-            char operator = expression.charAt(index++);
+            Debug.sendDebugMessage("Parsing Operation in %s".formatted(reader.getRemaining()), enableCalculatorCommandsDebug);
+            char operator = reader.read();
             if (expectOperand && operator == '-') {
                 return MathOperator.NEG;
             }
@@ -218,7 +231,7 @@ public class Calculator {
                 case '(' -> Brackets.OPENING;
                 case ')' -> Brackets.CLOSING;
                 default ->
-                        throw new CalculatorException("Unknown Operator %s".formatted(operator));
+                        throw new CalculatorException("Unknown Operator %s".formatted(operator), reader);
             };
         }
     }
