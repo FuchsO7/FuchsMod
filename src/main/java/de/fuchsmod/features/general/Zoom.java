@@ -23,7 +23,7 @@ public class Zoom {
     public static void init() {
         zoomKey = KeyMappingHelper.registerKeyMapping(
                 new KeyMapping(
-                        "Zoom",
+                        "key.fuchsmod.zoom",
                         InputConstants.Type.KEYSYM,
                         GLFW.GLFW_KEY_C,
                         FuchsMod.KEYMAPPING_CATEGORY

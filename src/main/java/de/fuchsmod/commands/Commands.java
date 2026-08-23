@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.Calculator;
 import de.fuchsmod.features.general.PingMeasurement;
@@ -15,8 +16,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.network.chat.Component;
 
-import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
-import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.*;
 
 public class Commands {
 
@@ -63,57 +63,76 @@ public class Commands {
 
     private static int executeGetTPSCommand(CommandContext<FabricClientCommandSource> context) {
         Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
-                .append("Estimated TPS: ")
-                .append(TPSMeasurement.getInstance().getCurrentTPSFormatted())
-                .append(", Average (%ds): ".formatted(TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
-                .append(TPSMeasurement.getInstance().getAverageTPSFormatted());
+                .append(Component.translatable("fuchsmod.commands.tps",
+                        TPSMeasurement.getInstance().getCurrentTPSFormatted(),
+                        TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
+                        TPSMeasurement.getInstance().getAverageTPSFormatted()));
         context.getSource().sendFeedback(message);
         return Command.SINGLE_SUCCESS;
     }
     private static int executeGetPingCommand(CommandContext<FabricClientCommandSource> context) {
         Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
-                .append("Estimated Ping: ")
-                .append(PingMeasurement.getInstance().getCurrentPingFormatted())
-                .append(" ms, Average (%ds): ".formatted(PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS))
-                .append(PingMeasurement.getInstance().getAveragePingFormatted())
-                .append(" ms");
+                .append(Component.translatable("fuchsmod.commands.ping",
+                        PingMeasurement.getInstance().getCurrentPingFormatted(),
+                        PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
+                        PingMeasurement.getInstance().getAveragePingFormatted()));
         context.getSource().sendFeedback(message);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executeCalculateCommand(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
-        double result = Calculator.calculateExpression(StringArgumentType.getString(context, "expression"));
-        context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append("Result: %s".formatted(Calculator.roundResult(result))));
+        String expression = StringArgumentType.getString(context, "expression");
+        double result;
+        try {
+            result = Calculator.calculateExpression(expression);
+        } catch (Calculator.CalculatorException exception) {
+            throw new SimpleCommandExceptionType(Component.literal(exception.getMessage())).create();
+        }
+        context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+                .append(Component.translatable("fuchsmod.commands.calculator_result",
+                        Calculator.roundResult(result))));
         return Command.SINGLE_SUCCESS;
+    }
+
+    private static void sendDebugFeedback(CommandContext<FabricClientCommandSource> context) {
+        context.getSource().sendFeedback(FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX.get()
+                .append(Component.translatable("fuchsmod.commands.debug_feedback",
+                        BoolArgumentType.getBool(context, "enable"))));
     }
 
     private static int executeSetTimeListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Debug.enableSetTimePacketListenerDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executePingListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Debug.enablePingPacketListenerDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executePongResponseListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Debug.enablePongResponsePacketListenerDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executeResourcePackListenerDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Debug.enableResourcePackPacketsListenerDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executePartyCommandsDebugToggle(CommandContext<FabricClientCommandSource> context) {
         PartyCommands.enablePartyCommandsDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executeCalculatorDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Calculator.enableCalculatorCommandsDebug = BoolArgumentType.getBool(context, "enable");
+        sendDebugFeedback(context);
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -26,9 +26,12 @@ public class PartyCommandEditorScreen extends Screen {
     private static final int DEFAULT_WIDTH = 60;
     private static final int DEFAULT_HEIGHT = 20;
 
-    private final StringWidget triggerLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT, Component.literal("Trigger:"), font);
-    private final StringWidget commandLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT, Component.literal("Executes:"), font);
-    private final StringWidget scopesLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT, Component.literal("Scopes:"), font);
+    private final StringWidget triggerLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT,
+            Component.translatable("fuchsmod.config.partycommands.editor.trigger"), font);
+    private final StringWidget commandLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT,
+            Component.translatable("fuchsmod.config.partycommands.editor.executes"), font);
+    private final StringWidget scopesLabel = new StringWidget(DEFAULT_WIDTH, DEFAULT_HEIGHT,
+            Component.translatable("fuchsmod.config.partycommands.editor.scopes"), font);
     private EditBox triggerText;
     private EditBox commandText;
     private CycleButton<Boolean> publicScopeButton;
@@ -38,7 +41,7 @@ public class PartyCommandEditorScreen extends Screen {
     private CycleButton<String> replacementFunctionButton;
 
     public PartyCommandEditorScreen(Screen parent, Option<PartyCommandRecord> option) {
-        super(Component.literal("Edit Party Command"));
+        super(Component.translatable("fuchsmod.config.partycommands.editor.title"));
         this.parent = parent;
         this.option = option;
         PartyCommandRecord value = option.pendingValue();
@@ -92,7 +95,8 @@ public class PartyCommandEditorScreen extends Screen {
         this.triggerText.setWidth(width / 2);
         this.triggerText.setMaxLength(255);
         this.triggerText.setValue(this.trigger);
-        this.triggerText.setTooltip(Tooltip.create(Component.literal("The command will be executed if this string is found in chat.")));
+        this.triggerText.setTooltip(Tooltip.create(
+                Component.translatable("fuchsmod.config.partycommands.editor.trigger.tooltip")));
         triggerRow.addChild(this.triggerText);
 
         LinearLayout commandRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
@@ -101,28 +105,31 @@ public class PartyCommandEditorScreen extends Screen {
         this.commandText.setWidth(width / 2);
         this.commandText.setMaxLength(255);
         this.commandText.setValue(this.command);
-        this.commandText.setTooltip(Tooltip.create(Component.literal("This is the command to be executed. " +
-                "The {player} placeholder will be replaced with the senders name. " +
-                "Use the {args[i]} placeholders to add arguments given after the trigger.")));
+        this.commandText.setTooltip(Tooltip.create(
+                Component.translatable("fuchsmod.config.partycommands.editor.executes.tooltip")));
         commandRow.addChild(this.commandText);
 
         LinearLayout scopesRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         scopesRow.defaultCellSetting().alignVerticallyMiddle();
         scopesRow.addChild(this.scopesLabel);
         LinearLayout scopesColumn = scopesRow.addChild(LinearLayout.vertical().spacing(DEFAULT_SPACING));
-        this.publicScopeButton = CycleButton.onOffBuilder(this.publicScope).create(Component.literal("Public"),
+        this.publicScopeButton = CycleButton.onOffBuilder(this.publicScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.public"),
                 (button, value) -> this.publicScope = value);
         this.publicScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.publicScopeButton);
-        this.partyScopeButton = CycleButton.onOffBuilder(this.partyScope).create(Component.literal("Party"),
+        this.partyScopeButton = CycleButton.onOffBuilder(this.partyScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.party"),
                 (button, value) -> this.partyScope = value);
         this.partyScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.partyScopeButton);
-        this.guildScopeButton = CycleButton.onOffBuilder(this.guildScope).create(Component.literal("Guild"),
+        this.guildScopeButton = CycleButton.onOffBuilder(this.guildScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.guild"),
                 (button, value) -> this.guildScope = value);
         this.guildScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.guildScopeButton);
-        this.officerScopeButton = CycleButton.onOffBuilder(this.officerScope).create(Component.literal("Officer"),
+        this.officerScopeButton = CycleButton.onOffBuilder(this.officerScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.officer"),
                 (button, value) -> this.officerScope = value);
         this.officerScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.officerScopeButton);
@@ -130,10 +137,11 @@ public class PartyCommandEditorScreen extends Screen {
         LinearLayout specialFunctionRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         this.replacementFunctionButton = CycleButton.builder(Component::literal, this.replacementFunction)
                 .withValues(PartyCommandUtils.replacementCommands.keySet())
-                .create(Component.literal("Special Replacement Function"),
+                .create(Component.translatable("fuchsmod.config.partycommands.editor.replacement_function"),
                         (button, value) -> this.replacementFunction = value);
         this.replacementFunctionButton.setWidth(width / 2 + DEFAULT_WIDTH + DEFAULT_SPACING);
-        this.replacementFunctionButton.setTooltip(Tooltip.create(Component.literal("On execution, the placeholder {function} will be replaced by this functions return value.")));
+        this.replacementFunctionButton.setTooltip(Tooltip.create(
+                Component.translatable("fuchsmod.config.partycommands.editor.replacement_function.tooltip")));
         specialFunctionRow.addChild(this.replacementFunctionButton);
 
         layout.arrangeElements();

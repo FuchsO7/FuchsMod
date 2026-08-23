@@ -32,8 +32,8 @@ public class TPSHud {
             return;
         int x = (int) Math.round(config.TPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
         int y = (int) Math.round(config.TPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-        Component text = Component.literal("TPS: ")
-                .append(TPSMeasurement.getInstance().getAverageTPSFormatted());
+        Component text = Component.translatable("fuchsmod.features.fps.hud",
+                TPSMeasurement.getInstance().getAverageTPSFormatted());
         graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
     }
 }

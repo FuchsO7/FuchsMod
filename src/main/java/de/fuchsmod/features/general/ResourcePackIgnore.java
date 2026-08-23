@@ -73,7 +73,7 @@ public class ResourcePackIgnore {
         LOGGER.info("Scheduled Serverbound Packets for Pack Download Imitation");
         if (config.sendServerResourcePackDownloadLink)
             scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
-                    .append(Component.literal("The ignored Server Resource Pack is available at: %s".formatted(url))
-                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url)))));
+                    .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
+                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
     }
 }

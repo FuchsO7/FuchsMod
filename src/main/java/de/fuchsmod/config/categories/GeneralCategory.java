@@ -16,13 +16,13 @@ public class GeneralCategory {
 
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
-                .name(Component.literal("General"))
+                .name(Component.translatable("fuchsmod.config.general"))
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("TPS"))
+                        .name(Component.translatable("fuchsmod.config.general.tps"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Show TPS Hud"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.show_hud"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Show a Hud Element, which displays the average TPS over the last 5 seconds.")))
+                                        Component.translatable("fuchsmod.config.general.tps.show_hud.description")))
                                 .binding(defaults.showTPSHud,
                                         () -> config.showTPSHud,
                                         newValue -> config.showTPSHud = newValue)
@@ -30,9 +30,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Color TPS Hud continuous"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.color"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Use a continuous coloring of the TPS Hud instead of discrete colors.")))
+                                        Component.translatable("fuchsmod.config.general.tps.color.description")))
                                 .binding(defaults.useContinuousColorsForTPSHud,
                                         () -> config.useContinuousColorsForTPSHud,
                                         newValue -> config.useContinuousColorsForTPSHud = newValue)
@@ -40,9 +40,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("TPS Hud X Position"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.hud_x_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Horizontal Position of the TPS Hud.")))
+                                        Component.translatable("fuchsmod.config.general.tps.hud_x_pos.description")))
                                 .binding(defaults.TPSHudXPos,
                                         () -> config.TPSHudXPos,
                                         newValue -> config.TPSHudXPos = newValue)
@@ -52,9 +52,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("TPS Hud Y Position"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.hud_y_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Vertical Position of the TPS Hud.")))
+                                        Component.translatable("fuchsmod.config.general.tps.hud_y_pos.description")))
                                 .binding(defaults.TPSHudYPos,
                                         () -> config.TPSHudYPos,
                                         newValue -> config.TPSHudYPos = newValue)
@@ -64,12 +64,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .option(Option.<FuchsModConfig.TPSPacketTypes>createBuilder()
-                                .name(Component.literal("Packet Type"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.packet_type"))
                                 .description(OptionDescription.of(
-                                        Component.literal("""
-                                                Choose which kind of packet is used to measure the Server TPS.
-                                                The Set Time Packet is sent by any server and grants a good estimate.
-                                                The Ping Packet offers more accurate results, but depends on a modified server as it's not used by the vanilla game.""")))
+                                        Component.translatable("fuchsmod.config.general.tps.packet_type.description")))
                                 .binding(defaults.packetTypeForTPSMeasurement,
                                         () -> config.packetTypeForTPSMeasurement,
                                         newValue -> {
@@ -80,19 +77,19 @@ public class GeneralCategory {
                                         .enumClass(FuchsModConfig.TPSPacketTypes.class))
                                 .build())
                         .option(ButtonOption.createBuilder()
-                                .name(Component.literal("Reset Data"))
+                                .name(Component.translatable("fuchsmod.config.general.tps.reset"))
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
-                                        Component.literal("Resets the currently cached TPS results.")))
+                                        Component.translatable("fuchsmod.config.general.tps.reset.description")))
                                 .action((screen, buttonOption) -> TPSMeasurement.getInstance().reset())
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("FPS"))
+                        .name(Component.translatable("fuchsmod.config.general.fps"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Show FPS Hud"))
+                                .name(Component.translatable("fuchsmod.config.general.fps.show_hud"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Show a Hud Element, which displays the current FPS.")))
+                                        Component.translatable("fuchsmod.config.general.fps.show_hud.description")))
                                 .binding(defaults.showFPSHud,
                                         () -> config.showFPSHud,
                                         newValue -> config.showFPSHud = newValue)
@@ -100,9 +97,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Color FPS Hud continuous"))
+                                .name(Component.translatable("fuchsmod.config.general.fps.color"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Use a continuous coloring of the FPS Hud instead of discrete colors.")))
+                                        Component.translatable("fuchsmod.config.general.fps.color.description")))
                                 .binding(defaults.useContinuousColorsForFPSHud,
                                         () -> config.useContinuousColorsForFPSHud,
                                         newValue -> config.useContinuousColorsForFPSHud = newValue)
@@ -110,9 +107,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("FPS Hud X Position"))
+                                .name(Component.translatable("fuchsmod.config.general.fps.hud_x_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Horizontal Position of the FPS Hud.")))
+                                        Component.translatable("fuchsmod.config.general.fps.hud_x_pos.description")))
                                 .binding(defaults.FPSHudXPos,
                                         () -> config.FPSHudXPos,
                                         newValue -> config.FPSHudXPos = newValue)
@@ -122,9 +119,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("FPS Hud Y Position"))
+                                .name(Component.translatable("fuchsmod.config.general.fps.hud_y_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Vertical Position of the FPS Hud.")))
+                                        Component.translatable("fuchsmod.config.general.fps.hud_y_pos.description")))
                                 .binding(defaults.FPSHudYPos,
                                         () -> config.FPSHudYPos,
                                         newValue -> config.FPSHudYPos = newValue)
@@ -135,11 +132,11 @@ public class GeneralCategory {
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Ping"))
+                        .name(Component.translatable("fuchsmod.config.general.ping"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Show Ping Hud"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.show_hud"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Show a Hud Element, which displays the average Ping over the last 5 seconds.")))
+                                        Component.translatable("fuchsmod.config.general.ping.show_hud.description")))
                                 .binding(defaults.showPingHud,
                                         () -> config.showPingHud,
                                         newValue -> config.showPingHud = newValue)
@@ -147,9 +144,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Color Ping Hud continuous"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.color"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Use a continuous coloring of the Ping Hud instead of discrete colors.")))
+                                        Component.translatable("fuchsmod.config.general.ping.color.description")))
                                 .binding(defaults.useContinuousColorsForPingHud,
                                         () -> config.useContinuousColorsForPingHud,
                                         newValue -> config.useContinuousColorsForPingHud = newValue)
@@ -157,9 +154,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("Ping Hud X Position"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.hud_x_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Horizontal Position of the Ping Hud.")))
+                                        Component.translatable("fuchsmod.config.general.ping.hud_x_pos.description")))
                                 .binding(defaults.PingHudXPos,
                                         () -> config.PingHudXPos,
                                         newValue -> config.PingHudXPos = newValue)
@@ -169,9 +166,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("Ping Hud Y Position"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.hud_y_pos"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Relative Vertical Position of the Ping Hud.")))
+                                        Component.translatable("fuchsmod.config.general.ping.hud_y_pos.description")))
                                 .binding(defaults.PingHudYPos,
                                         () -> config.PingHudYPos,
                                         newValue -> config.PingHudYPos = newValue)
@@ -181,11 +178,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Always send ping requests"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.always_send_request"))
                                 .description(OptionDescription.of(
-                                        Component.literal("""
-                                                If enabled, a ping request packet will be sent to the server each tick. Required for Ping measurement.
-                                                If disabled, ping requests will only be sent if the F3 Network Chart is open.""")))
+                                        Component.translatable("fuchsmod.config.general.ping.always_send_request.description")))
                                 .binding(defaults.alwaysSendPingRequest,
                                         () -> config.alwaysSendPingRequest,
                                         newValue -> config.alwaysSendPingRequest = newValue)
@@ -193,21 +188,19 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(ButtonOption.createBuilder()
-                                .name(Component.literal("Reset Data"))
+                                .name(Component.translatable("fuchsmod.config.general.ping.reset"))
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
-                                        Component.literal("Resets the currently cached Ping results.")))
+                                        Component.translatable("fuchsmod.config.general.ping.reset.description")))
                                 .action((screen, buttonOption) -> PingMeasurement.getInstance().reset())
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Tooltip Scroll"))
+                        .name(Component.translatable("fuchsmod.config.general.tooltip_scroll"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Enable Tooltip Scroll"))
+                                .name(Component.translatable("fuchsmod.config.general.tooltip_scroll.enable"))
                                 .description(OptionDescription.of(
-                                        Component.literal("""
-                                                Allows to move tooltips vertically with the mouse wheel.
-                                                Hold shift to scroll horizontally.""")))
+                                        Component.translatable("fuchsmod.config.general.tooltip_scroll.enable.description")))
                                 .binding(defaults.enableTooltipScroll,
                                         () -> config.enableTooltipScroll,
                                         newValue -> {
@@ -218,9 +211,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Integer>createBuilder()
-                                .name(Component.literal("Scroll Factor"))
+                                .name(Component.translatable("fuchsmod.config.general.tooltip_scroll.scroll_factor"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Determine by how much a tooltip should be moved each scroll.")))
+                                        Component.translatable("fuchsmod.config.general.tooltip_scroll.scroll_factor.description")))
                                 .binding(defaults.scrollFactor,
                                         () -> config.scrollFactor,
                                         newValue -> config.scrollFactor = newValue)
@@ -230,32 +223,36 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%d".formatted(value))))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Vertical Scroll Direction"))
+                                .name(Component.translatable("fuchsmod.config.general.tooltip_scroll.vertical_scroll_direction"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Determine in which direction the tooltip will be scrolled vertically.")))
+                                        Component.translatable("fuchsmod.config.general.tooltip_scroll.vertical_scroll_direction.description")))
                                 .binding(defaults.verticalScrollDirection == 1,
                                         () -> config.verticalScrollDirection == 1,
                                         newValue -> config.verticalScrollDirection = newValue ? 1 : -1)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .formatValue(value -> Component.literal(value ? "Scroll Up -> Move Down" : "Scroll Up -> Move Up")))
+                                        .formatValue(value -> Component.translatable(value ?
+                                                "fuchsmod.config.general.tooltip_scroll.vertical_scroll_direction.option_up_down" :
+                                                "fuchsmod.config.general.tooltip_scroll.vertical_scroll_direction.option_up_up")))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Horizontal Scroll Direction"))
+                                .name(Component.translatable("fuchsmod.config.general.tooltip_scroll.horizontal_scroll_direction"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Determine in which direction the tooltip will be scrolled horizontally.")))
+                                        Component.translatable("fuchsmod.config.general.tooltip_scroll.horizontal_scroll_direction.description")))
                                 .binding(defaults.horizontalScrollDirection == 1,
                                         () -> config.horizontalScrollDirection == 1,
                                         newValue -> config.horizontalScrollDirection = newValue ? 1 : -1)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .formatValue(value -> Component.literal(value ? "Scroll Up -> Move Right" : "Scroll Up -> Move Left")))
+                                        .formatValue(value -> Component.translatable(value ?
+                                                "fuchsmod.config.general.tooltip_scroll.horizontal_scroll_direction.option_up_right" :
+                                                "fuchsmod.config.general.tooltip_scroll.horizontal_scroll_direction.option_up_left")))
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Fullbright"))
+                        .name(Component.translatable("fuchsmod.config.general.fullbright"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Use Custom Brightness"))
+                                .name(Component.translatable("fuchsmod.config.general.fullbright.enable"))
                                 .description(OptionDescription.of(
-                                        Component.literal("If enabled, the custom brightness will be set as brightness. Otherwise, the vanilla brightness setting is used.")))
+                                        Component.translatable("fuchsmod.config.general.fullbright.enable.description")))
                                 .binding(defaults.enableCustomGamma,
                                         () -> config.enableCustomGamma,
                                         newValue -> {
@@ -265,9 +262,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("Custom Brightness"))
+                                .name(Component.translatable("fuchsmod.config.general.brightness"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Set a custom brightness. 100% is the normal Brightness.")))
+                                        Component.translatable("fuchsmod.config.general.brightness.description")))
                                 .binding(defaults.customGamma,
                                         () -> config.customGamma,
                                         newValue -> {
@@ -281,11 +278,11 @@ public class GeneralCategory {
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Zoom"))
+                        .name(Component.translatable("fuchsmod.config.general.zoom"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Enable Zoom"))
+                                .name(Component.translatable("fuchsmod.config.general.zoom.enable"))
                                 .description(OptionDescription.of(
-                                        Component.literal("If enabled, allows to zoom by holding control and scrolling with the mouse wheel.")))
+                                        Component.translatable("fuchsmod.config.general.zoom.enable.description")))
                                 .binding(defaults.enableZoom,
                                         () -> config.enableZoom,
                                         newValue -> {
@@ -295,9 +292,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Smooth Camera on Zoom"))
+                                .name(Component.translatable("fuchsmod.config.general.smooth_camera"))
                                 .description(OptionDescription.of(
-                                        Component.literal("If enabled, the camera is set to move smoothly while zooming.")))
+                                        Component.translatable("fuchsmod.config.general.smooth_camera.description")))
                                 .binding(defaults.smoothCameraOnZoom,
                                         () -> config.smoothCameraOnZoom,
                                         newValue -> {
@@ -307,9 +304,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("Zoom Factor"))
+                                .name(Component.translatable("fuchsmod.config.general.zoom_factor"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Determine by how much a scroll should zoom.")))
+                                        Component.translatable("fuchsmod.config.general.zoom_factor.description")))
                                 .binding(defaults.zoomFactor,
                                         () -> config.zoomFactor,
                                         newValue -> {
@@ -322,9 +319,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
                                 .build())
                         .option(Option.<Float>createBuilder()
-                                .name(Component.literal("Immediate Zoom"))
+                                .name(Component.translatable("fuchsmod.config.general.immediate_zoom_factor"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Determine by how much the zoom hotkey scales.")))
+                                        Component.translatable("fuchsmod.config.general.immediate_zoom_factor.description")))
                                 .binding(defaults.immediateZoomFactor,
                                         () -> config.immediateZoomFactor,
                                         newValue -> {
@@ -337,7 +334,7 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%.0fx".formatted(value))))
                                 .build())
                         .option(ButtonOption.createBuilder()
-                                .name(Component.literal("Open Key Binds"))
+                                .name(Component.translatable("controls.keybinds"))
                                 .text(Component.literal(""))
                                 .action((screen, buttonOption) -> {
                                     client.gui.setScreen(new KeyBindsScreen(screen, client.options));
@@ -345,11 +342,11 @@ public class GeneralCategory {
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Server Resource Pack"))
+                        .name(Component.translatable("fuchsmod.config.general.server_resource_pack"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Auto Ignore"))
+                                .name(Component.translatable("fuchsmod.config.general.server_resource_pack.auto_ignore"))
                                 .description(OptionDescription.of(
-                                        Component.literal("If enabled, the Server Resource Pack will be ignored automatically.")))
+                                        Component.translatable("fuchsmod.config.general.server_resource_pack.auto_ignore.description")))
                                 .binding(defaults.autoIgnoreServerResourcePacks,
                                         () -> config.autoIgnoreServerResourcePacks,
                                         newValue -> config.autoIgnoreServerResourcePacks = newValue)
@@ -357,9 +354,9 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Long>createBuilder()
-                                .name(Component.literal("Ignore Delay"))
+                                .name(Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_delay"))
                                 .description(OptionDescription.of(
-                                        Component.literal("The server is notified that you 'successfully loaded' the resource pack after this time in milliseconds.")))
+                                        Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_delay.description")))
                                 .binding(defaults.serverResourcePackIgnoreTimeMillis,
                                         () -> config.serverResourcePackIgnoreTimeMillis,
                                         newValue -> config.serverResourcePackIgnoreTimeMillis = newValue)
@@ -369,9 +366,9 @@ public class GeneralCategory {
                                         .formatValue(value -> Component.literal("%d ms".formatted(value))))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Send Download Link"))
+                                .name(Component.translatable("fuchsmod.config.general.server_resource_pack.send_link"))
                                 .description(OptionDescription.of(
-                                        Component.literal("If enabled, the link to the download source of the resource pack will be sent in chat. Be careful with suspicious links.")))
+                                        Component.translatable("fuchsmod.config.general.server_resource_pack.send_link.description")))
                                 .binding(defaults.sendServerResourcePackDownloadLink,
                                         () -> config.sendServerResourcePackDownloadLink,
                                         newValue -> config.sendServerResourcePackDownloadLink = newValue)

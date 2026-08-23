@@ -30,9 +30,8 @@ public class PingHud {
             return;
         int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
         int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-        Component text = Component.literal("Ping: ")
-                .append(PingMeasurement.getInstance().getAveragePingFormatted())
-                .append(" ms");
+        Component text = Component.translatable("fuchsmod.features.ping.hud",
+                PingMeasurement.getInstance().getAveragePingFormatted());
         graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
     }
 }

@@ -11,13 +11,13 @@ import net.minecraft.network.chat.Component;
 public class PartyCommandsCategory {
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
-                .name(Component.literal("Party Commands"))
+                .name(Component.translatable("fuchsmod.config.partycommands"))
                 .group(OptionGroup.createBuilder()
-                        .name(Component.literal("Party Commands"))
+                        .name(Component.translatable("fuchsmod.config.partycommands"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Enable Party Commands"))
+                                .name(Component.translatable("fuchsmod.config.partycommands.enable"))
                                 .description(OptionDescription.of(
-                                        Component.literal("Enable Party Commands.")))
+                                        Component.translatable("fuchsmod.config.partycommands.enable.description")))
                                 .binding(defaults.enablePartyCommands,
                                         () -> config.enablePartyCommands,
                                         newValue -> config.enablePartyCommands = newValue)
@@ -25,9 +25,9 @@ public class PartyCommandsCategory {
                                         .coloured(true))
                                 .build())
                         .option(Option.<Long>createBuilder()
-                                .name(Component.literal("Command Delay"))
+                                .name(Component.translatable("fuchsmod.config.partycommands.command_delay"))
                                 .description(OptionDescription.of(
-                                        Component.literal("A command execution is delayed by this time in milliseconds.")))
+                                        Component.translatable("fuchsmod.config.partycommands.command_delay.description")))
                                 .binding(defaults.commandDelay,
                                         () -> config.commandDelay,
                                         newValue -> config.commandDelay = newValue)
@@ -38,19 +38,9 @@ public class PartyCommandsCategory {
                                 .build())
                         .build())
                 .group(ListOption.<PartyCommandRecord>createBuilder()
-                        .name(Component.literal("Configure Commands"))
+                        .name(Component.translatable("fuchsmod.config.partycommands.configure_commands"))
                         .description(OptionDescription.of(
-                                Component.literal("""
-                                        Configure Party Commands here.
-                                        A command will be executed if the trigger is found in a chat message with matching scope.
-                                        Placeholders allow to modify the command depending on variables:
-                                        - {player} The senders player name
-                                        - {chat} The slash command for the chat of the scope
-                                            - AS example, if the scope is 'party', this placeholder becomes '/pc'
-                                        - {args[i]} Arguments after trigger, starting at index 0
-                                            - As example, {args[0]} refers to the first argument
-                                        - {function} Return value of a selectable replacement function
-                                        """)))
+                                Component.translatable("fuchsmod.config.partycommands.configure_commands.description")))
                         .binding(defaults.partyCommandsList,
                                 () -> config.partyCommandsList,
                                 newValue -> config.partyCommandsList = newValue)
