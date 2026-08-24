@@ -31,7 +31,7 @@ public class PartyCommandUtils {
     public static final LinkedHashMap<String, TriFunction<String, String, String[], String>> replacementCommands = new LinkedHashMap<>();
 
     public static void init() {
-        replacementCommands.put("fuchsmod.config.partycommands.editor.replacement_function.none", null);
+        replacementCommands.put("None", null);
         replacementCommands.put("Get TPS", getTPS);
         replacementCommands.put("Get FPS", getFPS);
         replacementCommands.put("Get Ping", getPing);
