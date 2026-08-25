@@ -8,17 +8,22 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.Calculator;
+import de.fuchsmod.features.general.CalculatorScreen;
 import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 
 import static de.fuchsmod.FuchsMod.*;
 
 public class Commands {
+    private static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess)-> {
@@ -30,6 +35,7 @@ public class Commands {
                 .then(ClientCommands.literal("ping")
                     .executes(Commands::executeGetPingCommand))
                 .then(ClientCommands.literal("calculate")
+                    .executes(Commands::executeCalculatorCommand)
                     .then(ClientCommands.argument("expression", StringArgumentType.greedyString())
                         .executes(Commands::executeCalculateCommand)))
                 .then(ClientCommands.literal("debug")
@@ -77,6 +83,12 @@ public class Commands {
                         PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
                         PingMeasurement.getInstance().getAveragePingFormatted()));
         context.getSource().sendFeedback(message);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeCalculatorCommand(CommandContext<FabricClientCommandSource> context) {
+        client.execute(() -> client.gui.setScreen(new CalculatorScreen(client.gui.screen())));
+        client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         return Command.SINGLE_SUCCESS;
     }
 
