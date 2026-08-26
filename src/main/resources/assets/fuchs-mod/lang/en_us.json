@@ -90,6 +90,14 @@
   "fuchsmod.config.general.server_resource_pack.send_link": "Send Download Link",
   "fuchsmod.config.general.server_resource_pack.send_link.description": "If enabled, the link to the download source of the resource pack will be sent in chat. Be careful with suspicious links.",
 
+  "fuchsmod.config.general.calculator": "Calculator",
+  "fuchsmod.config.general.calculator.precision": "Precision",
+  "fuchsmod.config.general.calculator.precision.description": "Determine to how many significant decimal places results should be rounded. Actual precision may be limited by limitations of the double data type (~15 digits).",
+  "fuchsmod.config.general.calculator.default_screen_layout": "Default Screen Layout",
+  "fuchsmod.config.general.calculator.default_screen_layout.description": "Determine which layout the calculator screen should use by default when opening it.\nSimple: Numbers and Operators \nAdvanced: Also shows Functions",
+  "fuchsmod.config.general.calculator.default_screen_layout.simple": "Simple",
+  "fuchsmod.config.general.calculator.default_screen_layout.advanced": "Advanced",
+
   "fuchsmod.config.partycommands": "Party Commands",
   "fuchsmod.config.partycommands.enable": "Enable Party Commands.",
   "fuchsmod.config.partycommands.enable.description": "Enable Party Commands.",
@@ -110,5 +118,4 @@
   "fuchsmod.config.partycommands.editor.scopes.officer": "Officer",
   "fuchsmod.config.partycommands.editor.replacement_function": "Special Replacement Function",
   "fuchsmod.config.partycommands.editor.replacement_function.tooltip": "On execution, the placeholder {function} will be replaced by this functions return value."
-
 }

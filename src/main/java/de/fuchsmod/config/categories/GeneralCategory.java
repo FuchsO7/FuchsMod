@@ -376,6 +376,32 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.translatable("fuchsmod.config.general.calculator"))
+                        .option(Option.<Integer>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.calculator.precision"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.calculator.precision.description")))
+                                .binding(defaults.calculatorPrecision,
+                                        () -> config.calculatorPrecision,
+                                        newValue -> config.calculatorPrecision = newValue)
+                                .controller(opt -> IntegerSliderControllerBuilder.create(opt)
+                                        .range(0, 10)
+                                        .step(1))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.calculator.default_screen_layout"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.calculator.default_screen_layout.description")))
+                                .binding(defaults.showFunctionsOnCalculatorScreenOpen,
+                                        () -> config.showFunctionsOnCalculatorScreenOpen,
+                                        newValue -> config.showFunctionsOnCalculatorScreenOpen = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .formatValue(value -> Component.translatable(value ?
+                                                "fuchsmod.config.general.calculator.default_screen_layout.advanced" :
+                                                "fuchsmod.config.general.calculator.default_screen_layout.simple")))
+                                .build())
+                        .build())
                 .build();
     }
 }

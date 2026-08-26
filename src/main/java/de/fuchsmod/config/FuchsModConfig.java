@@ -105,6 +105,9 @@ public class FuchsModConfig {
     @SerialEntry
     public int calculatorPrecision = 3;
 
+    @SerialEntry
+    public boolean showFunctionsOnCalculatorScreenOpen = false;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;
