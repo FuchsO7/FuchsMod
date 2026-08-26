@@ -19,7 +19,7 @@ public class CalculatorScreen extends Screen {
 
     private boolean showFunctions = true;
 
-    private EditBox expressionBox = new EditBox(font, Component.literal(""));;
+    private final EditBox expressionBox = new EditBox(font, Component.literal(""));;
 
     public CalculatorScreen(Screen parent) {
         super(Component.literal("Calculator"));
@@ -40,7 +40,9 @@ public class CalculatorScreen extends Screen {
         LinearLayout content = layout.addToContents(LinearLayout.vertical().spacing(DEFAULT_SPACING));
         content.defaultCellSetting().alignHorizontallyCenter();
         expressionBox.setSize(width / 2, 20);
-        expressionBox.setMaxLength(255);
+        expressionBox.setMaxLength(1024);
+        expressionBox.setCanLoseFocus(false);
+        expressionBox.setFocused(true);
         content.addChild(expressionBox);
 
         LinearLayout numpadLayout = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
@@ -50,10 +52,10 @@ public class CalculatorScreen extends Screen {
         GridLayout.RowHelper helper = numberGridLayout.createRowHelper(showFunctions ? 8 : 5);
 
         String[] buttonLabels = showFunctions ? new String[]{
-                "Clear", "Delete", "sin", "asin", "7", "8", "9", "+", "cos", "acos", "4", "5", "6", "-", "tan", "atan",
+                "C", "D", "<", ">", "sin", "asin", "7", "8", "9", "+", "cos", "acos", "4", "5", "6", "-", "tan", "atan",
                 "1", "2", "3", "*", "(", ")", "sign", "=", "0", ".", "/", "%", "^", "abs", "ln", "lg", "sqrt", "round", "log", ","
         } : new String[]{
-                "Clear", "Delete", ",", "7", "8", "9", "+", "(", "4", "5", "6", "-", ")", "1", "2", "3", "*", "^", "=", "0", ".", "/", "%"
+                "C", "D", "<", ">", ",", "7", "8", "9", "+", "(", "4", "5", "6", "-", ")", "1", "2", "3", "*", "^", "=", "0", ".", "/", "%"
         };
 
         for (String buttonLabel : buttonLabels) {
@@ -68,19 +70,18 @@ public class CalculatorScreen extends Screen {
                         expressionBox.setValue(e.getMessage());
                     }
                 };
-            } else if (buttonLabel.equals("Clear")) {
+            } else if (buttonLabel.equals("C")) {
                 onPress = (_) -> expressionBox.setValue("");
-                buttonWidthScaling = 2;
-            } else if (buttonLabel.equals("Delete")) {
-                onPress = (_) -> {
-                    if (!expressionBox.getValue().isEmpty())
-                        expressionBox.setValue(expressionBox.getValue().substring(0, expressionBox.getValue().length() - 1));
-                };
-                buttonWidthScaling = 2;
+            } else if (buttonLabel.equals("D")) {
+                onPress = (_) -> removeCharFromExpressionBox(expressionBox.getCursorPosition() - 1);
+            } else if (buttonLabel.equals("<")) {
+                onPress = (_) -> expressionBox.moveCursor(-1, false);
+            } else if (buttonLabel.equals(">")) {
+                onPress = (_) -> expressionBox.moveCursor(1, false);
             } else if (buttonLabel.length() == 1) {
-                onPress = (button) -> expressionBox.setValue(expressionBox.getValue() + button.getMessage().getString());
+                onPress = (button) -> addTextToExpressionBox(button.getMessage().getString());
             } else {
-                onPress = (button) -> expressionBox.setValue(expressionBox.getValue() + button.getMessage().getString() + "(");
+                onPress = (button) -> addTextToExpressionBox(button.getMessage().getString() + "(");
                 buttonWidthScaling = 2;
             }
 
@@ -89,7 +90,7 @@ public class CalculatorScreen extends Screen {
             helper.addChild(button, buttonWidthScaling);
         }
 
-        Button hideFunctionsButton = Button.builder(Component.literal(showFunctions ? "+-" : "f(x)"), (button) -> {
+        Button hideFunctionsButton = Button.builder(Component.literal(showFunctions ? "+/-" : "f(x)"), (button) -> {
             showFunctions = !showFunctions;
             this.rebuildWidgets();
         }).build();
@@ -98,5 +99,23 @@ public class CalculatorScreen extends Screen {
 
         layout.arrangeElements();
         layout.visitWidgets(this::addRenderableWidget);
+    }
+
+    private void addTextToExpressionBox(String text) {
+        int cursorPos = expressionBox.getCursorPosition();
+        expressionBox.setValue(
+                new StringBuilder(expressionBox.getValue()).insert(expressionBox.getCursorPosition(), text).toString()
+        );
+        expressionBox.moveCursorTo(cursorPos + text.length(), false);
+    }
+
+    private void removeCharFromExpressionBox(int position) {
+        if (!expressionBox.getValue().isEmpty() && expressionBox.getCursorPosition() != 0) {
+            int cursorPos = expressionBox.getCursorPosition();
+            expressionBox.setValue(
+                    new StringBuilder(expressionBox.getValue()).deleteCharAt(position).toString()
+            );
+            expressionBox.moveCursorTo(cursorPos -1, false);
+        }
     }
 }
