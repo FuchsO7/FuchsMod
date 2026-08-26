@@ -401,6 +401,16 @@ public class GeneralCategory {
                                                 "fuchsmod.config.general.calculator.default_screen_layout.advanced" :
                                                 "fuchsmod.config.general.calculator.default_screen_layout.simple")))
                                 .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.calculator.inventory_calculator"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.calculator.inventory_calculator.description")))
+                                .binding(defaults.showInventoryCalculator,
+                                        () -> config.showInventoryCalculator,
+                                        newValue -> config.showInventoryCalculator = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
                         .build())
                 .build();
     }

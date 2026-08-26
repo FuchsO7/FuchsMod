@@ -108,6 +108,9 @@ public class FuchsModConfig {
     @SerialEntry
     public boolean showFunctionsOnCalculatorScreenOpen = false;
 
+    @SerialEntry
+    public boolean showInventoryCalculator = false;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;

@@ -97,6 +97,8 @@
   "fuchsmod.config.general.calculator.default_screen_layout.description": "Determine which layout the calculator screen should use by default when opening it.\nSimple: Numbers and Operators \nAdvanced: Also shows Functions",
   "fuchsmod.config.general.calculator.default_screen_layout.simple": "Simple",
   "fuchsmod.config.general.calculator.default_screen_layout.advanced": "Advanced",
+  "fuchsmod.config.general.calculator.inventory_calculator": "Inventory Calculator",
+  "fuchsmod.config.general.calculator.inventory_calculator.description": "Enables an Calculator Field accessible in the Inventory.",
 
   "fuchsmod.config.partycommands": "Party Commands",
   "fuchsmod.config.partycommands.enable": "Enable Party Commands.",
