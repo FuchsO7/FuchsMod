@@ -111,6 +111,9 @@ public class FuchsModConfig {
     @SerialEntry
     public boolean showInventoryCalculator = false;
 
+    @SerialEntry
+    public boolean sendLastDeathLocationMessage = false;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;

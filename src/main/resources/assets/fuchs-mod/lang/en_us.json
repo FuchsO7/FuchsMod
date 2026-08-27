@@ -10,6 +10,7 @@
   "fuchsmod.features.fps.hud": "FPS: %1$s",
   "fuchsmod.features.ping.hud": "Ping: %1$s ms",
   "fuchsmod.features.resource_pack_ignore.pack_url": "The ignored Server Resource Pack is available at: %1$s",
+  "fuchsmod.features.last_death_position.message": "Click here to copy your last death location",
 
   "fuchsmod.config.title": "Fuchs Mod",
   "fuchsmod.config.general": "General",
@@ -99,6 +100,10 @@
   "fuchsmod.config.general.calculator.default_screen_layout.advanced": "Advanced",
   "fuchsmod.config.general.calculator.inventory_calculator": "Inventory Calculator",
   "fuchsmod.config.general.calculator.inventory_calculator.description": "Enables an Calculator Field accessible in the Inventory.",
+
+  "fuchsmod.config.general.death_message_saver": "Last Death Location Message",
+  "fuchsmod.config.general.death_message_saver.enable": "Enable",
+  "fuchsmod.config.general.death_message_saver.enable.description": "Send a message in your chat on death to copy your death location and show your death location on hover.",
 
   "fuchsmod.config.partycommands": "Party Commands",
   "fuchsmod.config.partycommands.enable": "Enable Party Commands.",

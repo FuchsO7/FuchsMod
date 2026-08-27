@@ -412,6 +412,19 @@ public class GeneralCategory {
                                         .coloured(true))
                                 .build())
                         .build())
+                .group(OptionGroup.createBuilder()
+                        .name(Component.translatable("fuchsmod.config.general.death_message_saver"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.death_message_saver.enable"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.death_message_saver.enable.description")))
+                                .binding(defaults.sendLastDeathLocationMessage,
+                                        () -> config.sendLastDeathLocationMessage,
+                                        newValue -> config.sendLastDeathLocationMessage = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .build())
                 .build();
     }
 }

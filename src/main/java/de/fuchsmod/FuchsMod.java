@@ -42,6 +42,7 @@ public class FuchsMod implements ClientModInitializer {
 		PartyCommandUtils.init();
 		PartyCommands.init();
 		ResourcePackIgnore.init();
+		DeathLocationSaver.init();
 		Debug.init();
 		Commands.init();
 		LOGGER.info("Initializing Fuchs Mod completed!");

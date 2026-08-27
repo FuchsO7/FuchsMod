@@ -18,5 +18,8 @@
     "ConnectionMixin",
     "CreativeModeInventoryScreenMixin",
     "DefaultTooltipPositionerMixin"
+  ],
+  "mixins": [
+    "PlayerMixin"
   ]
 }
