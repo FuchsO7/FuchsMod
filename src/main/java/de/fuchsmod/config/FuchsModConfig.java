@@ -129,6 +129,7 @@ public class FuchsModConfig {
             new PartyCommandRecord(2, "!invite", "/party invite {args[0]}", "None"),
             new PartyCommandRecord(2, "!kick", "/party kick {args[0]}", "None"),
             new PartyCommandRecord(2, "!kickoffline", "/party kickoffline", "None"),
+            new PartyCommandRecord(2, "!leave", "/party kick {player}", "None"),
             new PartyCommandRecord(2, "!promote", "/party promote {args[0]}", "None"),
             new PartyCommandRecord(2, "!demote", "/party demote {args[0]}", "None"),
             new PartyCommandRecord(2, "!dice", "/pc {player} rolled a {function}!", "Dice Roll"),
