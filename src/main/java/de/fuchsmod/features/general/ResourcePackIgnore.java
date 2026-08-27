@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
+import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class ResourcePackIgnore {
@@ -71,7 +72,8 @@ public class ResourcePackIgnore {
         packetsToSend.offer(new ScheduledPacket(time + config.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
         LOGGER.info("Scheduled Serverbound Packets for Pack Download Imitation");
         if (config.sendServerResourcePackDownloadLink)
-            scheduledMessage = Component.literal("The ignored Server Resource Pack is available at: %s".formatted(url))
-                    .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
+            scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+                    .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
+                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
     }
 }

@@ -32,8 +32,8 @@ public class FPSHud {
             return;
         int x = (int) Math.round(config.FPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
         int y = (int) Math.round(config.FPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
-        Component text = Component.literal("FPS: ")
-                .append(getCurrentFPSFormatted());
+        Component text = Component.translatable("fuchsmod.features.fps.hud",
+                getCurrentFPSFormatted());
         graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
     }
 
@@ -53,13 +53,13 @@ public class FPSHud {
 
     private static int getContinuousFPSColor(int fps) {
         final int BREAKPOINT = 20;
-        final int darK_green = 0xFF00AA00;
-        final int yellow = 0xFFFFFF55;
-        final int dark_red = 0xFFAA0000;
+        final int DARK_GREEN = 0xFF00AA00;
+        final int YELLOW = 0xFFFFFF55;
+        final int DARK_RED = 0xFFAA0000;
         if (fps <= BREAKPOINT) {
-            return ARGB.linearLerp((float) fps / BREAKPOINT, dark_red, yellow);
+            return ARGB.linearLerp((float) fps / BREAKPOINT, DARK_RED, YELLOW);
         } else {
-            return ARGB.linearLerp(Float.min((float) (fps - BREAKPOINT) / 40, 1f), yellow, darK_green);
+            return ARGB.linearLerp(Float.min((float) (fps - BREAKPOINT) / 40, 1f), YELLOW, DARK_GREEN);
         }
     }
 

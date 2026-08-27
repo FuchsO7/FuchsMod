@@ -1,13 +1,12 @@
 package de.fuchsmod.features.partycommands;
 
+import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
 import java.util.*;
@@ -16,7 +15,6 @@ import static de.fuchsmod.FuchsMod.LOGGER;
 
 public class PartyCommands {
     private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
-    private static final Minecraft client = Minecraft.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
     private static final Queue<ScheduledMessage> scheduledMessages = new LinkedList<>();
     private static long lastMessageSentMillis = 0;
@@ -39,7 +37,7 @@ public class PartyCommands {
             if (scheduledMessage == null)
                 return;
             if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + config.commandDelay < Util.getMillis()) {
-                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), false);
+                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), enablePartyCommandsDebug);
                 scheduledMessages.poll();
                 lastMessageSentMillis = Util.getMillis();
             }
@@ -48,7 +46,8 @@ public class PartyCommands {
     }
 
     public static void sendChatMessage(String message) {
-        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + (long) config.commandDelay, message));
+        Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(config.commandDelay, message), enablePartyCommandsDebug);
+        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + config.commandDelay, message));
     }
 
     public static List<String> getScopes(int scopesInteger) {
@@ -66,7 +65,7 @@ public class PartyCommands {
 
     public static void loadCommands() {
         commands.clear();
-        for(PartyCommandRecord command : config.partyCommandsList) {
+        for (PartyCommandRecord command : config.partyCommandsList) {
             commands.put(command.trigger(), new PartyCommand(
                     getScopes(command.scopes()),
                     command.command(),
@@ -89,10 +88,8 @@ public class PartyCommands {
         String command = content.split(" ")[0];
         String[] arguments = content.substring(command.length()).strip().split(" ");
 
-        if (enablePartyCommandsDebug && client.player != null)
-            client.player.sendSystemMessage(Component.literal("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
-                    command, scope, senderName, Arrays.toString(arguments)
-            )));
+        Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
+                command, scope, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
 
         var partyCommand = commands.get(command);
         if (partyCommand != null)

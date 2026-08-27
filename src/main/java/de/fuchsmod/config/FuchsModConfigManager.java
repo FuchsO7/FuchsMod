@@ -44,7 +44,7 @@ public class FuchsModConfigManager {
 
     public static Screen createGui(Screen parent) {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
-                .title(Component.literal("Fuchs Mod"))
+                .title(Component.translatable("fuchsmod.config.title"))
                 .category(GeneralCategory.create(defaults, config))
                 .category(PartyCommandsCategory.create(defaults, config))
                 .save(FuchsModConfigManager::save)

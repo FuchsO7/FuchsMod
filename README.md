@@ -9,6 +9,8 @@ If you find any problems or have suggestions, feel free to open an issue.
 - Tooltip Scrolling
 - Fullbright
 - Zoom
+- Copy Last Death Message
+- Ingame Calculator
 - Hypixel Party Commands
 - Server Resource Pack Ignoring
 

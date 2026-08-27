@@ -102,12 +102,24 @@ public class FuchsModConfig {
     @SerialEntry
     public boolean sendServerResourcePackDownloadLink = false;
 
+    @SerialEntry
+    public int calculatorPrecision = 3;
+
+    @SerialEntry
+    public boolean showFunctionsOnCalculatorScreenOpen = false;
+
+    @SerialEntry
+    public boolean showInventoryCalculator = false;
+
+    @SerialEntry
+    public boolean sendLastDeathLocationMessage = false;
+
     // PartyCommands
     @SerialEntry
     public boolean enablePartyCommands = false;
 
     @SerialEntry
-    public int commandDelay = 500;
+    public long commandDelay = 500;
 
     @SerialEntry
     public List<PartyCommandRecord> partyCommandsList = new ArrayList<>(List.of(
@@ -117,6 +129,7 @@ public class FuchsModConfig {
             new PartyCommandRecord(2, "!invite", "/party invite {args[0]}", "None"),
             new PartyCommandRecord(2, "!kick", "/party kick {args[0]}", "None"),
             new PartyCommandRecord(2, "!kickoffline", "/party kickoffline", "None"),
+            new PartyCommandRecord(2, "!leave", "/party kick {player}", "None"),
             new PartyCommandRecord(2, "!promote", "/party promote {args[0]}", "None"),
             new PartyCommandRecord(2, "!demote", "/party demote {args[0]}", "None"),
             new PartyCommandRecord(2, "!dice", "/pc {player} rolled a {function}!", "Dice Roll"),

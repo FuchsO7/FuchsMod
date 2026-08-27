@@ -75,13 +75,13 @@ public class PingMeasurement {
 
     private static int getContinuousPingColor(long ping) {
         final int BREAKPOINT = 150;
-        final int darK_green = 0xFF00AA00;
-        final int yellow = 0xFFFFFF55;
-        final int dark_red = 0xFFAA0000;
+        final int DARK_GREEN = 0xFF00AA00;
+        final int YELLOW = 0xFFFFFF55;
+        final int DARK_RED = 0xFFAA0000;
         if (ping <= BREAKPOINT) {
-            return ARGB.linearLerp((float) ping / BREAKPOINT, darK_green, yellow);
+            return ARGB.linearLerp((float) ping / BREAKPOINT, DARK_GREEN, YELLOW);
         } else {
-            return ARGB.linearLerp(Float.min((float) (ping - BREAKPOINT) / 250, 1f), yellow, dark_red);
+            return ARGB.linearLerp(Float.min((float) (ping - BREAKPOINT) / 250, 1f), YELLOW, DARK_RED);
         }
     }
 

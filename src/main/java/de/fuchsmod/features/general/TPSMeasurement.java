@@ -116,13 +116,13 @@ public class TPSMeasurement {
 
     private static int getContinuousTPSColor(double tps) {
         final double BREAKPOINT = 17.5;
-        final int darK_green = 0xFF00AA00;
-        final int yellow = 0xFFFFFF55;
-        final int dark_red = 0xFFAA0000;
+        final int DARK_GREEN = 0xFF00AA00;
+        final int YELLOW = 0xFFFFFF55;
+        final int DARK_RED = 0xFFAA0000;
         if (tps <= BREAKPOINT) {
-            return ARGB.linearLerp((float) Double.max(tps - 10, 0) / 7.5f, dark_red, yellow);
+            return ARGB.linearLerp((float) Double.max(tps - 10, 0) / 7.5f, DARK_RED, YELLOW);
         } else {
-            return ARGB.linearLerp(Float.min((float) (tps - BREAKPOINT) / 2.5f, 1f), yellow, darK_green);
+            return ARGB.linearLerp(Float.min((float) (tps - BREAKPOINT) / 2.5f, 1f), YELLOW, DARK_GREEN);
         }
     }
 

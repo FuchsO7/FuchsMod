@@ -55,9 +55,9 @@ public class PartyCommandUtils {
         try {
             int a = Integer.parseInt(arguments[0]);
             int b = Integer.parseInt(arguments[1]);
-            return "" + getRandomInteger(Integer.min(a, b), Integer.max(a, b));
+            return "%d".formatted(getRandomInteger(Integer.min(a, b), Integer.max(a, b)));
         } catch (Exception e) {
-            return "" + getRandomInteger(1, 6);
+            return "%d".formatted(getRandomInteger(1, 6));
         }
     };
 
