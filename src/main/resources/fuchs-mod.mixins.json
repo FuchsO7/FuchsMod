@@ -16,6 +16,7 @@
     "ClientPacketListenerMixin",
     "ConfirmScreenMixin",
     "ConnectionMixin",
+    "CreativeModeInventoryScreenMixin",
     "DefaultTooltipPositionerMixin"
   ]
 }
