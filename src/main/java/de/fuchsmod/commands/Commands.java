@@ -35,6 +35,10 @@ public class Commands {
                     .executes(Commands::executeCalculatorCommand)
                     .then(ClientCommands.argument("expression", StringArgumentType.greedyString())
                         .executes(Commands::executeCalculateCommand)))
+                .then(ClientCommands.literal("folder")
+                    .then(ClientCommands.argument("folder", StringArgumentType.string())
+                        .suggests(new FolderOpener.FolderSuggestionProvider())
+                        .executes(Commands::executeOpenFolderCommand)))
                 .then(ClientCommands.literal("debug")
                     .then(ClientCommands.literal("SetTimePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
@@ -101,6 +105,12 @@ public class Commands {
         context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.calculator_result",
                         Calculator.roundResult(result))));
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeOpenFolderCommand(CommandContext<FabricClientCommandSource> context) {
+        String folder = StringArgumentType.getString(context, "folder");
+        FolderOpener.openFolder(folder);
         return Command.SINGLE_SUCCESS;
     }
 

@@ -18,7 +18,7 @@ public class PartyCommandsTest implements FabricClientGameTest {
                 config.enablePartyCommands = true;
                 config.commandDelay = 500;
             });
-            singleplayer.getClientLevel().waitForChunksRender();
+            singleplayer.getConnection().waitForChunksRender();
 
             String[] commands = {
                     "Party > Player: !warp",
