@@ -38,7 +38,8 @@ public class Commands {
                 .then(ClientCommands.literal("folder")
                     .then(ClientCommands.argument("folder", StringArgumentType.string())
                         .suggests(new FolderOpener.FolderSuggestionProvider())
-                        .executes(Commands::executeOpenFolderCommand)))
+                        .executes(Commands::executeOpenFolderCommand))
+                    .executes(Commands::executeOpenFolderCommand))
                 .then(ClientCommands.literal("debug")
                     .then(ClientCommands.literal("SetTimePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
@@ -109,7 +110,12 @@ public class Commands {
     }
 
     private static int executeOpenFolderCommand(CommandContext<FabricClientCommandSource> context) {
-        String folder = StringArgumentType.getString(context, "folder");
+        String folder;
+        try {
+            folder = StringArgumentType.getString(context, "folder");
+        } catch (IllegalArgumentException e) {
+            folder = "";
+        }
         FolderOpener.openFolder(folder);
         return Command.SINGLE_SUCCESS;
     }
