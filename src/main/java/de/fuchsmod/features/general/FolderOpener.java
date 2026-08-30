@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Util;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,10 +24,15 @@ public class FolderOpener {
 
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
-            String[] paths = {"logs", "mods", "resourcepacks"};
-
-            for (String path : paths) {
-                builder.suggest(path);
+            File[] files = FabricLoader.getInstance().getGameDir().toFile().listFiles();
+            if (files == null)
+                return builder.buildFuture();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    String directoryName = file.getName();
+                    if (directoryName.startsWith(builder.getRemaining()))
+                        builder.suggest(file.getName());
+                }
             }
             return builder.buildFuture();
         }
