@@ -3,6 +3,7 @@ package de.fuchsmod.config;
 import com.google.gson.FieldNamingPolicy;
 import de.fuchsmod.config.categories.GeneralCategory;
 import de.fuchsmod.config.categories.PartyCommandsCategory;
+import de.fuchsmod.config.categories.PerformanceMeasurementCategory;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
@@ -51,6 +52,7 @@ public class FuchsModConfigManager {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
                 .title(Component.translatable("fuchsmod.config.title"))
                 .category(GeneralCategory.create(defaults, config))
+                .category(PerformanceMeasurementCategory.create(defaults, config))
                 .category(PartyCommandsCategory.create(defaults, config))
                 .save(FuchsModConfigManager::save)
         ).generateScreen(parent);
