@@ -2,14 +2,13 @@ package de.fuchsmod.features.general;
 
 import com.mojang.brigadier.StringReader;
 import de.fuchsmod.commands.Debug;
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 
 import java.math.*;
 import java.util.*;
 
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 public class Calculator {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     public static boolean enableCalculatorCommandsDebug = false;
 
     public static class CalculatorException extends Exception {
@@ -343,7 +342,7 @@ public class Calculator {
     public static String roundResult(double result) {
         return Double.isInfinite(result) || Double.isNaN(result) ? Double.toString(result) :
                 new BigDecimal(Double.toString(result))
-                        .round(new MathContext(config.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(Math.abs(result))), 0), RoundingMode.HALF_UP))
+                        .round(new MathContext(CONFIG.calculatorPrecision + Math.max((int) Math.ceil(Math.log10(Math.abs(result))), 0), RoundingMode.HALF_UP))
                         .stripTrailingZeros().toPlainString();
     }
 }

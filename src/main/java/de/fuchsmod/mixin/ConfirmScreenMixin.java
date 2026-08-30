@@ -1,13 +1,9 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.ResourcePackIgnore;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.ConfirmScreen;
-
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,12 +12,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static de.fuchsmod.FuchsMod.CLIENT;
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 @Mixin(ConfirmScreen.class)
 public class ConfirmScreenMixin {
-    @Unique
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
-    @Unique
-    private static final Minecraft client = Minecraft.getInstance();
     @Unique
     protected Component ignoreButtonComponent = Component.literal("Ignore");
     @Unique
@@ -33,13 +28,13 @@ public class ConfirmScreenMixin {
     )
     protected void fuchsmod$addIgnoreButton(LinearLayout buttonLayout, CallbackInfo ci) {
         if ((Object) this instanceof ClientCommonPacketListenerImpl.PackConfirmScreen packConfirmScreen) {
-            if (config.autoIgnoreServerResourcePacks) {
-                client.gui.setScreen(packConfirmScreen.parentScreen);
+            if (CONFIG.autoIgnoreServerResourcePacks) {
+                CLIENT.gui.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
                 return;
             }
             this.ignoreButton = buttonLayout.addChild(Button.builder(this.ignoreButtonComponent, button -> {
-                client.gui.setScreen(packConfirmScreen.parentScreen);
+                CLIENT.gui.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
             }).build());
         }

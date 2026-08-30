@@ -1,37 +1,34 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.FuchsMod;
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
+import static de.fuchsmod.FuchsMod.MOD_ID;
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CLIENT;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class PingHud {
-    private static final Minecraft client = Minecraft.getInstance();
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT,
-                Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "ping_hud"),
+                Identifier.fromNamespaceAndPath(MOD_ID, "ping_hud"),
                 PingHud::extract);
         LOGGER.info("Initialized Ping Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        if (!config.showPingHud || client.getDebugOverlay().showDebugScreen())
+        if (!CONFIG.showPingHud || CLIENT.getDebugOverlay().showDebugScreen())
             return;
-        int x = (int) Math.round(config.PingHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
-        int y = (int) Math.round(config.PingHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
+        int x = (int) Math.round(CONFIG.PingHudXPos / 100.0 * CLIENT.getWindow().getGuiScaledWidth());
+        int y = (int) Math.round(CONFIG.PingHudYPos / 100.0 * CLIENT.getWindow().getGuiScaledHeight());
         Component text = Component.translatable("fuchsmod.features.ping.hud",
                 PingMeasurement.getInstance().getAveragePingFormatted());
-        graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
+        graphics.text(CLIENT.font, text, x, y, 0xFFFFFFFF, true);
     }
 }

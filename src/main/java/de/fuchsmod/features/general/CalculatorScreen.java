@@ -1,7 +1,5 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -13,14 +11,15 @@ import net.minecraft.network.chat.Component;
 
 import java.util.function.Consumer;
 
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 public class CalculatorScreen extends Screen {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private final Screen parent;
 
     private static final int DEFAULT_SPACING = 4;
     private static final int DEFAULT_SIZE = 20;
 
-    private boolean showFunctions = config.showFunctionsOnCalculatorScreenOpen;
+    private boolean showFunctions = CONFIG.showFunctionsOnCalculatorScreenOpen;
 
     private final EditBox expressionBox = new EditBox(font, Component.literal(""));;
 

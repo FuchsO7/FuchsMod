@@ -1,9 +1,6 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.GameEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -12,11 +9,10 @@ import net.minecraft.network.chat.Style;
 
 import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CLIENT;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class DeathLocationSaver {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
-    private static final Minecraft client = Minecraft.getInstance();
-
     public static String dimension;
     public static BlockPos blockPos;
 
@@ -25,8 +21,8 @@ public class DeathLocationSaver {
             dimension = position.dimension().identifier().getPath();
             blockPos = position.pos();
             LOGGER.info("Saved Death Location %s".formatted(getLastDeathLocationString()));
-            if (config.sendLastDeathLocationMessage && client.player != null)
-                client.player.sendSystemMessage(getLastDeathLocationFormatted());
+            if (CONFIG.sendLastDeathLocationMessage && CLIENT.player != null)
+                CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted());
         });
     }
 

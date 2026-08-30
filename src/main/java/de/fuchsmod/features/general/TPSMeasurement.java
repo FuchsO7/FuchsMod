@@ -1,7 +1,6 @@
 package de.fuchsmod.features.general;
 
 import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.network.chat.Component;
@@ -14,9 +13,10 @@ import net.minecraft.util.Util;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 public class TPSMeasurement {
     private static final TPSMeasurement INSTANCE = new TPSMeasurement();
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private int packetCount = 0;
@@ -44,7 +44,7 @@ public class TPSMeasurement {
     }
 
     public void onSetTimePacket(ClientboundSetTimePacket packet) {
-        if (config.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.SetTime)
+        if (CONFIG.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.SetTime)
             return;
         long gameTime = packet.gameTime();
         long packetTimeMillis = Util.getMillis();
@@ -58,7 +58,7 @@ public class TPSMeasurement {
     }
 
     public void onPingPacket(ClientboundPingPacket packet) {
-        if (config.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.Ping)
+        if (CONFIG.packetTypeForTPSMeasurement != FuchsModConfig.TPSPacketTypes.Ping)
             return;
         this.packetCount++;
         if (this.packetCount >= 20) {
@@ -127,7 +127,7 @@ public class TPSMeasurement {
     }
 
     private static int getTPSColor(double tps) {
-        return config.useContinuousColorsForTPSHud ? getContinuousTPSColor(tps) : getDiscreteTPSColor(tps).getValue();
+        return CONFIG.useContinuousColorsForTPSHud ? getContinuousTPSColor(tps) : getDiscreteTPSColor(tps).getValue();
     }
 
     public double getMSPT() {

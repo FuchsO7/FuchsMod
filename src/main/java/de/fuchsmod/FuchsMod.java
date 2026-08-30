@@ -2,6 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.commands.Debug;
+import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
@@ -10,6 +11,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -21,6 +23,8 @@ import java.util.function.Supplier;
 public class FuchsMod implements ClientModInitializer {
 	public static final String MOD_ID = "fuchs-mod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Minecraft CLIENT = Minecraft.getInstance();
+	public static final FuchsModConfig CONFIG = FuchsModConfigManager.initInstance();
 	public static final KeyMapping.Category KEYMAPPING_CATEGORY = KeyMapping.Category.register(
 			Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "fuchsmod_category")
 	);
@@ -32,7 +36,6 @@ public class FuchsMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		LOGGER.info("Initializing Fuchs Mod!");
-		FuchsModConfigManager.init();
 		TPSHud.init();
 		FPSHud.init();
 		PingHud.init();

@@ -1,7 +1,5 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -20,9 +18,9 @@ import java.util.UUID;
 
 import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class ResourcePackIgnore {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private static UUID packID;
     private static String url;
     private static final Queue<ScheduledPacket> packetsToSend = new LinkedList<>();
@@ -68,10 +66,10 @@ public class ResourcePackIgnore {
     public static void imitateResourcePackDownload() {
         long time = Util.getMillis();
         packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.ACCEPTED)));
-        packetsToSend.offer(new ScheduledPacket(time + config.serverResourcePackIgnoreTimeMillis / 2, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DOWNLOADED)));
-        packetsToSend.offer(new ScheduledPacket(time + config.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
+        packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis / 2, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DOWNLOADED)));
+        packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
         LOGGER.info("Scheduled Serverbound Packets for Pack Download Imitation");
-        if (config.sendServerResourcePackDownloadLink)
+        if (CONFIG.sendServerResourcePackDownloadLink)
             scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                     .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
                             .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));

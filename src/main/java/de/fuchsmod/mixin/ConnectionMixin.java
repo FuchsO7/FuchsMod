@@ -1,11 +1,7 @@
 package de.fuchsmod.mixin;
 
 import de.fuchsmod.events.ClientPacketEvents;
-import de.fuchsmod.features.general.ResourcePackIgnore;
 import io.netty.channel.ChannelFutureListener;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;

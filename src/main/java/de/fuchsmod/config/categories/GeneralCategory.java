@@ -7,194 +7,16 @@ import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 
+import static de.fuchsmod.FuchsMod.CLIENT;
+
 public class GeneralCategory {
-    private static final Minecraft client = Minecraft.getInstance();
 
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
                 .name(Component.translatable("fuchsmod.config.general"))
-                .group(OptionGroup.createBuilder()
-                        .name(Component.translatable("fuchsmod.config.general.tps"))
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.show_hud"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.show_hud.description")))
-                                .binding(defaults.showTPSHud,
-                                        () -> config.showTPSHud,
-                                        newValue -> config.showTPSHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.color"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.color.description")))
-                                .binding(defaults.useContinuousColorsForTPSHud,
-                                        () -> config.useContinuousColorsForTPSHud,
-                                        newValue -> config.useContinuousColorsForTPSHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.hud_x_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.hud_x_pos.description")))
-                                .binding(defaults.TPSHudXPos,
-                                        () -> config.TPSHudXPos,
-                                        newValue -> config.TPSHudXPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.hud_y_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.hud_y_pos.description")))
-                                .binding(defaults.TPSHudYPos,
-                                        () -> config.TPSHudYPos,
-                                        newValue -> config.TPSHudYPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .option(Option.<FuchsModConfig.TPSPacketTypes>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.packet_type"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.packet_type.description")))
-                                .binding(defaults.packetTypeForTPSMeasurement,
-                                        () -> config.packetTypeForTPSMeasurement,
-                                        newValue -> {
-                                            config.packetTypeForTPSMeasurement = newValue;
-                                            TPSMeasurement.getInstance().reset();
-                                        })
-                                .controller(opt -> EnumControllerBuilder.create(opt)
-                                        .enumClass(FuchsModConfig.TPSPacketTypes.class))
-                                .build())
-                        .option(ButtonOption.createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.tps.reset"))
-                                .text(Component.literal(""))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.tps.reset.description")))
-                                .action((screen, buttonOption) -> TPSMeasurement.getInstance().reset())
-                                .build())
-                        .build())
-                .group(OptionGroup.createBuilder()
-                        .name(Component.translatable("fuchsmod.config.general.fps"))
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.fps.show_hud"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.fps.show_hud.description")))
-                                .binding(defaults.showFPSHud,
-                                        () -> config.showFPSHud,
-                                        newValue -> config.showFPSHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.fps.color"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.fps.color.description")))
-                                .binding(defaults.useContinuousColorsForFPSHud,
-                                        () -> config.useContinuousColorsForFPSHud,
-                                        newValue -> config.useContinuousColorsForFPSHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.fps.hud_x_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.fps.hud_x_pos.description")))
-                                .binding(defaults.FPSHudXPos,
-                                        () -> config.FPSHudXPos,
-                                        newValue -> config.FPSHudXPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.fps.hud_y_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.fps.hud_y_pos.description")))
-                                .binding(defaults.FPSHudYPos,
-                                        () -> config.FPSHudYPos,
-                                        newValue -> config.FPSHudYPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .build())
-                .group(OptionGroup.createBuilder()
-                        .name(Component.translatable("fuchsmod.config.general.ping"))
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.show_hud"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.show_hud.description")))
-                                .binding(defaults.showPingHud,
-                                        () -> config.showPingHud,
-                                        newValue -> config.showPingHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.color"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.color.description")))
-                                .binding(defaults.useContinuousColorsForPingHud,
-                                        () -> config.useContinuousColorsForPingHud,
-                                        newValue -> config.useContinuousColorsForPingHud = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.hud_x_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.hud_x_pos.description")))
-                                .binding(defaults.PingHudXPos,
-                                        () -> config.PingHudXPos,
-                                        newValue -> config.PingHudXPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.hud_y_pos"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.hud_y_pos.description")))
-                                .binding(defaults.PingHudYPos,
-                                        () -> config.PingHudYPos,
-                                        newValue -> config.PingHudYPos = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 100.0)
-                                        .step(0.1)
-                                        .formatValue(value -> Component.literal("%.1f %%".formatted(value))))
-                                .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.always_send_request"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.always_send_request.description")))
-                                .binding(defaults.alwaysSendPingRequest,
-                                        () -> config.alwaysSendPingRequest,
-                                        newValue -> config.alwaysSendPingRequest = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(ButtonOption.createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.ping.reset"))
-                                .text(Component.literal(""))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.ping.reset.description")))
-                                .action((screen, buttonOption) -> PingMeasurement.getInstance().reset())
-                                .build())
-                        .build())
                 .group(OptionGroup.createBuilder()
                         .name(Component.translatable("fuchsmod.config.general.tooltip_scroll"))
                         .option(Option.<Boolean>createBuilder()
@@ -337,7 +159,7 @@ public class GeneralCategory {
                                 .name(Component.translatable("controls.keybinds"))
                                 .text(Component.literal(""))
                                 .action((screen, buttonOption) -> {
-                                    client.gui.setScreen(new KeyBindsScreen(screen, client.options));
+                                    CLIENT.gui.setScreen(new KeyBindsScreen(screen, CLIENT.options));
                                 })
                                 .build())
                         .build())
