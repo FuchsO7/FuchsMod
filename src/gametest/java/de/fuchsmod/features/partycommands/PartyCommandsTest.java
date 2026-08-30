@@ -1,11 +1,11 @@
 package de.fuchsmod.features.partycommands;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.network.chat.Component;
+
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 @SuppressWarnings("UnstableApiUsage")
 public class PartyCommandsTest implements FabricClientGameTest {
@@ -14,9 +14,8 @@ public class PartyCommandsTest implements FabricClientGameTest {
     public void runTest(ClientGameTestContext context) {
         try (TestSingleplayerContext singleplayer = context.worldBuilder().create()) {
             context.runOnClient(client -> {
-                FuchsModConfig config = FuchsModConfigManager.getInstance();
-                config.enablePartyCommands = true;
-                config.commandDelay = 500;
+                CONFIG.enablePartyCommands = true;
+                CONFIG.commandDelay = 500;
             });
             singleplayer.getConnection().waitForChunksRender();
 

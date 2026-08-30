@@ -1,17 +1,14 @@
 package de.fuchsmod.features.partycommands;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
-import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.LinkedHashMap;
 
+import static de.fuchsmod.FuchsMod.CLIENT;
+
 public class PartyCommandUtils {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
-    private static final Minecraft client = Minecraft.getInstance();
     private static final TPSMeasurement tps = TPSMeasurement.getInstance();
     private static final PingMeasurement ping = PingMeasurement.getInstance();
 
@@ -47,7 +44,7 @@ public class PartyCommandUtils {
 
     public static TriFunction<String, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
 
-    public static TriFunction<String, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(client.getFps());
+    public static TriFunction<String, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
 
     public static TriFunction<String, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
 

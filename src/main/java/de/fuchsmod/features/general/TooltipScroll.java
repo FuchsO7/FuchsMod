@@ -1,16 +1,14 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import org.joml.Vector2i;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class TooltipScroll {
     private static final TooltipScroll INSTANCE = new TooltipScroll();
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     private int x = 0;
     private int y = 0;
@@ -18,7 +16,7 @@ public class TooltipScroll {
     public static void init() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             TooltipScroll.getInstance().resetOffset();
-            if (!config.enableTooltipScroll || client.player == null)
+            if (!CONFIG.enableTooltipScroll || client.player == null)
                 return;
             ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
                 if (!consumed) {
@@ -36,9 +34,9 @@ public class TooltipScroll {
 
     public void moveOffset(int distance, boolean moveVertical) {
         if (moveVertical) {
-            this.x += distance * config.scrollFactor * config.horizontalScrollDirection;
+            this.x += distance * CONFIG.scrollFactor * CONFIG.horizontalScrollDirection;
         } else {
-            this.y += distance * config.scrollFactor * config.verticalScrollDirection;
+            this.y += distance * CONFIG.scrollFactor * CONFIG.verticalScrollDirection;
         }
     }
 

@@ -12,7 +12,6 @@ import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +19,6 @@ import net.minecraft.sounds.SoundEvents;
 import static de.fuchsmod.FuchsMod.*;
 
 public class Commands {
-    private static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess)-> {
@@ -89,8 +87,8 @@ public class Commands {
     }
 
     private static int executeCalculatorCommand(CommandContext<FabricClientCommandSource> context) {
-        client.execute(() -> client.gui.setScreen(new CalculatorScreen(client.gui.screen())));
-        client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        CLIENT.execute(() -> CLIENT.gui.setScreen(new CalculatorScreen(CLIENT.gui.screen())));
+        CLIENT.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         return Command.SINGLE_SUCCESS;
     }
 

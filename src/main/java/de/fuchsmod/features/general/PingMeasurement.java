@@ -1,7 +1,5 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.network.chat.Component;
@@ -13,9 +11,10 @@ import net.minecraft.util.Util;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 public class PingMeasurement {
     private static final PingMeasurement INSTANCE = new PingMeasurement();
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
 
     private long estimatedPing;
@@ -86,7 +85,7 @@ public class PingMeasurement {
     }
 
     private static int getPingColor(long ping) {
-        return config.useContinuousColorsForPingHud ? getContinuousPingColor(ping) : getDiscretePingColor(ping).getValue();
+        return CONFIG.useContinuousColorsForPingHud ? getContinuousPingColor(ping) : getDiscretePingColor(ping).getValue();
     }
 
     public long getPing() {

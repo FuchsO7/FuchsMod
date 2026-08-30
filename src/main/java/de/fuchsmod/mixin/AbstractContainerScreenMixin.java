@@ -1,7 +1,5 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.Calculator;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -15,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static de.fuchsmod.FuchsMod.CONFIG;
+
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin extends Screen {
-    @Unique
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     @Unique
     private static final int DEFAULT_SIZE = 20;
     @Unique
@@ -35,7 +33,7 @@ public class AbstractContainerScreenMixin extends Screen {
             method = "init"
     )
     private void fuchsmod$addInventoryCalculatorWidgets(CallbackInfo ci) {
-        if (!config.showInventoryCalculator)
+        if (!CONFIG.showInventoryCalculator)
             return;
 
         LinearLayout layout = LinearLayout.horizontal().spacing(DEFAULT_SPACING);

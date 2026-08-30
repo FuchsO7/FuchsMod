@@ -37,6 +37,11 @@ public class FuchsModConfigManager {
         return HANDLER.instance();
     }
 
+    public static FuchsModConfig initInstance() {
+        init();
+        return getInstance();
+    }
+
     public static void save() {
         HANDLER.save();
         PartyCommands.loadCommands();

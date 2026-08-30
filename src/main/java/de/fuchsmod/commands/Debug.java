@@ -1,15 +1,13 @@
 package de.fuchsmod.commands;
 
 import de.fuchsmod.events.ClientPacketEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 import static de.fuchsmod.FuchsMod.FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CLIENT;
 
 public class Debug {
-    private static final Minecraft client = Minecraft.getInstance();
-
     static boolean enableSetTimePacketListenerDebug = false;
     static boolean enablePingPacketListenerDebug = false;
     static boolean enablePongResponsePacketListenerDebug = false;
@@ -56,8 +54,8 @@ public class Debug {
 
     public static void sendDebugMessage(String message) {
         Component debugMessage = FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX.get().append(message);
-        if (client.player != null)
-            client.player.sendSystemMessage(debugMessage);
+        if (CLIENT.player != null)
+            CLIENT.player.sendSystemMessage(debugMessage);
         LOGGER.info(message);
     }
     

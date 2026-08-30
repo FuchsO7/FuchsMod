@@ -1,8 +1,6 @@
 package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.commands.Debug;
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -12,9 +10,9 @@ import net.minecraft.util.Util;
 import java.util.*;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class PartyCommands {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     protected static final HashMap<String, PartyCommand> commands = new HashMap<>();
     private static final Queue<ScheduledMessage> scheduledMessages = new LinkedList<>();
     private static long lastMessageSentMillis = 0;
@@ -36,7 +34,7 @@ public class PartyCommands {
             ScheduledMessage scheduledMessage = scheduledMessages.peek();
             if (scheduledMessage == null)
                 return;
-            if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + config.commandDelay < Util.getMillis()) {
+            if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + CONFIG.commandDelay < Util.getMillis()) {
                 new ChatScreen("", false).handleChatInput(scheduledMessage.message(), enablePartyCommandsDebug);
                 scheduledMessages.poll();
                 lastMessageSentMillis = Util.getMillis();
@@ -46,8 +44,8 @@ public class PartyCommands {
     }
 
     public static void sendChatMessage(String message) {
-        Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(config.commandDelay, message), enablePartyCommandsDebug);
-        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + config.commandDelay, message));
+        Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(CONFIG.commandDelay, message), enablePartyCommandsDebug);
+        scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + CONFIG.commandDelay, message));
     }
 
     public static List<String> getScopes(int scopesInteger) {
@@ -65,7 +63,7 @@ public class PartyCommands {
 
     public static void loadCommands() {
         commands.clear();
-        for (PartyCommandRecord command : config.partyCommandsList) {
+        for (PartyCommandRecord command : CONFIG.partyCommandsList) {
             commands.put(command.trigger(), new PartyCommand(
                     getScopes(command.scopes()),
                     command.command(),
@@ -74,7 +72,7 @@ public class PartyCommands {
     }
 
     public static void onChatMessage(String message) {
-        if (!config.enablePartyCommands)
+        if (!CONFIG.enablePartyCommands)
             return;
         if (message.split(":").length < 2)
             return;

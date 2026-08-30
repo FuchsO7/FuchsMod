@@ -1,14 +1,10 @@
 package de.fuchsmod.features.partycommands;
 
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
-import net.minecraft.client.gui.screens.ChatScreen;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.List;
 
 public class PartyCommand {
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
     private final List<String> scopes;
     private final String message;
     private final TriFunction<String, String, String[], String> replacementFunction;

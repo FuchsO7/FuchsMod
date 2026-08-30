@@ -1,40 +1,37 @@
 package de.fuchsmod.features.general;
 
-import de.fuchsmod.FuchsMod;
-import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.config.FuchsModConfigManager;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
+import static de.fuchsmod.FuchsMod.MOD_ID;
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CLIENT;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class FPSHud {
-    private static final Minecraft client = Minecraft.getInstance();
-    private static final FuchsModConfig config = FuchsModConfigManager.getInstance();
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT,
-                Identifier.fromNamespaceAndPath(FuchsMod.MOD_ID, "fps_hud"),
+                Identifier.fromNamespaceAndPath(MOD_ID, "fps_hud"),
                 FPSHud::extract);
         LOGGER.info("Initialized FPS Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
-        if (!config.showFPSHud || client.getDebugOverlay().showDebugScreen())
+        if (!CONFIG.showFPSHud || CLIENT.getDebugOverlay().showDebugScreen())
             return;
-        int x = (int) Math.round(config.FPSHudXPos / 100.0 * client.getWindow().getGuiScaledWidth());
-        int y = (int) Math.round(config.FPSHudYPos / 100.0 * client.getWindow().getGuiScaledHeight());
+        int x = (int) Math.round(CONFIG.FPSHudXPos / 100.0 * CLIENT.getWindow().getGuiScaledWidth());
+        int y = (int) Math.round(CONFIG.FPSHudYPos / 100.0 * CLIENT.getWindow().getGuiScaledHeight());
         Component text = Component.translatable("fuchsmod.features.fps.hud",
                 getCurrentFPSFormatted());
-        graphics.text(client.font, text, x, y, 0xFFFFFFFF, true);
+        graphics.text(CLIENT.font, text, x, y, 0xFFFFFFFF, true);
     }
 
     private static TextColor getDiscreteFPSColor(int fps) {
@@ -64,10 +61,10 @@ public class FPSHud {
     }
 
     private static int getFPSColor(int fps) {
-        return config.useContinuousColorsForFPSHud ? getContinuousFPSColor(fps) : getDiscreteFPSColor(fps).getValue();
+        return CONFIG.useContinuousColorsForFPSHud ? getContinuousFPSColor(fps) : getDiscreteFPSColor(fps).getValue();
     }
 
     public static Component getCurrentFPSFormatted() {
-        return Component.literal("%d".formatted(client.getFps())).withColor(getFPSColor(client.getFps()));
+        return Component.literal("%d".formatted(CLIENT.getFps())).withColor(getFPSColor(CLIENT.getFps()));
     }
 }

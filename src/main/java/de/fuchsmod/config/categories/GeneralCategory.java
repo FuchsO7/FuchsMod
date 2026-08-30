@@ -7,12 +7,12 @@ import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 
+import static de.fuchsmod.FuchsMod.CLIENT;
+
 public class GeneralCategory {
-    private static final Minecraft client = Minecraft.getInstance();
 
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
@@ -337,7 +337,7 @@ public class GeneralCategory {
                                 .name(Component.translatable("controls.keybinds"))
                                 .text(Component.literal(""))
                                 .action((screen, buttonOption) -> {
-                                    client.gui.setScreen(new KeyBindsScreen(screen, client.options));
+                                    CLIENT.gui.setScreen(new KeyBindsScreen(screen, CLIENT.options));
                                 })
                                 .build())
                         .build())
