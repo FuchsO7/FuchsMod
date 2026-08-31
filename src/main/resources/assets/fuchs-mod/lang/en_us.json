@@ -5,6 +5,7 @@
   "fuchsmod.commands.tps": "Estimated TPS: %1$s, Average (%2$ds): %3$s",
   "fuchsmod.commands.calculator_result": "Result: %1$s",
   "fuchsmod.commands.debug_feedback": "Set debug setting to %1$s",
+  "fuchsmod.commands.debug_game_end_trigger": "Triggered game end event",
 
   "fuchsmod.features.tps.hud": "TPS: %1$s",
   "fuchsmod.features.fps.hud": "FPS: %1$s",

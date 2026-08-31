@@ -11,8 +11,19 @@ public class GameEvents {
         }
     });
 
+    public static final Event<GameEvents.GameEnded> GAME_ENDED = EventFactory.createArrayBacked(GameEnded.class, callbacks -> () -> {
+        for (GameEvents.GameEnded event : callbacks) {
+            event.onGameEnd();
+        }
+    });
+
     @FunctionalInterface
     public interface NewDeathLocation {
         void onNewDeathLocation(GlobalPos position);
+    }
+
+    @FunctionalInterface
+    public interface GameEnded {
+        void onGameEnd();
     }
 }

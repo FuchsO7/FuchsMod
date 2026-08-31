@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.fuchsmod.config.FuchsModConfigManager;
+import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -55,8 +56,10 @@ public class Commands {
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
                             .executes(Commands::executeCalculatorDebugToggle)))
                     .then(ClientCommands.literal("PartyCommands")
-                            .then(ClientCommands.argument("enable", BoolArgumentType.bool())
-                                    .executes(Commands::executePartyCommandsDebugToggle))))
+                        .then(ClientCommands.argument("enable", BoolArgumentType.bool())
+                            .executes(Commands::executePartyCommandsDebugToggle)))
+                    .then(ClientCommands.literal("triggerGameEnd")
+                        .executes(Commands::executeGameEndTrigger)))
             );
         });
         LOGGER.info("Initialized Fuchs Mod Commands!");
@@ -157,6 +160,13 @@ public class Commands {
     private static int executeCalculatorDebugToggle(CommandContext<FabricClientCommandSource> context) {
         Calculator.enableCalculatorCommandsDebug = BoolArgumentType.getBool(context, "enable");
         sendDebugFeedback(context);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeGameEndTrigger(CommandContext<FabricClientCommandSource> context) {
+        GameEvents.GAME_ENDED.invoker().onGameEnd();
+        context.getSource().sendFeedback(FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX.get()
+                .append(Component.translatable("fuchsmod.commands.debug_game_end_trigger")));
         return Command.SINGLE_SUCCESS;
     }
 }
