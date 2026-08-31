@@ -40,7 +40,7 @@ public class PartyCommands {
                 lastMessageSentMillis = Util.getMillis();
             }
         });
-        LOGGER.info("Initialized Party Commands!");
+        LOGGER.debug("Initialized Party Commands!");
     }
 
     public static void sendChatMessage(String message) {

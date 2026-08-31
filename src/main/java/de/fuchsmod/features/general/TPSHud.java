@@ -21,7 +21,7 @@ public class TPSHud {
                 VanillaHudElements.CHAT,
                 Identifier.fromNamespaceAndPath(MOD_ID, "tps_hud"),
                 TPSHud::extract);
-        LOGGER.info("Initialized TPS Measurement!");
+        LOGGER.debug("Initialized TPS Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {

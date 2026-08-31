@@ -12,7 +12,7 @@ public class Fullbright {
         ClientPlayConnectionEvents.JOIN.register((packetListener, packetSender, client) -> {
             setGamma();
         });
-        LOGGER.info("Initialized Fullbright!");
+        LOGGER.debug("Initialized Fullbright!");
     }
 
     public static void setGamma() {

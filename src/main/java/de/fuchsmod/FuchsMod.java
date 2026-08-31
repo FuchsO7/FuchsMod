@@ -48,6 +48,6 @@ public class FuchsMod implements ClientModInitializer {
 		DeathLocationSaver.init();
 		Debug.init();
 		Commands.init();
-		LOGGER.info("Initializing Fuchs Mod completed!");
+		LOGGER.debug("Initializing Fuchs Mod completed!");
 	}
 }

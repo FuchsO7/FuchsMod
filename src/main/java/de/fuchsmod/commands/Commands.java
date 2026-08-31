@@ -62,7 +62,7 @@ public class Commands {
                         .executes(Commands::executeGameEndTrigger)))
             );
         });
-        LOGGER.info("Initialized Fuchs Mod Commands!");
+        LOGGER.debug("Initialized Fuchs Mod Commands!");
     }
 
     private static int executeConfigCommand(CommandContext<FabricClientCommandSource> context) {

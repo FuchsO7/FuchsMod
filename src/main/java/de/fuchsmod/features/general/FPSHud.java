@@ -21,7 +21,7 @@ public class FPSHud {
                 VanillaHudElements.CHAT,
                 Identifier.fromNamespaceAndPath(MOD_ID, "fps_hud"),
                 FPSHud::extract);
-        LOGGER.info("Initialized FPS Measurement!");
+        LOGGER.debug("Initialized FPS Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {

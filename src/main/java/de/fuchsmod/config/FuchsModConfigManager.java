@@ -31,7 +31,7 @@ public class FuchsModConfigManager {
 
     public static void init() {
         HANDLER.load();
-        LOGGER.info("Initialized Config Manager!");
+        LOGGER.debug("Initialized Config Manager!");
     }
 
     public static FuchsModConfig getInstance() {

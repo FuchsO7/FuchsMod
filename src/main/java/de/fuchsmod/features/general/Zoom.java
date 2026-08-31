@@ -39,7 +39,7 @@ public class Zoom {
             onMouseScroll(yOffset);
             return false;
         });
-        LOGGER.info("Initialized Zoom!");
+        LOGGER.debug("Initialized Zoom!");
     }
 
     public static void onMouseScroll(double direction) {

@@ -25,7 +25,7 @@ public class TooltipScroll {
                 return consumed;
             });
         });
-        LOGGER.info("Initialized Tooltip Scrolling!");
+        LOGGER.debug("Initialized Tooltip Scrolling!");
     }
 
     public static TooltipScroll getInstance() {
