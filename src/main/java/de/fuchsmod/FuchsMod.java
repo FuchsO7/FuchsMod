@@ -2,6 +2,7 @@ package de.fuchsmod;
 
 import de.fuchsmod.commands.Commands;
 import de.fuchsmod.commands.Debug;
+import de.fuchsmod.compatibility.Skyblocker;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.features.general.*;
@@ -9,6 +10,7 @@ import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.api.ClientModInitializer;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -48,6 +50,8 @@ public class FuchsMod implements ClientModInitializer {
 		DeathLocationSaver.init();
 		Debug.init();
 		Commands.init();
+		if (FabricLoader.getInstance().isModLoaded("skyblocker"))
+			Skyblocker.register();
 		LOGGER.debug("Initializing Fuchs Mod completed!");
 	}
 }
