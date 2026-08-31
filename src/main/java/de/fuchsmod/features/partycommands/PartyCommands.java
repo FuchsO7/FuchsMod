@@ -40,10 +40,12 @@ public class PartyCommands {
                 lastMessageSentMillis = Util.getMillis();
             }
         });
-        LOGGER.info("Initialized Party Commands!");
+        LOGGER.debug("Initialized Party Commands!");
     }
 
     public static void sendChatMessage(String message) {
+        if (message.isEmpty())
+            return;
         Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(CONFIG.commandDelay, message), enablePartyCommandsDebug);
         scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + CONFIG.commandDelay, message));
     }

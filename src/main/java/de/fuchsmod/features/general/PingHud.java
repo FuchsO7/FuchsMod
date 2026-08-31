@@ -19,7 +19,7 @@ public class PingHud {
                 VanillaHudElements.CHAT,
                 Identifier.fromNamespaceAndPath(MOD_ID, "ping_hud"),
                 PingHud::extract);
-        LOGGER.info("Initialized Ping Measurement!");
+        LOGGER.debug("Initialized Ping Measurement!");
     }
 
     private static void extract(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {

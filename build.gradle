@@ -9,6 +9,7 @@ group = project.maven_group
 loom {
 
 	accessWidenerPath = file("src/main/resources/fuchsmod.classtweaker")
+	loom.log4jConfigs.from "log4j-dev.xml"
 
 }
 

@@ -24,6 +24,7 @@ public class DeathLocationSaver {
             if (CONFIG.sendLastDeathLocationMessage && CLIENT.player != null)
                 CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted());
         });
+        LOGGER.debug("initialized Death Location Saver!");
     }
 
     public static Component getLastDeathLocationFormatted() {

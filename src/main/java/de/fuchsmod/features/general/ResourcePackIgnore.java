@@ -57,7 +57,7 @@ public class ResourcePackIgnore {
         ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {
             packetsToSend.clear();
         });
-        LOGGER.info("Initialized Server Resource Pack Ignore!");
+        LOGGER.debug("Initialized Server Resource Pack Ignore!");
     }
 
     public record ScheduledPacket (long time, Packet<?> packet) {

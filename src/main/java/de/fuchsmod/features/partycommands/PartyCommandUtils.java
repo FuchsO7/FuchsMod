@@ -1,5 +1,6 @@
 package de.fuchsmod.features.partycommands;
 
+import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
 import org.apache.commons.lang3.function.TriFunction;
@@ -34,6 +35,14 @@ public class PartyCommandUtils {
         replacementCommands.put("Get Ping", getPing);
         replacementCommands.put("Dice Roll", diceRoll);
         replacementCommands.put("Bedwars Dream", getDream);
+        replacementCommands.put("Downtime Request", requestDowntime);
+
+        GameEvents.GAME_ENDED.register(() -> {
+            if (downtimeMessage != null) {
+                PartyCommands.sendChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
+                downtimeMessage = null;
+            }
+        });
     }
 
     /* TriFunction arguments:
@@ -64,4 +73,16 @@ public class PartyCommandUtils {
 
     public static TriFunction<String, String, String[], String> getDream = (_, _, _) ->
             DREAMS[(int) (((System.currentTimeMillis() - DREAM_ROTATION_TIME_SECONDS) % (DREAMS.length * WEEK_IN_SECONDS)) / WEEK_IN_SECONDS)];
+
+    private static String downtimeMessage;
+    private static String downtimeScope;
+
+    public static TriFunction<String, String, String[], String> requestDowntime = (scope, senderName, arguments) -> {
+        if (arguments.length == 0)
+            downtimeMessage = "Downtime requested by %s".formatted(senderName);
+        String reason = String.join(" ", arguments);
+        downtimeMessage = "Downtime requested by %s: %s".formatted(senderName, reason);
+        downtimeScope = scope;
+        return downtimeMessage;
+    };
 }
