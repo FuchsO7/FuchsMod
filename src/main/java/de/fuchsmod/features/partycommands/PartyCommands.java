@@ -6,10 +6,12 @@ import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.util.Util;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class PartyCommands {
@@ -34,8 +36,12 @@ public class PartyCommands {
             ScheduledMessage scheduledMessage = scheduledMessages.peek();
             if (scheduledMessage == null)
                 return;
-            if (scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + CONFIG.commandDelay < Util.getMillis()) {
-                new ChatScreen("", false).handleChatInput(scheduledMessage.message(), enablePartyCommandsDebug);
+            String message = StringUtils.normalizeSpace(scheduledMessage.message());
+            if (CLIENT.player != null && scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + CONFIG.commandDelay < Util.getMillis()) {
+                if (message.startsWith("/"))
+                    CLIENT.player.connection.sendCommand(message.substring(1));
+                else
+                    CLIENT.player.connection.sendChat(message);
                 scheduledMessages.poll();
                 lastMessageSentMillis = Util.getMillis();
             }
