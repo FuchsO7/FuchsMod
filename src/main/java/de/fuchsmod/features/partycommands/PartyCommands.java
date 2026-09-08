@@ -4,7 +4,6 @@ import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
