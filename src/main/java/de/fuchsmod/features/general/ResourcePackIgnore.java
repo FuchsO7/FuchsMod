@@ -46,12 +46,7 @@ public class ResourcePackIgnore {
             }
             if (scheduledPacket.time() < Util.getMillis()) {
                 Packet<?> packet = packetsToSend.poll().packet();
-                if (client.getConnection() != null)
-                    client.getConnection().send(packet);
-                else {
-                    LOGGER.warn("Client Connection was null, using last known connection to send resource pack download packets");
-                    connection.send(packet);
-                }
+                connection.send(packet);
             }
         });
         ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {
