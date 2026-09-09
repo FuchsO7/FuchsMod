@@ -2,8 +2,6 @@ package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.features.general.Fullbright;
-import de.fuchsmod.features.general.PingMeasurement;
-import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;

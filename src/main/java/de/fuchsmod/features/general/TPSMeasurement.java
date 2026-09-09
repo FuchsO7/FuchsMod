@@ -50,8 +50,10 @@ public class TPSMeasurement {
         long packetTimeMillis = Util.getMillis();
 
         long elapsedTimeMillis = packetTimeMillis - this.lastTimeMillis;
-        this.lastTimeMillis = packetTimeMillis;
         long elapsedTicks = gameTime - this.lastTick;
+        if (elapsedTimeMillis < 10L || elapsedTicks < 10L)
+            return;
+        this.lastTimeMillis = packetTimeMillis;
         this.lastTick = gameTime;
 
         calculateTPS((double) elapsedTimeMillis, elapsedTicks);
@@ -74,8 +76,6 @@ public class TPSMeasurement {
     }
 
     private void calculateTPS(double elapsedTimeMillis, long elapsedTicks) {
-        if (elapsedTimeMillis < 10.0 || elapsedTicks == 0L)
-            return;
         this.estimatedMSPT = elapsedTimeMillis / (double) elapsedTicks;
         this.estimatedTPS = 1000.0 / this.estimatedMSPT;
 

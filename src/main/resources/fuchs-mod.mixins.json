@@ -18,9 +18,7 @@
     "ConnectionMixin",
     "CreativeModeInventoryScreenMixin",
     "DefaultTooltipPositionerMixin",
-    "ServerReconfigScreenMixin"
-  ],
-  "mixins": [
+    "ServerReconfigScreenMixin",
     "PlayerMixin"
   ]
 }

@@ -21,7 +21,7 @@ public class CalculatorScreen extends Screen {
 
     private boolean showFunctions = CONFIG.showFunctionsOnCalculatorScreenOpen;
 
-    private final EditBox expressionBox = new EditBox(font, Component.literal(""));;
+    private final EditBox expressionBox = new EditBox(font, Component.literal(""));
 
     public CalculatorScreen(Screen parent) {
         super(Component.literal("Calculator"));
