@@ -126,6 +126,7 @@ public class FuchsModConfig {
             new PartyCommandRecord(2, "!warp", "/party warp", "None"),
             new PartyCommandRecord(2, "!allinv", "/party settings allinvite true", "None"),
             new PartyCommandRecord(2, "!ptme", "/party transfer {player}", "None"),
+            new PartyCommandRecord(2, "!dt", "", "Downtime Request"),
             new PartyCommandRecord(2, "!invite", "/party invite {args[0]}", "None"),
             new PartyCommandRecord(2, "!kick", "/party kick {args[0]}", "None"),
             new PartyCommandRecord(2, "!kickoffline", "/party kickoffline", "None"),
