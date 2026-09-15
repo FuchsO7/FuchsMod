@@ -31,7 +31,7 @@ public class PartyCommands {
                     .replaceAll("§.", "");
             onChatMessage(messageString);
         });
-        ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
+        ClientTickEvents.END_CLIENT_TICK.register((clientLevel) -> {
             ScheduledMessage scheduledMessage = scheduledMessages.peek();
             if (scheduledMessage == null)
                 return;
