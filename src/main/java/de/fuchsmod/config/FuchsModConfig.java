@@ -182,4 +182,8 @@ public class FuchsModConfig {
             new PartyCommandRecord(2, "!mi", "/play murder_infection", "None"),
             new PartyCommandRecord(2, "!ma", "/play murder_assassins", "None")
     ));
+
+    // Advanced
+    @SerialEntry
+    public List<String> gameEndTriggerRegexes = new ArrayList<>();
 }

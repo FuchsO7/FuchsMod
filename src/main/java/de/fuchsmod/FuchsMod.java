@@ -4,6 +4,7 @@ import de.fuchsmod.commands.Commands;
 import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.FuchsModConfigManager;
+import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
@@ -36,6 +37,7 @@ public class FuchsMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		LOGGER.info("Initializing Fuchs Mod!");
+		GameEvents.register();
 		TPSHud.init();
 		FPSHud.init();
 		PingHud.init();

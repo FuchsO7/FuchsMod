@@ -129,5 +129,9 @@
   "fuchsmod.config.partycommands.editor.scopes.guild": "Guild",
   "fuchsmod.config.partycommands.editor.scopes.officer": "Officer",
   "fuchsmod.config.partycommands.editor.replacement_function": "Special Replacement Function",
-  "fuchsmod.config.partycommands.editor.replacement_function.tooltip": "On execution, the placeholder {function} will be replaced by this functions return value."
+  "fuchsmod.config.partycommands.editor.replacement_function.tooltip": "On execution, the placeholder {function} will be replaced by this functions return value.",
+
+  "fuchsmod.config.advanced": "Advanced",
+  "fuchsmod.config.advanced.game_end_trigger_regexes": "Game End Trigger Regexes",
+  "fuchsmod.config.advanced.game_end_trigger_regexes.description": "An on Game End Event is triggered when a chat message matches one of these regexes"
 }
