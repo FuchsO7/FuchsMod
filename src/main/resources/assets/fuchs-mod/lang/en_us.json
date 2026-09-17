@@ -49,6 +49,8 @@
   "fuchsmod.config.general.server_resource_pack": "Server Resource Pack",
   "fuchsmod.config.general.server_resource_pack.auto_ignore": "Auto Ignore",
   "fuchsmod.config.general.server_resource_pack.auto_ignore.description": "If enabled, the Server Resource Pack will be ignored automatically.",
+  "fuchsmod.config.general.server_resource_pack.ignore_method": "Method",
+  "fuchsmod.config.general.server_resource_pack.ignore_method.description": "Choose which method of packets to be sent should be used.\nAccept: notifies the server that you accepted the pack\nDecline: notifies the server that you declined the pack\nSilent: don't send any packets",
   "fuchsmod.config.general.server_resource_pack.ignore_delay": "Ignore Delay",
   "fuchsmod.config.general.server_resource_pack.ignore_delay.description": "The server is notified that you 'successfully loaded' the resource pack after this time in milliseconds.",
   "fuchsmod.config.general.server_resource_pack.send_link": "Send Download Link",

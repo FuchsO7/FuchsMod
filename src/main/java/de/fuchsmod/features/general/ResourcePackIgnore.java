@@ -1,5 +1,6 @@
 package de.fuchsmod.features.general;
 
+import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -59,14 +60,24 @@ public class ResourcePackIgnore {
     }
 
     public static void imitateResourcePackDownload() {
-        long time = Util.getMillis();
-        packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.ACCEPTED)));
-        packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis / 2, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DOWNLOADED)));
-        packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
-        LOGGER.info("Scheduled Serverbound Packets for Pack Download Imitation");
+        schedulePackets();
         if (CONFIG.sendServerResourcePackDownloadLink)
             scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                     .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
                             .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
+    }
+
+    private static void schedulePackets() {
+        if (CONFIG.serverResourcePackIgnoreMethod == FuchsModConfig.ServerResourcePackIgnoreMethods.Silent)
+            return;
+        long time = Util.getMillis();
+        if (CONFIG.serverResourcePackIgnoreMethod == FuchsModConfig.ServerResourcePackIgnoreMethods.Decline) {
+            packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DECLINED)));
+        } else {
+            packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.ACCEPTED)));
+            packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis / 2, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DOWNLOADED)));
+            packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
+        }
+        LOGGER.debug("Scheduled Serverbound Packets for Pack Download Imitation");
     }
 }

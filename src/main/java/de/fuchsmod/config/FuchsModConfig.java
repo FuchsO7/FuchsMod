@@ -23,9 +23,6 @@ public class FuchsModConfig {
     @SerialEntry
     public double TPSHudYPos = 2.0;
 
-    @SerialEntry
-    public TPSPacketTypes packetTypeForTPSMeasurement = TPSPacketTypes.SetTime;
-
     public enum TPSPacketTypes implements NameableEnum {
         SetTime,
         Ping;
@@ -35,6 +32,9 @@ public class FuchsModConfig {
             return Component.literal(name());
         }
     }
+
+    @SerialEntry
+    public TPSPacketTypes packetTypeForTPSMeasurement = TPSPacketTypes.SetTime;
 
     @SerialEntry
     public boolean showFPSHud = false;
@@ -98,6 +98,20 @@ public class FuchsModConfig {
 
     @SerialEntry
     public long serverResourcePackIgnoreTimeMillis = 5000L;
+
+    public enum ServerResourcePackIgnoreMethods implements NameableEnum {
+        Accept,
+        Decline,
+        Silent;
+
+        @Override
+        public Component getDisplayName() {
+            return Component.literal(name());
+        }
+    }
+
+    @SerialEntry
+    public ServerResourcePackIgnoreMethods serverResourcePackIgnoreMethod = ServerResourcePackIgnoreMethods.Accept;
 
     @SerialEntry
     public boolean sendServerResourcePackDownloadLink = false;

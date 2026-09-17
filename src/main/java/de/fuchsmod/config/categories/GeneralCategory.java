@@ -2,6 +2,7 @@ package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.features.general.Fullbright;
+import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
@@ -172,6 +173,19 @@ public class GeneralCategory {
                                         newValue -> config.autoIgnoreServerResourcePacks = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
+                                .build())
+                        .option(Option.<FuchsModConfig.ServerResourcePackIgnoreMethods>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_method"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_method.description")))
+                                .binding(defaults.serverResourcePackIgnoreMethod,
+                                        () -> config.serverResourcePackIgnoreMethod,
+                                        newValue -> {
+                                            config.serverResourcePackIgnoreMethod = newValue;
+                                            TPSMeasurement.getInstance().reset();
+                                        })
+                                .controller(opt -> EnumControllerBuilder.create(opt)
+                                        .enumClass(FuchsModConfig.ServerResourcePackIgnoreMethods.class))
                                 .build())
                         .option(Option.<Long>createBuilder()
                                 .name(Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_delay"))
