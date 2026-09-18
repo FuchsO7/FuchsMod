@@ -1,6 +1,7 @@
 package de.fuchsmod.config;
 
 import com.google.gson.FieldNamingPolicy;
+import de.fuchsmod.config.categories.AdvancedCategory;
 import de.fuchsmod.config.categories.GeneralCategory;
 import de.fuchsmod.config.categories.PartyCommandsCategory;
 import de.fuchsmod.config.categories.PerformanceMeasurementCategory;
@@ -54,6 +55,7 @@ public class FuchsModConfigManager {
                 .category(GeneralCategory.create(defaults, config))
                 .category(PerformanceMeasurementCategory.create(defaults, config))
                 .category(PartyCommandsCategory.create(defaults, config))
+                .category(AdvancedCategory.create(defaults, config))
                 .save(FuchsModConfigManager::save)
         ).generateScreen(parent);
     }

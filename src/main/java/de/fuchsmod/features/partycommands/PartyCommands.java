@@ -8,6 +8,9 @@ import net.minecraft.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
 import static de.fuchsmod.FuchsMod.CLIENT;
@@ -31,7 +34,7 @@ public class PartyCommands {
                     .replaceAll("§.", "");
             onChatMessage(messageString);
         });
-        ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
+        ClientTickEvents.END_CLIENT_TICK.register((clientLevel) -> {
             ScheduledMessage scheduledMessage = scheduledMessages.peek();
             if (scheduledMessage == null)
                 return;
@@ -61,9 +64,9 @@ public class PartyCommands {
             scopes.add("public");
         if ((scopesInteger >> 1) % 2 == 1)
             scopes.add("party");
-        if ((scopesInteger >> 2) % 2 == 1 )
+        if ((scopesInteger >> 2) % 2 == 1)
             scopes.add("guild");
-        if ((scopesInteger >> 3) % 2 == 1 )
+        if ((scopesInteger >> 3) % 2 == 1)
             scopes.add("officer");
         return scopes;
     }
@@ -81,23 +84,30 @@ public class PartyCommands {
     public static void onChatMessage(String message) {
         if (!CONFIG.enablePartyCommands)
             return;
-        if (message.split(":").length < 2)
-            return;
-        String prefix = message.split(":")[0];
-        String content = message.substring(prefix.length() + 1).strip();
-        if (!content.startsWith("!"))
-            return;
-        String[] prefixSplit = prefix.split(" ");
-        String senderName = prefixSplit[prefixSplit.length - 1];
-        String scope = prefix.contains(">") ? prefixSplit[0].toLowerCase().strip() : "public";
-        String command = content.split(" ")[0];
-        String[] arguments = content.substring(command.length()).strip().split(" ");
+        for (String regex : CONFIG.partyCommandsPatterns) {
+            try {
+                Matcher matcher = Pattern.compile(regex).matcher(message);
+                if (!matcher.find())
+                    continue;
 
-        Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
-                command, scope, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
+                String scope = matcher.group(1).toLowerCase(Locale.ROOT);
+                if (!getScopes(15).contains(scope))
+                    scope = "public";
+                String senderName = matcher.group(2);
+                String command = matcher.group(3);
+                String[] arguments = message.substring(matcher.end()).strip().split(" ");
 
-        var partyCommand = commands.get(command);
-        if (partyCommand != null)
-            partyCommand.run(scope, senderName, arguments);
+                Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
+                        command, scope, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
+
+                PartyCommand partyCommand = commands.get(command);
+                if (partyCommand != null)
+                    partyCommand.run(scope, senderName, arguments);
+                return;
+            } catch (PatternSyntaxException exception) {
+                if (!message.contains("Invalid Regex"))
+                    Debug.sendDebugMessage("Invalid Regex %s: %s".formatted(regex, exception.getDescription()));
+            }
+        }
     }
 }

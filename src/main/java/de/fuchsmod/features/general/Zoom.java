@@ -26,7 +26,7 @@ public class Zoom {
                         KEYMAPPING_CATEGORY
                 ));
 
-        ClientTickEvents.END_LEVEL_TICK.register((clientLevel) -> {
+        ClientTickEvents.END_CLIENT_TICK.register((clientLevel) -> {
             if (!CLIENT.hasControlDown())
                 resetZoom();
             if (zoomKey.isDown())
