@@ -188,7 +188,9 @@ public class FuchsModConfig {
     public boolean enableGameEndTrigger = true;
 
     @SerialEntry
-    public List<String> gameEndTriggerPatterns = new ArrayList<>();
+    public List<String> gameEndTriggerPatterns = new ArrayList<>(List.of(
+            "\\s*Team Score: \\d+ \\(.\\+?\\)\\s*"
+    ));
 
     @SerialEntry
     public List<String> partyCommandsPatterns = new ArrayList<>(List.of(
