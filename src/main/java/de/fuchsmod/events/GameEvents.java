@@ -14,8 +14,10 @@ public class GameEvents {
 
     public static void register() {
         ChatEvents.MESSAGE.register(message -> {
+            if (!CONFIG.enableGameEndTrigger)
+                return;
             String messageString = message.content().getString().replaceAll("§.", "");
-            for (String regex : CONFIG.gameEndTriggerRegexes) {
+            for (String regex : CONFIG.gameEndTriggerPatterns) {
                 try {
                     if (messageString.matches(regex))
                         GAME_ENDED.invoker().onGameEnd();

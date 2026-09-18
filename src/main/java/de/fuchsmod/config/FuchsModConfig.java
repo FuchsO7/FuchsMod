@@ -185,5 +185,13 @@ public class FuchsModConfig {
 
     // Advanced
     @SerialEntry
-    public List<String> gameEndTriggerRegexes = new ArrayList<>();
+    public boolean enableGameEndTrigger = true;
+
+    @SerialEntry
+    public List<String> gameEndTriggerPatterns = new ArrayList<>();
+
+    @SerialEntry
+    public List<String> partyCommandsPatterns = new ArrayList<>(List.of(
+            "^([^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*([^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(!\\S*)"
+    ));
 }

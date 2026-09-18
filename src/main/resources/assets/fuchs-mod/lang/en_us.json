@@ -133,5 +133,9 @@
 
   "fuchsmod.config.advanced": "Advanced",
   "fuchsmod.config.advanced.game_end_trigger_regexes": "Game End Trigger Regexes",
-  "fuchsmod.config.advanced.game_end_trigger_regexes.description": "An on Game End Event is triggered when a chat message matches one of these regexes"
+  "fuchsmod.config.advanced.game_end_trigger_regexes.description": "An on Game End Event is triggered when a chat message matches one of these regexes.",
+  "fuchsmod.config.advanced.enable_game_end_trigger": "Enable Game End Event",
+  "fuchsmod.config.advanced.enable_game_end_trigger.description": "Allows to toggle the Game End Event in case it's ever needed",
+  "fuchsmod.config.advanced.partycommands_regexes": "Party Command Regex",
+  "fuchsmod.config.advanced.partycommands_regexes.description": "These patterns are used to determine the content of a partycommand using capture groups. Only the first matching pattern is used to execute a command.\nGroup 1: Scope\nGroup 2: Sender\nGroup 3: Command\nAnything after that: Arguments."
 }
