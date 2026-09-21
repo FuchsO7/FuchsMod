@@ -22,7 +22,7 @@ public class AbstractContainerScreenMixin extends Screen {
     @Unique
     private static final int DEFAULT_SPACING = 4;
     @Unique
-    private final EditBox expressionBox = new EditBox(this.font, Component.literal(""));
+    private final EditBox expressionBox = new EditBox(this.font, 150, 20, Component.literal(""));
 
     private AbstractContainerScreenMixin(Component title) {
         super(title);

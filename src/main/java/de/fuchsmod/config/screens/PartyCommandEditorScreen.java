@@ -77,7 +77,7 @@ public class PartyCommandEditorScreen extends Screen {
         PartyCommandRecord newSettings = getSettings();
         if (!newSettings.equals(this.option.pendingValue()))
             this.option.requestSet(getSettings());
-        minecraft.gui.setScreen(this.parent);
+        minecraft.setScreen(this.parent);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class PartyCommandEditorScreen extends Screen {
 
         LinearLayout triggerRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         triggerRow.addChild(this.triggerLabel);
-        this.triggerText = new EditBox(font, Component.literal(""));
+        this.triggerText = new EditBox(font, 150, 20, Component.literal(""));
         this.triggerText.setWidth(width / 2);
         this.triggerText.setMaxLength(255);
         this.triggerText.setValue(this.trigger);
@@ -101,7 +101,7 @@ public class PartyCommandEditorScreen extends Screen {
 
         LinearLayout commandRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         commandRow.addChild(this.commandLabel);
-        this.commandText = new EditBox(font, Component.literal(""));
+        this.commandText = new EditBox(font, 150, 20, Component.literal(""));
         this.commandText.setWidth(width / 2);
         this.commandText.setMaxLength(255);
         this.commandText.setValue(this.command);

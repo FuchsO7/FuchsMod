@@ -62,7 +62,7 @@ public class FuchsModConfigManager {
 
     public static void open() {
         client.execute(() -> {
-            client.gui.setScreen(createGui(client.gui.screen()));
+            client.setScreen(createGui(client.screen));
         });
     }
 }

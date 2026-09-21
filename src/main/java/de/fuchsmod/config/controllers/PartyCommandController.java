@@ -71,7 +71,7 @@ public class PartyCommandController implements Controller<PartyCommandRecord> {
         }
 
         public void openEditorScreen() {
-            client.gui.setScreen(new PartyCommandEditorScreen(client.gui.screen(), control.option()));
+            client.setScreen(new PartyCommandEditorScreen(client.screen, control.option()));
             playDownSound();
         }
     }

@@ -2,6 +2,7 @@ package de.fuchsmod.features.general;
 
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
@@ -60,15 +61,15 @@ public class PingMeasurement {
 
     private static TextColor getDiscretePingColor(long ping) {
         if (ping < 50L) {
-            return TextColor.DARK_GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN);
         } else if (ping < 150L) {
-            return TextColor.GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.GREEN);
         } else if (ping < 250L) {
-            return TextColor.YELLOW;
+            return TextColor.fromLegacyFormat(ChatFormatting.YELLOW);
         } else if (ping < 400L) {
-            return TextColor.RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.RED);
         } else {
-            return TextColor.DARK_RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_RED);
         }
     }
 
@@ -104,7 +105,7 @@ public class PingMeasurement {
         if (this.PingResults.size() >= 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
             return Component.literal("%d".formatted(this.averagePing)).withColor(getPingColor(this.averagePing));
         } else {
-            return Component.literal("???").withColor(TextColor.WHITE);
+            return Component.literal("???").withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE).getValue());
         }
     }
 }

@@ -29,12 +29,12 @@ public class ConfirmScreenMixin {
     protected void fuchsmod$addIgnoreButton(LinearLayout buttonLayout, CallbackInfo ci) {
         if ((Object) this instanceof ClientCommonPacketListenerImpl.PackConfirmScreen packConfirmScreen) {
             if (CONFIG.autoIgnoreServerResourcePacks) {
-                CLIENT.gui.setScreen(packConfirmScreen.parentScreen);
+                CLIENT.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
                 return;
             }
             this.ignoreButton = buttonLayout.addChild(Button.builder(this.ignoreButtonComponent, button -> {
-                CLIENT.gui.setScreen(packConfirmScreen.parentScreen);
+                CLIENT.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
             }).build());
         }

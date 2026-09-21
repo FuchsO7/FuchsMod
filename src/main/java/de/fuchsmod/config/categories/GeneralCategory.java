@@ -158,7 +158,7 @@ public class GeneralCategory {
                                 .name(Component.translatable("controls.keybinds"))
                                 .text(Component.literal(""))
                                 .action((screen, buttonOption) -> {
-                                    CLIENT.gui.setScreen(new KeyBindsScreen(screen, CLIENT.options));
+                                    CLIENT.setScreen(new KeyBindsScreen(screen, CLIENT.options));
                                 })
                                 .build())
                         .build())

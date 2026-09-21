@@ -2,6 +2,7 @@ package de.fuchsmod.features.general;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -36,15 +37,15 @@ public class FPSHud {
 
     private static TextColor getDiscreteFPSColor(int fps) {
         if (fps >= 60) {
-            return TextColor.DARK_GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN);
         } else if (fps >= 30) {
-            return TextColor.GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.GREEN);
         } else if (fps >= 20) {
-            return TextColor.YELLOW;
+            return TextColor.fromLegacyFormat(ChatFormatting.YELLOW);
         } else if (fps >= 10) {
-            return TextColor.RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.RED);
         } else {
-            return TextColor.DARK_RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_RED);
         }
     }
 

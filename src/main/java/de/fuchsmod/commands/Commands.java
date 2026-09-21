@@ -90,7 +90,7 @@ public class Commands {
     }
 
     private static int executeCalculatorCommand(CommandContext<FabricClientCommandSource> context) {
-        CLIENT.execute(() -> CLIENT.gui.setScreen(new CalculatorScreen(CLIENT.gui.screen())));
+        CLIENT.execute(() -> CLIENT.setScreen(new CalculatorScreen(CLIENT.screen)));
         CLIENT.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         return Command.SINGLE_SUCCESS;
     }

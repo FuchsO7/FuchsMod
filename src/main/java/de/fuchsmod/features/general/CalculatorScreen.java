@@ -21,7 +21,7 @@ public class CalculatorScreen extends Screen {
 
     private boolean showFunctions = CONFIG.showFunctionsOnCalculatorScreenOpen;
 
-    private final EditBox expressionBox = new EditBox(font, Component.literal(""));
+    private final EditBox expressionBox = new EditBox(font, 150, 20, Component.literal(""));
 
     public CalculatorScreen(Screen parent) {
         super(Component.literal("Calculator"));
@@ -30,7 +30,7 @@ public class CalculatorScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.gui.setScreen(this.parent);
+        minecraft.setScreen(this.parent);
     }
 
     @Override

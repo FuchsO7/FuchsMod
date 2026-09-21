@@ -3,6 +3,7 @@ package de.fuchsmod.features.general;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.common.ClientboundPingPacket;
@@ -102,15 +103,15 @@ public class TPSMeasurement {
 
     private static TextColor getDiscreteTPSColor(double tps) {
         if (tps > 19.0) {
-            return TextColor.DARK_GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN);
         } else if (tps > 17.5) {
-            return TextColor.GREEN;
+            return TextColor.fromLegacyFormat(ChatFormatting.GREEN);
         } else if (tps > 15.0) {
-            return TextColor.YELLOW;
+            return TextColor.fromLegacyFormat(ChatFormatting.YELLOW);
         } else if (tps > 10.0) {
-            return TextColor.RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.RED);
         } else {
-            return TextColor.DARK_RED;
+            return TextColor.fromLegacyFormat(ChatFormatting.DARK_RED);
         }
     }
 
@@ -150,7 +151,7 @@ public class TPSMeasurement {
         if (this.TPSResults.size() >= AVERAGE_SAMPLE_TIME_SECONDS) {
             return Component.literal("%.1f".formatted(this.averageTPS)).withColor(getTPSColor(this.averageTPS));
         } else {
-            return Component.literal("???").withColor(TextColor.WHITE);
+            return Component.literal("???").withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE).getValue());
         }
     }
 }
