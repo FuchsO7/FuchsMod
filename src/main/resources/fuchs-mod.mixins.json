@@ -9,8 +9,16 @@
     "requireAnnotations": true
   },
   "client": [
+    "AbstractContainerScreenMixin",
+    "CameraMixin",
+    "ChatComponentMixin",
     "ClientCommonPacketListenerImplMixin",
     "ClientPacketListenerMixin",
-    "DefaultTooltipPositionerMixin"
-    ]
+    "ConfirmScreenMixin",
+    "ConnectionMixin",
+    "CreativeModeInventoryScreenMixin",
+    "DefaultTooltipPositionerMixin",
+    "PlayerMixin",
+    "ServerReconfigScreenMixin"
+  ]
 }

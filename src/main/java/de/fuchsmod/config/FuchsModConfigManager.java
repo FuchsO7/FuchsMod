@@ -1,6 +1,11 @@
 package de.fuchsmod.config;
 
 import com.google.gson.FieldNamingPolicy;
+import de.fuchsmod.config.categories.AdvancedCategory;
+import de.fuchsmod.config.categories.GeneralCategory;
+import de.fuchsmod.config.categories.PartyCommandsCategory;
+import de.fuchsmod.config.categories.PerformanceMeasurementCategory;
+import de.fuchsmod.features.partycommands.PartyCommands;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
@@ -11,8 +16,10 @@ import net.minecraft.network.chat.Component;
 
 import java.nio.file.Path;
 
+import static de.fuchsmod.FuchsMod.LOGGER;
+
 public class FuchsModConfigManager {
-    public static final Minecraft client = Minecraft.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("fuchsmod.json5");
     protected static ConfigClassHandler<FuchsModConfig> HANDLER = ConfigClassHandler.createBuilder(FuchsModConfig.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
@@ -25,27 +32,37 @@ public class FuchsModConfigManager {
 
     public static void init() {
         HANDLER.load();
+        LOGGER.debug("Initialized Config Manager!");
     }
 
     public static FuchsModConfig getInstance() {
         return HANDLER.instance();
     }
 
+    public static FuchsModConfig initInstance() {
+        init();
+        return getInstance();
+    }
+
     public static void save() {
         HANDLER.save();
+        PartyCommands.loadCommands();
     }
 
     public static Screen createGui(Screen parent) {
         return YetAnotherConfigLib.create(HANDLER, (defaults, config, builder) -> builder
-                .title(Component.literal("Test Mod"))
-                .category(FuchsModConfig.create(defaults, config))
+                .title(Component.translatable("fuchsmod.config.title"))
+                .category(GeneralCategory.create(defaults, config))
+                .category(PerformanceMeasurementCategory.create(defaults, config))
+                .category(PartyCommandsCategory.create(defaults, config))
+                .category(AdvancedCategory.create(defaults, config))
                 .save(FuchsModConfigManager::save)
         ).generateScreen(parent);
     }
 
     public static void open() {
         client.execute(() -> {
-            client.setScreen(createGui(client.screen));
+            client.gui.setScreen(createGui(client.gui.screen()));
         });
     }
 }

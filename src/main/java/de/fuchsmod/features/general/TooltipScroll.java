@@ -1,0 +1,51 @@
+package de.fuchsmod.features.general;
+
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import org.joml.Vector2i;
+
+import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CONFIG;
+
+public class TooltipScroll {
+    private static final TooltipScroll INSTANCE = new TooltipScroll();
+
+    private int x = 0;
+    private int y = 0;
+
+    public static void init() {
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            TooltipScroll.getInstance().resetOffset();
+            if (!CONFIG.enableTooltipScroll || client.player == null)
+                return;
+            ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
+                if (!consumed) {
+                    getInstance().moveOffset((int) verticalAmount, client.hasShiftDown());
+                }
+                return consumed;
+            });
+        });
+        LOGGER.debug("Initialized Tooltip Scrolling!");
+    }
+
+    public static TooltipScroll getInstance() {
+        return INSTANCE;
+    }
+
+    public void moveOffset(int distance, boolean moveVertical) {
+        if (moveVertical) {
+            this.x += distance * CONFIG.scrollFactor * CONFIG.horizontalScrollDirection;
+        } else {
+            this.y += distance * CONFIG.scrollFactor * CONFIG.verticalScrollDirection;
+        }
+    }
+
+    public Vector2i getOffset() {
+        return new Vector2i(this.x, this.y);
+    }
+
+    public void resetOffset() {
+        this.x = 0;
+        this.y = 0;
+    }
+}

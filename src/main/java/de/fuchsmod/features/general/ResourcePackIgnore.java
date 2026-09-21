@@ -1,0 +1,83 @@
+package de.fuchsmod.features.general;
+
+import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.events.ClientPacketEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
+import net.minecraft.util.Util;
+
+import java.net.URI;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.UUID;
+
+import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
+import static de.fuchsmod.FuchsMod.LOGGER;
+import static de.fuchsmod.FuchsMod.CONFIG;
+
+public class ResourcePackIgnore {
+    private static UUID packID;
+    private static String url;
+    private static final Queue<ScheduledPacket> packetsToSend = new LinkedList<>();
+    private static Component scheduledMessage;
+    private static Connection connection;
+
+    public static void init() {
+        ClientPacketEvents.RESOURCE_PACK_PUSH_PACKET.register(packet -> {
+            packID = packet.id();
+            url = packet.url();
+        });
+        ClientPacketEvents.NEW_CONNECTION.register(newConnection -> {
+            connection = newConnection;
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            ScheduledPacket scheduledPacket = packetsToSend.peek();
+            if (scheduledPacket == null) {
+                if (client.player != null && scheduledMessage != null) {
+                    client.player.sendSystemMessage(scheduledMessage);
+                    scheduledMessage = null;
+                }
+                return;
+            }
+            if (scheduledPacket.time() < Util.getMillis()) {
+                Packet<?> packet = packetsToSend.poll().packet();
+                connection.send(packet);
+            }
+        });
+        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {
+            packetsToSend.clear();
+        });
+        LOGGER.debug("Initialized Server Resource Pack Ignore!");
+    }
+
+    public record ScheduledPacket (long time, Packet<?> packet) {
+    }
+
+    public static void imitateResourcePackDownload() {
+        schedulePackets();
+        if (CONFIG.sendServerResourcePackDownloadLink)
+            scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+                    .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
+                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
+    }
+
+    private static void schedulePackets() {
+        if (CONFIG.serverResourcePackIgnoreMethod == FuchsModConfig.ServerResourcePackIgnoreMethods.Silent)
+            return;
+        long time = Util.getMillis();
+        if (CONFIG.serverResourcePackIgnoreMethod == FuchsModConfig.ServerResourcePackIgnoreMethods.Decline) {
+            packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DECLINED)));
+        } else {
+            packetsToSend.offer(new ScheduledPacket(time, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.ACCEPTED)));
+            packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis / 2, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.DOWNLOADED)));
+            packetsToSend.offer(new ScheduledPacket(time + CONFIG.serverResourcePackIgnoreTimeMillis, new ServerboundResourcePackPacket(packID, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED)));
+        }
+        LOGGER.debug("Scheduled Serverbound Packets for Pack Download Imitation");
+    }
+}
