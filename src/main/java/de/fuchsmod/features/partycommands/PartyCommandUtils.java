@@ -1,5 +1,6 @@
 package de.fuchsmod.features.partycommands;
 
+import de.fuchsmod.commands.Debug;
 import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.PingMeasurement;
 import de.fuchsmod.features.general.TPSMeasurement;
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.function.TriFunction;
 import java.util.LinkedHashMap;
 
 import static de.fuchsmod.FuchsMod.CLIENT;
+import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class PartyCommandUtils {
     private static final TPSMeasurement tps = TPSMeasurement.getInstance();
@@ -67,12 +69,14 @@ public class PartyCommandUtils {
         }
     };
 
-    private static final String[] DREAMS = {"swap","oneblock","rush","ultimate","castles","voidless","armed","lucky"};
-    private static final long DREAM_ROTATION_TIME_SECONDS = 82800;
-    private static final long WEEK_IN_SECONDS = 604800;
-
-    public static TriFunction<String, String, String[], String> getDream = (_, _, _) ->
-            DREAMS[(int) (((System.currentTimeMillis() - DREAM_ROTATION_TIME_SECONDS) % (DREAMS.length * WEEK_IN_SECONDS)) / WEEK_IN_SECONDS)];
+    public static TriFunction<String, String, String[], String> getDream = (_, _, _) -> {
+        if (!CONFIG.partyCommandsBedwarsDreams.isEmpty())
+            return CONFIG.partyCommandsBedwarsDreams.get((int) (((System.currentTimeMillis() / 1000 - CONFIG.dreamRotationOffsetSeconds) % (CONFIG.partyCommandsBedwarsDreams.size() * CONFIG.dreamRotationTimeSeconds)) / CONFIG.dreamRotationTimeSeconds));
+        else {
+            Debug.sendDebugMessage("No Bedwars Dream Mode found.");
+            return "";
+        }
+    };
 
     private static String downtimeMessage;
     private static String downtimeScope;
