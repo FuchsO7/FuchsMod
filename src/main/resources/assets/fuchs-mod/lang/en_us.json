@@ -137,5 +137,12 @@
   "fuchsmod.config.advanced.enable_game_end_trigger": "Enable Game End Event",
   "fuchsmod.config.advanced.enable_game_end_trigger.description": "Allows to toggle the Game End Event in case it's ever needed",
   "fuchsmod.config.advanced.partycommands_regexes": "Party Command Regex",
-  "fuchsmod.config.advanced.partycommands_regexes.description": "These patterns are used to determine the content of a partycommand using capture groups. Only the first matching pattern is used to execute a command.\nGroup 1: Scope\nGroup 2: Sender\nGroup 3: Command\nAnything after that: Arguments."
+  "fuchsmod.config.advanced.partycommands_regexes.description": "These patterns are used to determine the content of a partycommand using capture groups. Only the first matching pattern is used to execute a command.\nGroup 1: Scope\nGroup 2: Sender\nGroup 3: Command\nAnything after that: Arguments.",
+  "fuchsmod.config.advanced.partycommand_bedwars_dreams_settings": "Party Commands Bedwars Dream Settings",
+  "fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time": "Rotation Time",
+  "fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time.description": "The time in seconds for each dream rotation. By default this is 604800, which is equal to 7 days.",
+  "fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset": "Offset Time",
+  "fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset.description": "The time in seconds to offset the dream rotation from Jan 1 1970. This defines when the first rotation started.",
+  "fuchsmod.config.advanced.partycommands_bedwars_dreams": "Party Commands Bedwars Dreams",
+  "fuchsmod.config.advanced.partycommands_bedwars_dreams.description": "These are the available dream game modes for the dream replacement function. The currently chosen dream is %1$s."
 }

@@ -196,4 +196,15 @@ public class FuchsModConfig {
     public List<String> partyCommandsPatterns = new ArrayList<>(List.of(
             "^([^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*([^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(!\\S*)"
     ));
+
+    @SerialEntry
+    public List<String> partyCommandsBedwarsDreams = new ArrayList<>(List.of(
+            "swap", "oneblock", "rush", "ultimate", "castles", "voidless", "armed", "lucky"
+    ));
+
+    @SerialEntry
+    public long dreamRotationTimeSeconds  = 604800L;
+
+    @SerialEntry
+    public long dreamRotationOffsetSeconds = 82800L;
 }
