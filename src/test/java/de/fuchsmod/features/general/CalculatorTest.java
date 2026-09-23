@@ -7,8 +7,8 @@ public class CalculatorTest {
 
     @Test
     void testSimpleOperations() throws Calculator.CalculatorException {
-        String[] expressions = {"1 + 2", "23.3 + 35.5", "4 * 8", "-3 / 6", "10 % 3"};
-        Double[] expectedResults = {3.0, 58.8, 32.0, -0.5, 1.0};
+        String[] expressions = {"1 + 2", "23.3 + 35.5", "4 * 8", "-3 / 6", "10 % 3", "pi", "2 * e"};
+        Double[] expectedResults = {3.0, 58.8, 32.0, -0.5, 1.0, Math.PI, 2 * Math.E};
 
         for (int i = 0; i < expressions.length; i++) {
             double expectedResult = expectedResults[i];
@@ -33,8 +33,8 @@ public class CalculatorTest {
 
     @Test
     void testFunctions() throws Calculator.CalculatorException {
-        String[] expressions = {"sqrt(4)", "abs(-3)", "ln(3)", "lg(100)", "log(0.25, 2)", "round(5.5)", "-(sqrt(16) * -3) / 2", "cos(1)", "asin(0.5)"};
-        Double[] expectedResults = {2.0, 3.0, Math.log(3), 2.0, -2.0, 6.0, 6.0, Math.cos(1), Math.asin(0.5)};
+        String[] expressions = {"sqrt(4)", "abs(-3)", "ln(3)", "lg(100)", "log(0.25, 2)", "round(5.5)", "-(sqrt(16) * -3) / 2", "cos(1)", "asin(0.5)", "fact(5)"};
+        Double[] expectedResults = {2.0, 3.0, Math.log(3), 2.0, -2.0, 6.0, 6.0, Math.cos(1), Math.asin(0.5), 120.0};
 
         for (int i = 0; i < expressions.length; i++) {
             double expectedResult = expectedResults[i];
@@ -46,7 +46,7 @@ public class CalculatorTest {
 
     @Test
     void testExceptions() throws Calculator.CalculatorException {
-        String[] expressions = {"1.1.1", "1 + ", "foo(1)", "(1 + 1", "(1) + 1)", "1 + * 1", "1 § 1", "1 / 0"};
+        String[] expressions = {"1.1.1", "1 + ", "foo(1)", "(1 + 1", "(1) + 1)", "1 + * 1", "1 § 1", "1 / 0", "fact(-1)"};
 
         for (String expression : expressions) {
             Assertions.assertThrows(Calculator.CalculatorException.class, () -> Calculator.calculateExpression(expression),
