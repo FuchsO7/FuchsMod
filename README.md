@@ -1,4 +1,4 @@
-# FuchsMod for 26.2
+# FuchsMod for 26.3
 
 This Minecraft mod is a clientside utility mod by Fuchs07 featuring random things which might be useful. 
 I made it while learning how to modify Minecraft with Fabric, probably. 
@@ -18,7 +18,7 @@ Open the config with `/fuchsmod config`
 
 ## Dependencies
 - Fabric API
-- YACL Yet Another Config Lib 3.9.4
+- YACL Yet Another Config Lib 3.9.7
 
 ## License
 
