@@ -59,9 +59,21 @@ public class Calculator {
         }
     }
 
+    private enum MathSupplier implements MathOperation {
+        E,
+        PI,
+        RANDOM;
+
+        @Override
+        public int getPriority() {
+            return 5;
+        }
+    }
+
     private enum MathFunction implements MathOperation {
         SQRT,
         ROUND,
+        FACT,
         ABS,
         SIGN,
         LN,
@@ -203,6 +215,10 @@ public class Calculator {
             Debug.sendDebugMessage("Found function %s".formatted(function), enableCalculatorCommandsDebug);
 
             try {
+                return MathSupplier.valueOf(function);
+            } catch (IllegalArgumentException _) {
+            }
+            try {
                 return MathFunction.valueOf(function);
             } catch (IllegalArgumentException _) {
             }
@@ -246,10 +262,25 @@ public class Calculator {
                     throw new CalculatorException("Division by 0");
                 yield a / b;
             }
-            case MOD -> a % b;
+            case MOD -> {
+                if (b == 0.0)
+                    throw new CalculatorException("Division by 0");
+                yield a % b;
+            }
             case POW -> Math.pow(a, b);
             default ->
                     throw new CalculatorException("Unknown Operator %s".formatted(operator));
+        };
+    }
+
+    private static double evaluateSupplier(MathSupplier supplier) throws CalculatorException {
+        Debug.sendDebugMessage("Evaluating supplier %s".formatted(supplier), enableCalculatorCommandsDebug);
+        return switch (supplier) {
+            case E -> Math.E;
+            case PI -> Math.PI;
+            case RANDOM -> Math.random();
+            default ->
+                    throw new CalculatorException("Unknown supplier %s".formatted(supplier));
         };
     }
 
@@ -258,6 +289,17 @@ public class Calculator {
         return switch (function) {
             case SQRT -> Math.sqrt(a);
             case ROUND -> Math.round(a);
+            case FACT -> {
+                if (a < 0.0)
+                    throw new CalculatorException("Factorial of negative value");
+                if (a != Math.rint(a))
+                    throw new CalculatorException("Factorial of non-integer");
+                double factorial = 1.0;
+                for (int i = 1; i <= a; i++) {
+                    factorial = factorial * i;
+                }
+                yield factorial;
+            }
             case ABS -> Math.abs(a);
             case SIGN -> Math.signum(a);
             case LN -> Math.log(a);
@@ -303,6 +345,11 @@ public class Calculator {
                     double a = results.pop();
                     result = evaluateOperation(a, b, operator);
                 }
+                Debug.sendDebugMessage("Pushing %s to result stack".formatted(result), enableCalculatorCommandsDebug);
+                results.push(result);
+            } else if (symbol instanceof MathSupplier supplier) {
+                Debug.sendDebugMessage("Found supplier %s".formatted(supplier), enableCalculatorCommandsDebug);
+                double result = evaluateSupplier(supplier);
                 Debug.sendDebugMessage("Pushing %s to result stack".formatted(result), enableCalculatorCommandsDebug);
                 results.push(result);
             } else if (symbol instanceof MathFunction function) {
