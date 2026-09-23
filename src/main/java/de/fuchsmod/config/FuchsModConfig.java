@@ -12,58 +12,6 @@ import java.util.List;
 public class FuchsModConfig {
     // General
     @SerialEntry
-    public boolean showTPSHud = false;
-
-    @SerialEntry
-    public boolean useContinuousColorsForTPSHud = false;
-
-    @SerialEntry
-    public double TPSHudXPos = 2.0;
-
-    @SerialEntry
-    public double TPSHudYPos = 2.0;
-
-    public enum TPSPacketTypes implements NameableEnum {
-        SetTime,
-        Ping;
-
-        @Override
-        public Component getDisplayName() {
-            return Component.literal(name());
-        }
-    }
-
-    @SerialEntry
-    public TPSPacketTypes packetTypeForTPSMeasurement = TPSPacketTypes.SetTime;
-
-    @SerialEntry
-    public boolean showFPSHud = false;
-
-    @SerialEntry
-    public boolean useContinuousColorsForFPSHud = false;
-
-    @SerialEntry
-    public double FPSHudXPos = 2.0;
-
-    @SerialEntry
-    public double FPSHudYPos = 5.0;
-
-    @SerialEntry
-    public boolean showPingHud = false;
-
-    @SerialEntry
-    public boolean useContinuousColorsForPingHud = false;
-
-    @SerialEntry
-    public double PingHudXPos = 2.0;
-
-    @SerialEntry
-    public double PingHudYPos = 8.0;
-
-    @SerialEntry
-    public boolean alwaysSendPingRequest = true;
-
-    @SerialEntry
     public boolean enableTooltipScroll = false;
 
     @SerialEntry
@@ -127,6 +75,59 @@ public class FuchsModConfig {
 
     @SerialEntry
     public boolean sendLastDeathLocationMessage = false;
+
+    // Performance Measurement
+    @SerialEntry
+    public boolean showTPSHud = false;
+
+    @SerialEntry
+    public boolean useContinuousColorsForTPSHud = false;
+
+    @SerialEntry
+    public double TPSHudXPos = 2.0;
+
+    @SerialEntry
+    public double TPSHudYPos = 2.0;
+
+    public enum TPSPacketTypes implements NameableEnum {
+        SetTime,
+        Ping;
+
+        @Override
+        public Component getDisplayName() {
+            return Component.literal(name());
+        }
+    }
+
+    @SerialEntry
+    public TPSPacketTypes packetTypeForTPSMeasurement = TPSPacketTypes.SetTime;
+
+    @SerialEntry
+    public boolean showFPSHud = false;
+
+    @SerialEntry
+    public boolean useContinuousColorsForFPSHud = false;
+
+    @SerialEntry
+    public double FPSHudXPos = 2.0;
+
+    @SerialEntry
+    public double FPSHudYPos = 5.0;
+
+    @SerialEntry
+    public boolean showPingHud = false;
+
+    @SerialEntry
+    public boolean useContinuousColorsForPingHud = false;
+
+    @SerialEntry
+    public double PingHudXPos = 2.0;
+
+    @SerialEntry
+    public double PingHudYPos = 8.0;
+
+    @SerialEntry
+    public boolean alwaysSendPingRequest = true;
 
     // PartyCommands
     @SerialEntry
