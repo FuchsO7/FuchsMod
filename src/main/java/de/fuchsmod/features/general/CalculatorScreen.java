@@ -55,7 +55,7 @@ public class CalculatorScreen extends Screen {
 
         String[] buttonLabels = showFunctions ? new String[]{
                 "C", "D", "<", ">", "sin", "asin", "7", "8", "9", "+", "cos", "acos", "4", "5", "6", "-", "tan", "atan",
-                "1", "2", "3", "*", "(", ")", "sign", "=", "0", ".", "/", "%", "^", "abs", "ln", "lg", "sqrt", "round", "log", ","
+                "1", "2", "3", "*", "(", ")", "e", "pi", "=", "0", ".", "/", "%", "^", "sqrt", "abs", "sign", "round", "random", "ln", "lg", "log", ","
         } : new String[]{
                 "C", "D", "<", ">", ",", "7", "8", "9", "+", "(", "4", "5", "6", "-", ")", "1", "2", "3", "*", "^", "=", "0", ".", "/", "%"
         };
@@ -80,10 +80,10 @@ public class CalculatorScreen extends Screen {
                 onPress = (_) -> expressionBox.moveCursor(-1, false);
             } else if (buttonLabel.equals(">")) {
                 onPress = (_) -> expressionBox.moveCursor(1, false);
-            } else if (buttonLabel.length() == 1) {
+            } else if (buttonLabel.length() == 1 || buttonLabel.equals("pi")) {
                 onPress = (button) -> addTextToExpressionBox(button.getMessage().getString());
             } else {
-                onPress = (button) -> addTextToExpressionBox(button.getMessage().getString() + "(");
+                onPress = (button) -> addTextToExpressionBox(button.getMessage().getString() + (buttonLabel.equals("random") ? "()" : "("));
                 buttonWidthScaling = 2;
             }
 
