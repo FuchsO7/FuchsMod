@@ -184,6 +184,13 @@ public class FuchsModConfig {
             new PartyCommandRecord(2, "!ma", "/play murder_assassins", "None")
     ));
 
+    // Command Whitelist
+    @SerialEntry
+    public boolean confirmEveryCommand = false;
+
+    @SerialEntry
+    public List<String> whitelistedCommandPatterns = new ArrayList<>();
+
     // Advanced
     @SerialEntry
     public boolean enableGameEndTrigger = true;
