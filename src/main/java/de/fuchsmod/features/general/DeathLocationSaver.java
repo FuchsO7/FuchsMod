@@ -1,7 +1,7 @@
 package de.fuchsmod.features.general;
 
 import de.fuchsmod.events.GameEvents;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
@@ -13,30 +13,27 @@ import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class DeathLocationSaver {
-    public static String dimension;
-    public static BlockPos blockPos;
 
     public static void init () {
-        GameEvents.NEW_DEATH_LOCATION.register((position) -> {
-            dimension = position.dimension().identifier().getPath();
-            blockPos = position.pos();
-            LOGGER.info("Saved Death Location %s".formatted(getLastDeathLocationString()));
+        GameEvents.NEW_DEATH_LOCATION.register((globalPos) -> {
+            LOGGER.info("Saved Death Location %s".formatted(getLastDeathLocationString(globalPos)));
             if (CONFIG.sendLastDeathLocationMessage && CLIENT.player != null)
-                CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted());
+                CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted(globalPos));
         });
         LOGGER.debug("initialized Death Location Saver!");
     }
 
-    public static Component getLastDeathLocationFormatted() {
+    public static Component getLastDeathLocationFormatted(GlobalPos globalPos) {
         return FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.features.last_death_position.message"))
                 .withStyle(Style.EMPTY
-                        .withClickEvent(new ClickEvent.CopyToClipboard(getLastDeathLocationString()))
-                        .withHoverEvent(new HoverEvent.ShowText(Component.literal(getLastDeathLocationString()))));
+                        .withClickEvent(new ClickEvent.CopyToClipboard(getLastDeathLocationString(globalPos)))
+                        .withHoverEvent(new HoverEvent.ShowText(Component.literal(getLastDeathLocationString(globalPos)))));
     }
 
-    public static String getLastDeathLocationString() {
+    public static String getLastDeathLocationString(GlobalPos globalPos) {
         return String.format("x: %d, y: %d, z: %d, dimension: %s",
-                blockPos.getX(), blockPos.getY(), blockPos.getZ(), dimension);
+                globalPos.pos().getX(), globalPos.pos().getY(), globalPos.pos().getZ(),
+                globalPos.dimension().identifier().getPath());
     }
 }
