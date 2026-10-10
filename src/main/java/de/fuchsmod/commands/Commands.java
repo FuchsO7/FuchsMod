@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
@@ -39,6 +40,8 @@ public class Commands {
                         .suggests(new FolderOpener.FolderSuggestionProvider())
                         .executes(Commands::executeOpenFolderCommand))
                     .executes(Commands::executeOpenFolderCommand))
+                .then(ClientCommands.literal("lastDeathLocation")
+                    .executes(Commands::executeGetLastDeathLocationCommand))
                 .then(ClientCommands.literal("debug")
                     .then(ClientCommands.literal("SetTimePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
@@ -118,6 +121,16 @@ public class Commands {
             folder = "";
         }
         FolderOpener.openFolder(folder);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeGetLastDeathLocationCommand(CommandContext<FabricClientCommandSource> context) {
+        if (CLIENT.player != null) {
+            if (CLIENT.player.getLastDeathLocation().isPresent())
+                CLIENT.player.sendSystemMessage(DeathLocationSaver.getLastDeathLocationFormatted(CLIENT.player.getLastDeathLocation().get()));
+            else
+                CLIENT.player.sendSystemMessage(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append(Component.translatable("fuchsmod.features.last_death_position.not_found")));
+        }
         return Command.SINGLE_SUCCESS;
     }
 
