@@ -42,7 +42,6 @@ public class FuchsMod implements ClientModInitializer {
 		FPSHud.init();
 		PingHud.init();
 		TooltipScroll.init();
-		Fullbright.init();
 		Zoom.init();
 		PartyCommandUtils.init();
 		PartyCommands.init();
