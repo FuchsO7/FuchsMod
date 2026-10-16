@@ -27,7 +27,7 @@ public class FuchsModConfig {
     public boolean enableCustomGamma = false;
 
     @SerialEntry
-    public double customGamma = 1.0;
+    public float customGamma = 1.0f;
 
     @SerialEntry
     public boolean enableZoom = false;
