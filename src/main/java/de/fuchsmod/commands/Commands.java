@@ -42,6 +42,8 @@ public class Commands {
                     .executes(Commands::executeOpenFolderCommand))
                 .then(ClientCommands.literal("lastDeathLocation")
                     .executes(Commands::executeGetLastDeathLocationCommand))
+                .then(ClientCommands.literal("resourcePackLink")
+                    .executes(Commands::executeGetServerResourcePackLinkCommand))
                 .then(ClientCommands.literal("debug")
                     .then(ClientCommands.literal("SetTimePacketListener")
                         .then(ClientCommands.argument("enable", BoolArgumentType.bool())
@@ -131,6 +133,11 @@ public class Commands {
             else
                 CLIENT.player.sendSystemMessage(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append(Component.translatable("fuchsmod.features.last_death_position.not_found")));
         }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeGetServerResourcePackLinkCommand(CommandContext<FabricClientCommandSource> context) {
+        ResourcePackIgnore.sendResourcePackLink();
         return Command.SINGLE_SUCCESS;
     }
 
