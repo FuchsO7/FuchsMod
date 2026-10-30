@@ -1,7 +1,6 @@
 package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.features.general.Fullbright;
 import de.fuchsmod.features.general.TPSMeasurement;
 import de.fuchsmod.features.general.TooltipScroll;
 import dev.isxander.yacl3.api.*;
@@ -76,13 +75,11 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.fullbright.enable.description")))
                                 .binding(defaults.enableCustomGamma,
                                         () -> config.enableCustomGamma,
-                                        newValue -> {
-                                            config.enableCustomGamma = newValue;
-                                            Fullbright.setGamma();})
+                                        newValue -> config.enableCustomGamma = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
-                        .option(Option.<Double>createBuilder()
+                        .option(Option.<Float>createBuilder()
                                 .name(Component.translatable("fuchsmod.config.general.brightness"))
                                 .description(OptionDescription.of(
                                         Component.translatable("fuchsmod.config.general.brightness.description")))
@@ -90,11 +87,10 @@ public class GeneralCategory {
                                         () -> config.customGamma,
                                         newValue -> {
                                             config.customGamma = newValue;
-                                            Fullbright.setGamma();
                                         })
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 15.0)
-                                        .step(0.1)
+                                .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                        .range(0.0f, 15.0f)
+                                        .step(0.1f)
                                         .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
                                 .build())
                         .build())
@@ -106,9 +102,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.zoom.enable.description")))
                                 .binding(defaults.enableZoom,
                                         () -> config.enableZoom,
-                                        newValue -> {
-                                            config.enableZoom = newValue;
-                                            Fullbright.setGamma();})
+                                        newValue -> config.enableZoom = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
@@ -118,9 +112,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.smooth_camera.description")))
                                 .binding(defaults.smoothCameraOnZoom,
                                         () -> config.smoothCameraOnZoom,
-                                        newValue -> {
-                                            config.smoothCameraOnZoom = newValue;
-                                            Fullbright.setGamma();})
+                                        newValue -> config.smoothCameraOnZoom = newValue)
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
@@ -130,10 +122,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.zoom_factor.description")))
                                 .binding(defaults.zoomFactor,
                                         () -> config.zoomFactor,
-                                        newValue -> {
-                                            config.zoomFactor = newValue;
-                                            Fullbright.setGamma();
-                                        })
+                                        newValue -> config.zoomFactor = newValue)
                                 .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                         .range(0.0, 2.0)
                                         .step(0.01)
@@ -145,10 +134,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.immediate_zoom_factor.description")))
                                 .binding(defaults.immediateZoomFactor,
                                         () -> config.immediateZoomFactor,
-                                        newValue -> {
-                                            config.immediateZoomFactor = newValue;
-                                            Fullbright.setGamma();
-                                        })
+                                        newValue -> config.immediateZoomFactor = newValue)
                                 .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                         .range(1.0f, 32.0f)
                                         .step(1f)

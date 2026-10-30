@@ -61,10 +61,16 @@ public class ResourcePackIgnore {
 
     public static void imitateResourcePackDownload() {
         schedulePackets();
+        sendResourcePackLink();
+    }
+
+    public static void sendResourcePackLink() {
+        if (url == null)
+            return;
         if (CONFIG.sendServerResourcePackDownloadLink)
             scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                     .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
-                            .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
+                    .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
     }
 
     private static void schedulePackets() {
