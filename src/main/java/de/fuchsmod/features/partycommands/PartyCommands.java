@@ -4,6 +4,7 @@ import de.fuchsmod.commands.Debug;
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.events.ChatEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,24 +35,25 @@ public class PartyCommands {
                     .replaceAll("§.", "");
             onChatMessage(messageString);
         });
-        ClientTickEvents.END_CLIENT_TICK.register((clientLevel) -> {
-            ScheduledMessage scheduledMessage = scheduledMessages.peek();
-            if (scheduledMessage == null)
-                return;
-            String message = StringUtils.normalizeSpace(scheduledMessage.message());
-            if (CLIENT.player != null && scheduledMessage.time < Util.getMillis() && lastMessageSentMillis + CONFIG.commandDelay < Util.getMillis()) {
-                if (message.startsWith("/"))
-                    CLIENT.player.connection.sendCommand(message.substring(1));
-                else
-                    CLIENT.player.connection.sendChat(message);
-                scheduledMessages.poll();
-                lastMessageSentMillis = Util.getMillis();
-            }
-        });
+        ClientTickEvents.END_CLIENT_TICK.register(_ -> handleScheduledMessages());
         LOGGER.debug("Initialized Party Commands!");
     }
 
-    public static void sendChatMessage(String message) {
+    public static void handleScheduledMessages() {
+        if (scheduledMessages.isEmpty())
+            return;
+        ScheduledMessage scheduledMessage = scheduledMessages.peek();
+        if (CLIENT.player != null && scheduledMessage.time() < Util.getMillis() && lastMessageSentMillis + CONFIG.commandDelay < Util.getMillis()) {
+            String message = StringUtils.normalizeSpace(scheduledMessage.message());
+            ChatScreen chatScreen = new ChatScreen("", false);
+            chatScreen.init(0, 0); // For compatibility with other mods which mess with chat screens
+            chatScreen.handleChatInput(message, false);
+            scheduledMessages.poll();
+            lastMessageSentMillis = Util.getMillis();
+        }
+    }
+
+    public static void scheduleChatMessage(String message) {
         if (message.isEmpty())
             return;
         Debug.sendDebugMessage("Scheduling Message to send in %s ms: %s".formatted(CONFIG.commandDelay, message), enablePartyCommandsDebug);

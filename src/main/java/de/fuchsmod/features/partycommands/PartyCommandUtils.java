@@ -41,7 +41,7 @@ public class PartyCommandUtils {
 
         GameEvents.GAME_ENDED.register(() -> {
             if (downtimeMessage != null) {
-                PartyCommands.sendChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
+                PartyCommands.scheduleChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
                 downtimeMessage = null;
             }
         });

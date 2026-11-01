@@ -29,6 +29,6 @@ public class PartyCommand {
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);
         if (replacementFunction != null)
             messageToSend = messageToSend.replace("{function}", replacementFunction.apply(scope, senderName, arguments));
-        PartyCommands.sendChatMessage(messageToSend);
+        PartyCommands.scheduleChatMessage(messageToSend);
     }
 }
