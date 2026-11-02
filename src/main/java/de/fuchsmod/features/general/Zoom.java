@@ -12,7 +12,7 @@ import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class Zoom {
-    private static double scrolls = 1;
+    private static double dynamicZoomFactor = 1.0;
     public static float fovModifier = 1.0f;
     private static KeyMapping zoomKey;
 
@@ -21,31 +21,30 @@ public class Zoom {
                 new KeyMapping(
                         "key.fuchsmod.zoom",
                         InputConstants.Type.KEYBOARD,
-                        InputConstants.KEY_C,
+                        InputConstants.UNKNOWN.getValue(),
                         KEYMAPPING_CATEGORY
                 ));
 
         ClientTickEvents.END_CLIENT_TICK.register((clientLevel) -> {
-            if (!CLIENT.hasControlDown())
-                resetZoom();
             if (zoomKey.isDown())
-                setZoom(CONFIG.immediateZoomFactor);
+                setZoom((float) (dynamicZoomFactor * dynamicZoomFactor) * CONFIG.immediateZoomFactor);
+            else
+                resetZoom();
         });
 
         ClientHotbarScrollEvents.ALLOW.register((inventory, currentSlot, newSlot, xOffset, yOffset) -> {
-            if (!CLIENT.hasControlDown() || zoomKey.isDown() || !CONFIG.enableZoom)
+            if (!zoomKey.isDown() || !CONFIG.enableZoom)
                 return true;
-            onMouseScroll(yOffset);
+            updateDynamicZoomFactor(yOffset);
             return false;
         });
         LOGGER.debug("Initialized Zoom!");
     }
 
-    public static void onMouseScroll(double direction) {
-        scrolls += CONFIG.zoomFactor * direction;
-        if (scrolls < 1.0)
-            scrolls = 1.0;
-        else setZoom((float) (scrolls * scrolls));
+    public static void updateDynamicZoomFactor(double direction) {
+        dynamicZoomFactor += CONFIG.dynamicZoomFactor * direction;
+        if (dynamicZoomFactor < 1.0)
+            dynamicZoomFactor = 1.0;
     }
 
     public static void setZoom(float factor) {
@@ -57,7 +56,7 @@ public class Zoom {
     public static void resetZoom() {
         if (CONFIG.smoothCameraOnZoom)
             CLIENT.options.smoothCamera = false;
-        scrolls = 1.0;
+        dynamicZoomFactor = 1.0;
         fovModifier = 1.0f;
     }
 }

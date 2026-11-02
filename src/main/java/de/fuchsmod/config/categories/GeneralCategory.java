@@ -116,18 +116,6 @@ public class GeneralCategory {
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
                                 .build())
-                        .option(Option.<Double>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.zoom_factor"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.zoom_factor.description")))
-                                .binding(defaults.zoomFactor,
-                                        () -> config.zoomFactor,
-                                        newValue -> config.zoomFactor = newValue)
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
-                                        .range(0.0, 2.0)
-                                        .step(0.01)
-                                        .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
-                                .build())
                         .option(Option.<Float>createBuilder()
                                 .name(Component.translatable("fuchsmod.config.general.immediate_zoom_factor"))
                                 .description(OptionDescription.of(
@@ -139,6 +127,18 @@ public class GeneralCategory {
                                         .range(1.0f, 32.0f)
                                         .step(1f)
                                         .formatValue(value -> Component.literal("%.0fx".formatted(value))))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.zoom_factor"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.zoom_factor.description")))
+                                .binding(defaults.dynamicZoomFactor,
+                                        () -> config.dynamicZoomFactor,
+                                        newValue -> config.dynamicZoomFactor = newValue)
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.0, 2.0)
+                                        .step(0.01)
+                                        .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
                                 .build())
                         .option(ButtonOption.createBuilder()
                                 .name(Component.translatable("controls.keybinds"))

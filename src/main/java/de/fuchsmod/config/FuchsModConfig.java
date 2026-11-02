@@ -36,10 +36,10 @@ public class FuchsModConfig {
     public boolean smoothCameraOnZoom = false;
 
     @SerialEntry
-    public double zoomFactor = 0.2;
+    public float immediateZoomFactor = 4.0f;
 
     @SerialEntry
-    public float immediateZoomFactor = 4.0f;
+    public double dynamicZoomFactor = 0.2;
 
     @SerialEntry
     public boolean autoIgnoreServerResourcePacks = false;
