@@ -9,6 +9,9 @@ import dev.isxander.yacl3.api.controller.LongFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.network.chat.Component;
 
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 public class AdvancedCategory {
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
@@ -45,12 +48,23 @@ public class AdvancedCategory {
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())
+                .group(ListOption.<String>createBuilder()
+                        .name(Component.translatable("fuchsmod.config.advanced.partycommands_custom_scopes"))
+                        .description(OptionDescription.of(
+                                Component.translatable("fuchsmod.config.advanced.partycommands_custom_scopes.description")))
+                        .binding(defaults.partyCommandsCustomScopes,
+                                () -> config.partyCommandsCustomScopes,
+                                newValue -> config.partyCommandsCustomScopes = newValue.stream().map(element -> element.toLowerCase(Locale.ROOT)).toList())
+                        .controller(StringControllerBuilder::create)
+                        .initial("")
+                        .insertEntriesAtEnd(true)
+                        .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings"))
+                        .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings"))
                         .option(Option.<Long>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time"))
+                                .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time"))
                                 .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time.description")))
+                                        Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time.description")))
                                 .binding(defaults.dreamRotationTimeSeconds,
                                         () -> config.dreamRotationTimeSeconds,
                                         newValue -> {
@@ -60,9 +74,9 @@ public class AdvancedCategory {
                                 .controller(LongFieldControllerBuilder::create)
                                 .build())
                         .option(Option.<Long>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset"))
+                                .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.offset"))
                                 .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset.description")))
+                                        Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.offset.description")))
                                 .binding(defaults.dreamRotationOffsetSeconds,
                                         () -> config.dreamRotationOffsetSeconds,
                                         newValue -> {

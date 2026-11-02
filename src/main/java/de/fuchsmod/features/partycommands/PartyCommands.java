@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
 import static de.fuchsmod.FuchsMod.CLIENT;
@@ -70,6 +69,8 @@ public class PartyCommands {
             scopes.add("guild");
         if ((scopesInteger >> 3) % 2 == 1)
             scopes.add("officer");
+        if ((scopesInteger >> 4) % 2 == 1)
+            scopes.add("custom");
         return scopes;
     }
 
@@ -92,11 +93,13 @@ public class PartyCommands {
                 if (!matcher.find())
                     continue;
 
-                String scope = matcher.group(1).toLowerCase(Locale.ROOT);
-                if (!getScopes(15).contains(scope))
+                String scope = matcher.group("scope").toLowerCase(Locale.ROOT);
+                if (CONFIG.partyCommandsCustomScopes.contains(scope))
+                    scope = "custom";
+                else if (!getScopes(15).contains(scope))
                     scope = "public";
-                String senderName = matcher.group(2);
-                String command = matcher.group(3);
+                String senderName = matcher.group("sender");
+                String command = matcher.group("command");
                 String[] arguments = message.substring(matcher.end()).strip().split(" ");
 
                 Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
@@ -106,9 +109,9 @@ public class PartyCommands {
                 if (partyCommand != null)
                     partyCommand.run(scope, senderName, arguments);
                 return;
-            } catch (PatternSyntaxException exception) {
+            } catch (IllegalArgumentException exception) {
                 if (!message.contains("Invalid Regex"))
-                    Debug.sendDebugMessage("Invalid Regex %s: %s".formatted(regex, exception.getDescription()));
+                    Debug.sendDebugMessage("Invalid Regex %s: %s".formatted(regex, exception.getMessage()));
             }
         }
     }

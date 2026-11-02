@@ -18,6 +18,7 @@ public class PartyCommandEditorScreen extends Screen {
     private boolean partyScope = false;
     private boolean guildScope = false;
     private boolean officerScope = false;
+    private boolean customScope = false;
     private final String trigger;
     private final String command;
     private String replacementFunction;
@@ -38,6 +39,7 @@ public class PartyCommandEditorScreen extends Screen {
     private CycleButton<Boolean> partyScopeButton;
     private CycleButton<Boolean> guildScopeButton;
     private CycleButton<Boolean> officerScopeButton;
+    private CycleButton<Boolean> customScopeButton;
     private CycleButton<String> replacementFunctionButton;
 
     public PartyCommandEditorScreen(Screen parent, Option<PartyCommandRecord> option) {
@@ -53,6 +55,8 @@ public class PartyCommandEditorScreen extends Screen {
             this.guildScope = true;
         if ((value.scopes() >> 3) % 2 == 1)
             this.officerScope = true;
+        if ((value.scopes() >> 4) % 2 == 1)
+            this.customScope = true;
         this.trigger = value.trigger();
         this.command = value.command();
         this.replacementFunction = value.replacementFunction();
@@ -68,6 +72,8 @@ public class PartyCommandEditorScreen extends Screen {
             scopes += 4;
         if (this.officerScope)
             scopes += 8;
+        if (this.customScope)
+            scopes += 16;
 
         return new PartyCommandRecord(scopes, this.triggerText.getValue(), this.commandText.getValue(), this.replacementFunction);
     }
@@ -133,6 +139,11 @@ public class PartyCommandEditorScreen extends Screen {
                 (button, value) -> this.officerScope = value);
         this.officerScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.officerScopeButton);
+        this.customScopeButton = CycleButton.onOffBuilder(this.customScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.custom"),
+                (button, value) -> this.customScope = value);
+        this.customScopeButton.setWidth(width / 2);
+        scopesColumn.addChild(this.customScopeButton);
 
         LinearLayout specialFunctionRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         this.replacementFunctionButton = CycleButton.builder(Component::literal, this.replacementFunction)

@@ -202,8 +202,11 @@ public class FuchsModConfig {
 
     @SerialEntry
     public List<String> partyCommandsPatterns = new ArrayList<>(List.of(
-            "^([^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*([^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(!\\S*)"
+            "^(?<scope>[^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*(?<sender>[^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(?<command>!\\S*)"
     ));
+
+    @SerialEntry
+    public List<String> partyCommandsCustomScopes = new ArrayList<>();
 
     @SerialEntry
     public List<String> partyCommandsBedwarsDreams = new ArrayList<>(List.of(
