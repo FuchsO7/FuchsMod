@@ -13,7 +13,7 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class Zoom {
     private static double dynamicZoomFactor = 1.0;
-    public static float fovModifier = 1.0f;
+    private static float zoomModifier = 1.0f;
     private static KeyMapping zoomKey;
 
     public static void init() {
@@ -50,13 +50,17 @@ public class Zoom {
     public static void setZoom(float factor) {
         if (CONFIG.smoothCameraOnZoom)
             CLIENT.options.smoothCamera = factor > 1.0f;
-        fovModifier = 1.0f / factor;
+        zoomModifier = 1.0f / factor;
     }
 
     public static void resetZoom() {
         if (CONFIG.smoothCameraOnZoom)
             CLIENT.options.smoothCamera = false;
         dynamicZoomFactor = 1.0;
-        fovModifier = 1.0f;
+        zoomModifier = 1.0f;
+    }
+
+    public static float getZoomModifier() {
+        return zoomModifier;
     }
 }
