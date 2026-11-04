@@ -1,12 +1,13 @@
 package de.fuchsmod.config.categories;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.controllers.FormattableStringControllerBuilder;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.ListOption;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
-import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.network.chat.Component;
 
 public class CommandWhitelistCategory {
@@ -30,7 +31,8 @@ public class CommandWhitelistCategory {
                         .binding(defaults.whitelistedCommandPatterns,
                                 () -> config.whitelistedCommandPatterns,
                                 newValue -> config.whitelistedCommandPatterns = newValue)
-                        .controller(StringControllerBuilder::create)
+                        .controller(opt -> FormattableStringControllerBuilder.create(opt)
+                                .validateValue(FuchsMod::checkIfRegexIsValid))
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())

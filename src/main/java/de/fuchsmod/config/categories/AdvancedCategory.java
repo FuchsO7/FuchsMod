@@ -1,6 +1,8 @@
 package de.fuchsmod.config.categories;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.controllers.FormattableStringControllerBuilder;
 import de.fuchsmod.features.general.TooltipScroll;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import dev.isxander.yacl3.api.*;
@@ -30,7 +32,8 @@ public class AdvancedCategory {
                         .binding(defaults.gameEndTriggerPatterns,
                                 () -> config.gameEndTriggerPatterns,
                                 newValue -> config.gameEndTriggerPatterns = newValue)
-                        .controller(StringControllerBuilder::create)
+                        .controller(opt -> FormattableStringControllerBuilder.create(opt)
+                                .validateValue(FuchsMod::checkIfRegexIsValid))
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())
@@ -41,16 +44,28 @@ public class AdvancedCategory {
                         .binding(defaults.partyCommandsPatterns,
                                 () -> config.partyCommandsPatterns,
                                 newValue -> config.partyCommandsPatterns = newValue)
+                        .controller(opt -> FormattableStringControllerBuilder.create(opt)
+                                .validateValue(value -> FuchsMod.checkIfRegexIsValid(value, "scope", "sender", "command")))
+                        .initial("")
+                        .insertEntriesAtEnd(true)
+                        .build())
+                .group(ListOption.<String>createBuilder()
+                        .name(Component.translatable("fuchsmod.config.advanced.partycommands_custom_scopes"))
+                        .description(OptionDescription.of(
+                                Component.translatable("fuchsmod.config.advanced.partycommands_custom_scopes.description")))
+                        .binding(defaults.partyCommandsCustomScopes,
+                                () -> config.partyCommandsCustomScopes,
+                                newValue -> config.partyCommandsCustomScopes = newValue)
                         .controller(StringControllerBuilder::create)
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())
                 .group(OptionGroup.createBuilder()
-                        .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings"))
+                        .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings"))
                         .option(Option.<Long>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time"))
+                                .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time"))
                                 .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.rotation_time.description")))
+                                        Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time.description")))
                                 .binding(defaults.dreamRotationTimeSeconds,
                                         () -> config.dreamRotationTimeSeconds,
                                         newValue -> {
@@ -60,9 +75,9 @@ public class AdvancedCategory {
                                 .controller(LongFieldControllerBuilder::create)
                                 .build())
                         .option(Option.<Long>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset"))
+                                .name(Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.offset"))
                                 .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.advanced.partycommand_bedwars_dreams_settings.offset.description")))
+                                        Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.offset.description")))
                                 .binding(defaults.dreamRotationOffsetSeconds,
                                         () -> config.dreamRotationOffsetSeconds,
                                         newValue -> {

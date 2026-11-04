@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 
-import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
 import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
@@ -24,7 +23,7 @@ public class DeathLocationSaver {
     }
 
     public static Component getLastDeathLocationFormatted(GlobalPos globalPos) {
-        return FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+        return Component.empty()
                 .append(Component.translatable("fuchsmod.features.last_death_position.message"))
                 .withStyle(Style.EMPTY
                         .withClickEvent(new ClickEvent.CopyToClipboard(getLastDeathLocationString(globalPos)))

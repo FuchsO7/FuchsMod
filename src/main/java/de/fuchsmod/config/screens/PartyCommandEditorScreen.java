@@ -2,6 +2,7 @@ package de.fuchsmod.config.screens;
 
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
+import de.fuchsmod.features.partycommands.Scope;
 import dev.isxander.yacl3.api.Option;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -18,6 +19,7 @@ public class PartyCommandEditorScreen extends Screen {
     private boolean partyScope = false;
     private boolean guildScope = false;
     private boolean officerScope = false;
+    private boolean customScope = false;
     private final String trigger;
     private final String command;
     private String replacementFunction;
@@ -38,6 +40,7 @@ public class PartyCommandEditorScreen extends Screen {
     private CycleButton<Boolean> partyScopeButton;
     private CycleButton<Boolean> guildScopeButton;
     private CycleButton<Boolean> officerScopeButton;
+    private CycleButton<Boolean> customScopeButton;
     private CycleButton<String> replacementFunctionButton;
 
     public PartyCommandEditorScreen(Screen parent, Option<PartyCommandRecord> option) {
@@ -53,6 +56,8 @@ public class PartyCommandEditorScreen extends Screen {
             this.guildScope = true;
         if ((value.scopes() >> 3) % 2 == 1)
             this.officerScope = true;
+        if ((value.scopes() >> 4) % 2 == 1)
+            this.customScope = true;
         this.trigger = value.trigger();
         this.command = value.command();
         this.replacementFunction = value.replacementFunction();
@@ -61,13 +66,15 @@ public class PartyCommandEditorScreen extends Screen {
     public PartyCommandRecord getSettings() {
         int scopes = 0;
         if (this.publicScope)
-            scopes += 1;
+            scopes += Scope.PUBLIC.getConfigValue();
         if (this.partyScope)
-            scopes += 2;
+            scopes += Scope.PARTY.getConfigValue();
         if (this.guildScope)
-            scopes += 4;
+            scopes += Scope.GUILD.getConfigValue();
         if (this.officerScope)
-            scopes += 8;
+            scopes += Scope.OFFICER.getConfigValue();
+        if (this.customScope)
+            scopes += Scope.CUSTOM.getConfigValue();
 
         return new PartyCommandRecord(scopes, this.triggerText.getValue(), this.commandText.getValue(), this.replacementFunction);
     }
@@ -133,6 +140,11 @@ public class PartyCommandEditorScreen extends Screen {
                 (button, value) -> this.officerScope = value);
         this.officerScopeButton.setWidth(width / 2);
         scopesColumn.addChild(this.officerScopeButton);
+        this.customScopeButton = CycleButton.onOffBuilder(this.customScope).create(
+                Component.translatable("fuchsmod.config.partycommands.editor.scopes.custom"),
+                (button, value) -> this.customScope = value);
+        this.customScopeButton.setWidth(width / 2);
+        scopesColumn.addChild(this.customScopeButton);
 
         LinearLayout specialFunctionRow = content.addChild(LinearLayout.horizontal().spacing(DEFAULT_SPACING));
         this.replacementFunctionButton = CycleButton.builder(Component::literal, this.replacementFunction)

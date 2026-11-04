@@ -1,4 +1,4 @@
-package de.fuchsmod.features.general;
+package de.fuchsmod.features.calculator;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -68,7 +68,7 @@ public class CalculatorScreen extends Screen {
                     try {
                         double result = Calculator.calculateExpression(expressionBox.getValue());
                         expressionBox.setValue(Calculator.roundResult(result));
-                    } catch (Calculator.CalculatorException e) {
+                    } catch (CalculatorException e) {
                         expressionBox.setValue(e.getMessage());
                     }
                 };

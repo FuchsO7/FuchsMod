@@ -1,5 +1,6 @@
 package de.fuchsmod.features.general;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
@@ -17,7 +18,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
-import static de.fuchsmod.FuchsMod.FUCHSMOD_CHAT_MESSAGE_PREFIX;
 import static de.fuchsmod.FuchsMod.LOGGER;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
@@ -39,8 +39,8 @@ public class ResourcePackIgnore {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ScheduledPacket scheduledPacket = packetsToSend.peek();
             if (scheduledPacket == null) {
-                if (client.player != null && scheduledMessage != null) {
-                    client.player.sendSystemMessage(scheduledMessage);
+                if (scheduledMessage != null) {
+                    FuchsMod.sendClientMessage(scheduledMessage);
                     scheduledMessage = null;
                 }
                 return;
@@ -68,7 +68,7 @@ public class ResourcePackIgnore {
         if (url == null)
             return;
         if (CONFIG.sendServerResourcePackDownloadLink)
-            scheduledMessage = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+            scheduledMessage = Component.empty()
                     .append(Component.translatable("fuchsmod.features.resource_pack_ignore.pack_url", url))
                     .withStyle(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(URI.create(url))));
     }
