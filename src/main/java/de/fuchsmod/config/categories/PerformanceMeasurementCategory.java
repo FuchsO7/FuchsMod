@@ -1,8 +1,8 @@
 package de.fuchsmod.config.categories;
 
 import de.fuchsmod.config.FuchsModConfig;
-import de.fuchsmod.features.general.PingMeasurement;
-import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.features.performance.PingMeasurement;
+import de.fuchsmod.features.performance.TPSMeasurement;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;

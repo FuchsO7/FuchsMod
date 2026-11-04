@@ -2,8 +2,8 @@ package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.commands.Debug;
 import de.fuchsmod.events.GameEvents;
-import de.fuchsmod.features.general.PingMeasurement;
-import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.features.performance.PingMeasurement;
+import de.fuchsmod.features.performance.TPSMeasurement;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.LinkedHashMap;
@@ -19,16 +19,16 @@ public class PartyCommandUtils {
         return (int) ((max - min + 1) * Math.random()) + min;
     }
 
-    public static String getScopeChatCommand(String scope) {
+    public static String getScopeChatCommand(Scope scope) {
         return switch (scope) {
-            case "party" -> "/pc ";
-            case "guild" -> "/gc";
-            case "officer" -> "/oc";
+            case PARTY -> "/pc ";
+            case GUILD -> "/gc";
+            case OFFICER -> "/oc";
             default -> "";
         };
     }
 
-    public static final LinkedHashMap<String, TriFunction<String, String, String[], String>> replacementCommands = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, TriFunction<Scope, String, String[], String>> replacementCommands = new LinkedHashMap<>();
 
     public static void init() {
         replacementCommands.put("None", null);
@@ -41,25 +41,25 @@ public class PartyCommandUtils {
 
         GameEvents.GAME_ENDED.register(() -> {
             if (downtimeMessage != null) {
-                PartyCommands.sendChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
+                PartyCommands.scheduleChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
                 downtimeMessage = null;
             }
         });
     }
 
     /* TriFunction arguments:
-    - scope: String
+    - scope: Scope
     - senderName: String
     - arguments: String[]
     */
 
-    public static TriFunction<String, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
+    public static TriFunction<Scope, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
 
-    public static TriFunction<String, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
+    public static TriFunction<Scope, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
 
-    public static TriFunction<String, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
+    public static TriFunction<Scope, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
 
-    public static TriFunction<String, String, String[], String> diceRoll = (_, _, arguments) -> {
+    public static TriFunction<Scope, String, String[], String> diceRoll = (_, _, arguments) -> {
         try {
             int a = Integer.parseInt(arguments[0]);
             int b = Integer.parseInt(arguments[1]);
@@ -69,7 +69,7 @@ public class PartyCommandUtils {
         }
     };
 
-    public static TriFunction<String, String, String[], String> getDream = (_, _, _) -> {
+    public static TriFunction<Scope, String, String[], String> getDream = (_, _, _) -> {
         if (!CONFIG.partyCommandsBedwarsDreams.isEmpty())
             return CONFIG.partyCommandsBedwarsDreams.get((int) (((System.currentTimeMillis() / 1000 - CONFIG.dreamRotationOffsetSeconds) % (CONFIG.partyCommandsBedwarsDreams.size() * CONFIG.dreamRotationTimeSeconds)) / CONFIG.dreamRotationTimeSeconds));
         else {
@@ -79,9 +79,9 @@ public class PartyCommandUtils {
     };
 
     private static String downtimeMessage;
-    private static String downtimeScope;
+    private static Scope downtimeScope;
 
-    public static TriFunction<String, String, String[], String> requestDowntime = (scope, senderName, arguments) -> {
+    public static TriFunction<Scope, String, String[], String> requestDowntime = (scope, senderName, arguments) -> {
         if (arguments.length == 0)
             downtimeMessage = "Downtime requested by %s".formatted(senderName);
         String reason = String.join(" ", arguments);
