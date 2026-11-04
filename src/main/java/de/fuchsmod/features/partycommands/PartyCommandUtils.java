@@ -2,8 +2,8 @@ package de.fuchsmod.features.partycommands;
 
 import de.fuchsmod.commands.Debug;
 import de.fuchsmod.events.GameEvents;
-import de.fuchsmod.features.general.PingMeasurement;
-import de.fuchsmod.features.general.TPSMeasurement;
+import de.fuchsmod.features.performance.PingMeasurement;
+import de.fuchsmod.features.performance.TPSMeasurement;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.LinkedHashMap;

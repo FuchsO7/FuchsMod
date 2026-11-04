@@ -13,6 +13,8 @@ import de.fuchsmod.features.calculator.CalculatorException;
 import de.fuchsmod.features.calculator.CalculatorScreen;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommands;
+import de.fuchsmod.features.performance.PingMeasurement;
+import de.fuchsmod.features.performance.TPSMeasurement;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;

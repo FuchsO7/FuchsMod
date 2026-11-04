@@ -8,6 +8,9 @@ import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
+import de.fuchsmod.features.performance.FPSHud;
+import de.fuchsmod.features.performance.PingHud;
+import de.fuchsmod.features.performance.TPSHud;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.ChatFormatting;
@@ -20,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FuchsMod implements ClientModInitializer {
