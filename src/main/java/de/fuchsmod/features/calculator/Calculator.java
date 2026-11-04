@@ -1,4 +1,4 @@
-package de.fuchsmod.features.general;
+package de.fuchsmod.features.calculator;
 
 import com.mojang.brigadier.StringReader;
 import de.fuchsmod.commands.Debug;
@@ -10,95 +10,6 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class Calculator {
     public static boolean enableCalculatorCommandsDebug = false;
-
-    public static class CalculatorException extends Exception {
-        public StringReader reader;
-
-        public CalculatorException(String message) {
-            this(message, null);
-        }
-
-        public CalculatorException(String message, StringReader reader) {
-            super(message);
-            this.reader = reader;
-        }
-    }
-
-    private interface MathOperation {
-        int getPriority();
-    }
-
-    private enum MathOperator implements MathOperation {
-        ADD(1),
-        SUB(1),
-        NEG(4),
-        MUL(2),
-        DIV(2),
-        MOD(2),
-        POW(3);
-
-        private final int priority;
-
-        MathOperator(int priority) {
-            this.priority = priority;
-        }
-
-        @Override
-        public int getPriority() {
-            return this.priority;
-        }
-    }
-
-    private enum Brackets implements MathOperation {
-        OPENING,
-        CLOSING;
-
-        @Override
-        public int getPriority() {
-            return 0;
-        }
-    }
-
-    private enum MathSupplier implements MathOperation {
-        E,
-        PI,
-        RANDOM;
-
-        @Override
-        public int getPriority() {
-            return 5;
-        }
-    }
-
-    private enum MathFunction implements MathOperation {
-        SQRT,
-        ROUND,
-        FACT,
-        ABS,
-        SIGN,
-        LN,
-        LG,
-        SIN,
-        COS,
-        TAN,
-        ASIN,
-        ACOS,
-        ATAN;
-
-        @Override
-        public int getPriority() {
-            return 5;
-        }
-    }
-
-    private enum MathBifunction implements MathOperation {
-        LOG;
-
-        @Override
-        public int getPriority() {
-            return 5;
-        }
-    }
 
     private static class ExpressionParser {
         private final StringReader reader;

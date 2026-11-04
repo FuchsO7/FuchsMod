@@ -6,9 +6,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.GameEvents;
+import de.fuchsmod.features.calculator.Calculator;
+import de.fuchsmod.features.calculator.CalculatorException;
+import de.fuchsmod.features.calculator.CalculatorScreen;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -105,7 +107,7 @@ public class Commands {
         double result;
         try {
             result = Calculator.calculateExpression(expression);
-        } catch (Calculator.CalculatorException exception) {
+        } catch (CalculatorException exception) {
             SimpleCommandExceptionType commandException = new SimpleCommandExceptionType(Component.literal(exception.getMessage()));
             throw exception.reader == null ? commandException.create() : commandException.createWithContext(exception.reader);
         }
