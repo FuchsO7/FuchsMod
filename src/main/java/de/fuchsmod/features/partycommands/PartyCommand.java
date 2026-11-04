@@ -5,25 +5,26 @@ import org.apache.commons.lang3.function.TriFunction;
 import java.util.List;
 
 public class PartyCommand {
-    private final List<String> scopes;
+    private final List<Scope> scopes;
     private final String message;
-    private final TriFunction<String, String, String[], String> replacementFunction;
+    private final TriFunction<Scope, String, String[], String> replacementFunction;
 
-    public PartyCommand (List<String> scopes, String message) {
+    public PartyCommand (List<Scope> scopes, String message) {
         this(scopes, message, null);
     }
 
-    public PartyCommand (List<String> scopes, String message, TriFunction<String, String, String[], String> replacementFunction) {
+    public PartyCommand (List<Scope> scopes, String message, TriFunction<Scope, String, String[], String> replacementFunction) {
         this.scopes = scopes;
         this.message = message;
         this.replacementFunction = replacementFunction;
     }
 
-    public void run(String scope, String senderName, String[] arguments) {
+    public void run(Scope scope, String scopeString, String senderName, String[] arguments) {
         if (!scopes.contains(scope))
             return;
         String messageToSend = message
                 .replace("{player}", senderName)
+                .replace("{scope}", scopeString)
                 .replace("{chat}", PartyCommandUtils.getScopeChatCommand(scope));
         for(int i = 0; i < arguments.length; i++)
             messageToSend = messageToSend.replace("{args["+i+"]}", arguments[i]);

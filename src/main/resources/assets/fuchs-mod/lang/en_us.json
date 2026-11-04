@@ -147,7 +147,7 @@
   "fuchsmod.config.advanced.partycommands_regexes": "Party Commands Regexes",
   "fuchsmod.config.advanced.partycommands_regexes.description": "These patterns are used to determine the content of a party command using capture groups. Only the first matching pattern is used to execute a command.\nUse capture groups to pass scope, sender and command to the party command.\nAnything after that will be passed as arguments.",
   "fuchsmod.config.advanced.partycommands_custom_scopes": "Party Commands Custom Scopes",
-  "fuchsmod.config.advanced.partycommands_custom_scopes.description": "If a scope matches one of these strings, it will be treated as custom scope. Capitalization is ignored.",
+  "fuchsmod.config.advanced.partycommands_custom_scopes.description": "If a scope matches one of these strings, it will be treated as custom scope.",
   "fuchsmod.config.advanced.partycommands_bedwars_dreams_settings": "Party Commands Bedwars Dream Settings",
   "fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time": "Rotation Time",
   "fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time.description": "The time in seconds for each dream rotation. By default this is 604800, which is equal to 7 days.",

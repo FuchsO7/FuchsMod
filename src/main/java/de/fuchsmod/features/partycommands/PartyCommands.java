@@ -59,18 +59,12 @@ public class PartyCommands {
         scheduledMessages.offer(new ScheduledMessage(Util.getMillis() + CONFIG.commandDelay, message));
     }
 
-    public static List<String> getScopes(int scopesInteger) {
-        List<String> scopes = new ArrayList<>();
-        if (scopesInteger % 2 == 1)
-            scopes.add("public");
-        if ((scopesInteger >> 1) % 2 == 1)
-            scopes.add("party");
-        if ((scopesInteger >> 2) % 2 == 1)
-            scopes.add("guild");
-        if ((scopesInteger >> 3) % 2 == 1)
-            scopes.add("officer");
-        if ((scopesInteger >> 4) % 2 == 1)
-            scopes.add("custom");
+    public static List<Scope> getScopes(int scopesInteger) {
+        List<Scope> scopes = new ArrayList<>();
+        for (Scope scope : Scope.values()) {
+            if ((scopesInteger >> scope.ordinal()) % 2 == 1)
+                scopes.add(scope);
+        }
         return scopes;
     }
 
@@ -93,21 +87,27 @@ public class PartyCommands {
                 if (!matcher.find())
                     continue;
 
-                String scope = matcher.group("scope").toLowerCase(Locale.ROOT);
-                if (CONFIG.partyCommandsCustomScopes.contains(scope))
-                    scope = "custom";
-                else if (!getScopes(15).contains(scope))
-                    scope = "public";
+                String scopeString = matcher.group("scope");
+                Scope scope;
+                try {
+                    scope = Scope.valueOf(scopeString.toUpperCase(Locale.ROOT));
+                } catch (IllegalArgumentException exception) {
+                    if (CONFIG.partyCommandsCustomScopes.contains(scopeString))
+                        scope = Scope.CUSTOM;
+                    else
+                        scope = Scope.PUBLIC;
+                }
+
                 String senderName = matcher.group("sender");
                 String command = matcher.group("command");
                 String[] arguments = message.substring(matcher.end()).strip().split(" ");
 
                 Debug.sendDebugMessage("Executing Party Command '%s':\n- Scope: %s\n- Sender: %s\n- Arguments: %s".formatted(
-                        command, scope, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
+                        command, scopeString, senderName, Arrays.toString(arguments)), enablePartyCommandsDebug);
 
                 PartyCommand partyCommand = commands.get(command);
                 if (partyCommand != null)
-                    partyCommand.run(scope, senderName, arguments);
+                    partyCommand.run(scope, scopeString, senderName, arguments);
                 return;
             } catch (IllegalArgumentException exception) {
                 if (!message.contains("Invalid Regex"))

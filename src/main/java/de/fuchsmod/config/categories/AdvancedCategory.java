@@ -11,8 +11,6 @@ import dev.isxander.yacl3.api.controller.LongFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.network.chat.Component;
 
-import java.util.Locale;
-
 public class AdvancedCategory {
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
         return ConfigCategory.createBuilder()
@@ -57,7 +55,7 @@ public class AdvancedCategory {
                                 Component.translatable("fuchsmod.config.advanced.partycommands_custom_scopes.description")))
                         .binding(defaults.partyCommandsCustomScopes,
                                 () -> config.partyCommandsCustomScopes,
-                                newValue -> config.partyCommandsCustomScopes = newValue.stream().map(element -> element.toLowerCase(Locale.ROOT)).toList())
+                                newValue -> config.partyCommandsCustomScopes = newValue)
                         .controller(StringControllerBuilder::create)
                         .initial("")
                         .insertEntriesAtEnd(true)

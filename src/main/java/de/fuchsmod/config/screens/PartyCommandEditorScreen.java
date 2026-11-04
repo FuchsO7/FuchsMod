@@ -2,6 +2,7 @@ package de.fuchsmod.config.screens;
 
 import de.fuchsmod.config.controllers.PartyCommandRecord;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
+import de.fuchsmod.features.partycommands.Scope;
 import dev.isxander.yacl3.api.Option;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -65,15 +66,15 @@ public class PartyCommandEditorScreen extends Screen {
     public PartyCommandRecord getSettings() {
         int scopes = 0;
         if (this.publicScope)
-            scopes += 1;
+            scopes += Scope.PUBLIC.getConfigValue();
         if (this.partyScope)
-            scopes += 2;
+            scopes += Scope.PARTY.getConfigValue();
         if (this.guildScope)
-            scopes += 4;
+            scopes += Scope.GUILD.getConfigValue();
         if (this.officerScope)
-            scopes += 8;
+            scopes += Scope.OFFICER.getConfigValue();
         if (this.customScope)
-            scopes += 16;
+            scopes += Scope.CUSTOM.getConfigValue();
 
         return new PartyCommandRecord(scopes, this.triggerText.getValue(), this.commandText.getValue(), this.replacementFunction);
     }
