@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.event.client.player.ClientHotbarScrollEvents;
 import net.minecraft.client.KeyMapping;
+import org.lwjgl.glfw.GLFW;
 
 import static de.fuchsmod.FuchsMod.KEYMAPPING_CATEGORY;
 import static de.fuchsmod.FuchsMod.LOGGER;
@@ -20,8 +21,8 @@ public class Zoom {
         zoomKey = KeyMappingHelper.registerKeyMapping(
                 new KeyMapping(
                         "key.fuchsmod.zoom",
-                        InputConstants.Type.KEYBOARD,
-                        InputConstants.UNKNOWN.getValue(),
+                        InputConstants.Type.KEYSYM,
+                        GLFW.GLFW_KEY_C,
                         KEYMAPPING_CATEGORY
                 ));
 
