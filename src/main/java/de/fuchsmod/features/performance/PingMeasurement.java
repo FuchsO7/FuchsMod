@@ -1,4 +1,4 @@
-package de.fuchsmod.features.general;
+package de.fuchsmod.features.performance;
 
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;

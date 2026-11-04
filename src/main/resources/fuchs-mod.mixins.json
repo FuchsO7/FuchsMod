@@ -19,6 +19,7 @@
     "CreativeModeInventoryScreenMixin",
     "DefaultTooltipPositionerMixin",
     "LightmapRenderStateExtractorMixin",
+    "MouseHandlerMixin",
     "ServerReconfigScreenMixin"
   ]
 }

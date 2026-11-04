@@ -1,6 +1,7 @@
 package de.fuchsmod.mixin;
 
-import de.fuchsmod.features.general.Calculator;
+import de.fuchsmod.features.calculator.Calculator;
+import de.fuchsmod.features.calculator.CalculatorException;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -43,7 +44,7 @@ public class AbstractContainerScreenMixin extends Screen {
             try {
                 double result = Calculator.calculateExpression(expressionBox.getValue());
                 expressionBox.setValue(Calculator.roundResult(result));
-            } catch (Calculator.CalculatorException e) {
+            } catch (CalculatorException e) {
                 expressionBox.setValue(e.getMessage());
             }
         })).build();
