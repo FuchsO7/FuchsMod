@@ -56,6 +56,15 @@ public class FuchsMod implements ClientModInitializer {
 		LOGGER.debug("Initializing Fuchs Mod completed!");
 	}
 
+	public static void sendClientMessage(String message) {
+		sendClientMessage(Component.translatable(message));
+	}
+
+	public static void sendClientMessage(Component message) {
+		if (CLIENT.player != null)
+			CLIENT.player.sendSystemMessage(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append(message));
+	}
+
 	public static boolean checkIfRegexIsValid(String regex, String... requiredCaptureGroups) {
 		try {
 			Pattern pattern = Pattern.compile(regex);
