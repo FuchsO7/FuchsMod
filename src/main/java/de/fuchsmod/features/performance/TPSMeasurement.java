@@ -1,4 +1,4 @@
-package de.fuchsmod.features.general;
+package de.fuchsmod.features.performance;
 
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.events.ClientPacketEvents;

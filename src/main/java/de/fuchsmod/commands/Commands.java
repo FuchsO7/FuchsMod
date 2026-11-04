@@ -9,8 +9,13 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfigManager;
 import de.fuchsmod.events.GameEvents;
+import de.fuchsmod.features.calculator.Calculator;
+import de.fuchsmod.features.calculator.CalculatorException;
+import de.fuchsmod.features.calculator.CalculatorScreen;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommands;
+import de.fuchsmod.features.performance.PingMeasurement;
+import de.fuchsmod.features.performance.TPSMeasurement;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -76,26 +81,24 @@ public class Commands {
     }
 
     private static int executeGetTPSCommand(CommandContext<FabricClientCommandSource> context) {
-        Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+        context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.tps",
                         TPSMeasurement.getInstance().getCurrentTPSFormatted(),
                         TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
-                        TPSMeasurement.getInstance().getAverageTPSFormatted()));
-        context.getSource().sendFeedback(message);
+                        TPSMeasurement.getInstance().getAverageTPSFormatted())));
         return Command.SINGLE_SUCCESS;
     }
     private static int executeGetPingCommand(CommandContext<FabricClientCommandSource> context) {
-        Component message = FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
+        context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.ping",
                         PingMeasurement.getInstance().getCurrentPingFormatted(),
                         PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
-                        PingMeasurement.getInstance().getAveragePingFormatted()));
-        context.getSource().sendFeedback(message);
+                        PingMeasurement.getInstance().getAveragePingFormatted())));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executeCalculatorCommand(CommandContext<FabricClientCommandSource> context) {
-        CLIENT.execute(() -> CLIENT.setScreen(new CalculatorScreen(CLIENT.screen)));
+        CLIENT.execute(() -> CLIENT.gui.setScreen(new CalculatorScreen(CLIENT.gui.screen())));
         CLIENT.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         return Command.SINGLE_SUCCESS;
     }
@@ -105,7 +108,7 @@ public class Commands {
         double result;
         try {
             result = Calculator.calculateExpression(expression);
-        } catch (Calculator.CalculatorException exception) {
+        } catch (CalculatorException exception) {
             SimpleCommandExceptionType commandException = new SimpleCommandExceptionType(Component.literal(exception.getMessage()));
             throw exception.reader == null ? commandException.create() : commandException.createWithContext(exception.reader);
         }
@@ -129,9 +132,9 @@ public class Commands {
     private static int executeGetLastDeathLocationCommand(CommandContext<FabricClientCommandSource> context) {
         if (CLIENT.player != null) {
             if (CLIENT.player.getLastDeathLocation().isPresent())
-                CLIENT.player.sendSystemMessage(DeathLocationSaver.getLastDeathLocationFormatted(CLIENT.player.getLastDeathLocation().get()));
+                FuchsMod.sendClientMessage(DeathLocationSaver.getLastDeathLocationFormatted(CLIENT.player.getLastDeathLocation().get()));
             else
-                CLIENT.player.sendSystemMessage(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append(Component.translatable("fuchsmod.features.last_death_position.not_found")));
+                FuchsMod.sendClientMessage("fuchsmod.features.last_death_position.not_found");
         }
         return Command.SINGLE_SUCCESS;
     }

@@ -18,7 +18,7 @@ Open the config with `/fuchsmod config`
 
 ## Dependencies
 - Fabric API
-- YACL Yet Another Config Lib 3.9.4
+- YACL Yet Another Config Lib 3.9.7
 
 ## License
 

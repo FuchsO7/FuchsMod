@@ -1,4 +1,4 @@
-package de.fuchsmod.features.general;
+package de.fuchsmod.features.performance;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;

@@ -8,6 +8,9 @@ import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
+import de.fuchsmod.features.performance.FPSHud;
+import de.fuchsmod.features.performance.PingHud;
+import de.fuchsmod.features.performance.TPSHud;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.ChatFormatting;
@@ -20,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 public class FuchsMod implements ClientModInitializer {
 	public static final String MOD_ID = "fuchs-mod";
@@ -50,5 +54,27 @@ public class FuchsMod implements ClientModInitializer {
 		Debug.init();
 		Commands.init();
 		LOGGER.debug("Initializing Fuchs Mod completed!");
+	}
+
+	public static void sendClientMessage(String message) {
+		sendClientMessage(Component.translatable(message));
+	}
+
+	public static void sendClientMessage(Component message) {
+		if (CLIENT.player != null)
+			CLIENT.player.sendSystemMessage(FUCHSMOD_CHAT_MESSAGE_PREFIX.get().append(message));
+	}
+
+	public static boolean checkIfRegexIsValid(String regex, String... requiredCaptureGroups) {
+		try {
+			Pattern pattern = Pattern.compile(regex);
+			for (String captureGroup : requiredCaptureGroups) {
+				if (!regex.contains(captureGroup.startsWith("?<") ? captureGroup : "?<" + captureGroup + ">"))
+					return false;
+			}
+		} catch (IllegalArgumentException exception) {
+			return false;
+		}
+		return true;
 	}
 }

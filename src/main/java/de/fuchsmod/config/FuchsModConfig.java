@@ -36,10 +36,10 @@ public class FuchsModConfig {
     public boolean smoothCameraOnZoom = false;
 
     @SerialEntry
-    public double zoomFactor = 0.2;
+    public float immediateZoomFactor = 4.0f;
 
     @SerialEntry
-    public float immediateZoomFactor = 4.0f;
+    public double dynamicZoomFactor = 0.2;
 
     @SerialEntry
     public boolean autoIgnoreServerResourcePacks = false;
@@ -202,8 +202,11 @@ public class FuchsModConfig {
 
     @SerialEntry
     public List<String> partyCommandsPatterns = new ArrayList<>(List.of(
-            "^([^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*([^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(!\\S*)"
+            "^(?<scope>[^:\\s]+)[^:]*>\\s*?\\[?\\S*\\]?\\s*(?<sender>[^\\s\\[\\]]*)\\s*\\[?\\S*\\]?:\\s(?<command>!\\S*)"
     ));
+
+    @SerialEntry
+    public List<String> partyCommandsCustomScopes = new ArrayList<>();
 
     @SerialEntry
     public List<String> partyCommandsBedwarsDreams = new ArrayList<>(List.of(
