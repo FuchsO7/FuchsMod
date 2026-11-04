@@ -1,6 +1,8 @@
 package de.fuchsmod.config.categories;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
+import de.fuchsmod.config.controllers.FormattableStringControllerBuilder;
 import de.fuchsmod.features.general.TooltipScroll;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import dev.isxander.yacl3.api.*;
@@ -10,7 +12,6 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.network.chat.Component;
 
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class AdvancedCategory {
     public static ConfigCategory create(FuchsModConfig defaults, FuchsModConfig config) {
@@ -33,7 +34,8 @@ public class AdvancedCategory {
                         .binding(defaults.gameEndTriggerPatterns,
                                 () -> config.gameEndTriggerPatterns,
                                 newValue -> config.gameEndTriggerPatterns = newValue)
-                        .controller(StringControllerBuilder::create)
+                        .controller(opt -> FormattableStringControllerBuilder.create(opt)
+                                .validateValue(FuchsMod::checkIfRegexIsValid))
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())
@@ -44,7 +46,8 @@ public class AdvancedCategory {
                         .binding(defaults.partyCommandsPatterns,
                                 () -> config.partyCommandsPatterns,
                                 newValue -> config.partyCommandsPatterns = newValue)
-                        .controller(StringControllerBuilder::create)
+                        .controller(opt -> FormattableStringControllerBuilder.create(opt)
+                                .validateValue(value -> FuchsMod.checkIfRegexIsValid(value, "scope", "sender", "command")))
                         .initial("")
                         .insertEntriesAtEnd(true)
                         .build())
