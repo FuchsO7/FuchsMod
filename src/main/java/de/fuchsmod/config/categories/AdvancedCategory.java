@@ -68,10 +68,7 @@ public class AdvancedCategory {
                                         Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.rotation_time.description")))
                                 .binding(defaults.dreamRotationTimeSeconds,
                                         () -> config.dreamRotationTimeSeconds,
-                                        newValue -> {
-                                            config.dreamRotationTimeSeconds = newValue;
-                                            TooltipScroll.getInstance().resetOffset();
-                                        })
+                                        newValue -> config.dreamRotationTimeSeconds = newValue)
                                 .controller(LongFieldControllerBuilder::create)
                                 .build())
                         .option(Option.<Long>createBuilder()
@@ -80,10 +77,7 @@ public class AdvancedCategory {
                                         Component.translatable("fuchsmod.config.advanced.partycommands_bedwars_dreams_settings.offset.description")))
                                 .binding(defaults.dreamRotationOffsetSeconds,
                                         () -> config.dreamRotationOffsetSeconds,
-                                        newValue -> {
-                                            config.dreamRotationOffsetSeconds = newValue;
-                                            TooltipScroll.getInstance().resetOffset();
-                                        })
+                                        newValue -> config.dreamRotationOffsetSeconds = newValue)
                                 .controller(LongFieldControllerBuilder::create)
                                 .build())
                         .build())
