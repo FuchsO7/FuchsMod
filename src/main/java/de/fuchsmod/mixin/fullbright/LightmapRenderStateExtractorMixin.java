@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.fullbright;
 
 import net.minecraft.client.renderer.LightmapRenderStateExtractor;
 import org.spongepowered.asm.mixin.Mixin;

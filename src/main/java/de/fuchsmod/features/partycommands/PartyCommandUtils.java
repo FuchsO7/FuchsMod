@@ -39,7 +39,7 @@ public class PartyCommandUtils {
         replacementCommands.put("Bedwars Dream", getDream);
         replacementCommands.put("Downtime Request", requestDowntime);
 
-        GameEvents.GAME_ENDED.register(() -> {
+        GameEvents.ON_GAME_END.register(() -> {
             if (downtimeMessage != null) {
                 PartyCommands.scheduleChatMessage(getScopeChatCommand(downtimeScope) + downtimeMessage);
                 downtimeMessage = null;

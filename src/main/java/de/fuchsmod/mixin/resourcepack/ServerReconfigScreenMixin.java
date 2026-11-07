@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.resourcepack;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.multiplayer.ServerReconfigScreen;

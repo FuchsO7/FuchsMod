@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.zoom;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.fuchsmod.features.general.Zoom;
