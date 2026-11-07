@@ -28,10 +28,10 @@ public class TPSMeasurement {
     private Queue<Double> TPSResults = new LinkedList<>();
 
     private TPSMeasurement() {
-        ClientPacketEvents.SET_TIME_PACKET.register(packet -> {
+        ClientPacketEvents.ON_SET_TIME_PACKET.register(packet -> {
             INSTANCE.onSetTimePacket(packet);
         });
-        ClientPacketEvents.PING_PACKET.register(packet -> {
+        ClientPacketEvents.ON_PING_PACKET.register(packet -> {
             INSTANCE.onPingPacket(packet);
         });
         ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {

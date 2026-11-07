@@ -6,7 +6,7 @@ import net.minecraft.client.multiplayer.chat.GuiMessage;
 
 public class ChatEvents {
 
-    public static final Event<Message> MESSAGE = EventFactory.createArrayBacked(Message.class, callbacks -> message -> {
+    public static final Event<Message> ON_MESSAGE = EventFactory.createArrayBacked(Message.class, callbacks -> message -> {
         for (Message event : callbacks) {
             event.onMessage(message);
         }

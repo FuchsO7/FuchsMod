@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.tooltipscroll;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import de.fuchsmod.features.general.TooltipScroll;
@@ -12,6 +12,7 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 
 @Mixin(DefaultTooltipPositioner.class)
 public class DefaultTooltipPositionerMixin {
+
     @ModifyReturnValue(
             at = @At("RETURN"),
             method = "positionTooltip(IIIIII)Lorg/joml/Vector2ic;"
