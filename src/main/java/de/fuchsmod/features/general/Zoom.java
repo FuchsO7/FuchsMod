@@ -14,6 +14,7 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 public class Zoom {
     private static double dynamicZoomFactor = 1.0;
     private static float zoomModifier = 1.0f;
+    private static boolean isZooming = false;
     private static KeyMapping zoomKey;
 
     public static void init() {
@@ -33,7 +34,7 @@ public class Zoom {
         });
 
         ClientHotbarScrollEvents.ALLOW.register((inventory, currentSlot, newSlot, xOffset, yOffset) -> {
-            if (!zoomKey.isDown() || !CONFIG.enableZoom)
+            if (!zoomKey.isDown())
                 return true;
             updateDynamicZoomFactor(yOffset);
             return false;
@@ -41,7 +42,7 @@ public class Zoom {
         LOGGER.debug("Initialized Zoom!");
     }
 
-    public static void updateDynamicZoomFactor(double direction) {
+    private static void updateDynamicZoomFactor(double direction) {
         dynamicZoomFactor += CONFIG.dynamicZoomFactor * direction;
         if (dynamicZoomFactor < 1.0)
             dynamicZoomFactor = 1.0;
@@ -51,6 +52,7 @@ public class Zoom {
         if (CONFIG.smoothCameraOnZoom)
             CLIENT.options.smoothCamera = factor > 1.0f;
         zoomModifier = 1.0f / factor;
+        isZooming = true;
     }
 
     public static void resetZoom() {
@@ -58,9 +60,17 @@ public class Zoom {
             CLIENT.options.smoothCamera = false;
         dynamicZoomFactor = 1.0;
         zoomModifier = 1.0f;
+        isZooming = false;
     }
 
-    public static float getZoomModifier() {
-        return zoomModifier;
+    public static float modifyFov(float originalFov) {
+        return originalFov * zoomModifier;
+    }
+
+    public static double modifyMouseSensitivity(double originalSensitivity) {
+        if (CONFIG.adjustMouseSensitivityOnZoom && isZooming)
+            return originalSensitivity * zoomModifier * CONFIG.mouseSensitivityAdjustmentMultiplier;
+        else
+            return originalSensitivity;
     }
 }

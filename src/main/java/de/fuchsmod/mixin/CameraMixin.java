@@ -13,6 +13,6 @@ public class CameraMixin {
             method = "calculateFov"
     )
     private float fuchsmod$calculateNewFov(float fov) {
-        return fov * Zoom.getZoomModifier();
+        return Zoom.modifyFov(fov);
     }
 }
