@@ -3,7 +3,6 @@ package de.fuchsmod.config.categories;
 import de.fuchsmod.FuchsMod;
 import de.fuchsmod.config.FuchsModConfig;
 import de.fuchsmod.config.controllers.FormattableStringControllerBuilder;
-import de.fuchsmod.features.general.TooltipScroll;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;

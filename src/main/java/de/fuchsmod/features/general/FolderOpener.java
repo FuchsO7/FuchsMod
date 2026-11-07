@@ -24,7 +24,7 @@ public class FolderOpener {
     public static class FolderSuggestionProvider implements SuggestionProvider<FabricClientCommandSource> {
 
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
             File[] files = FabricLoader.getInstance().getGameDir().toFile().listFiles();
             if (files == null)
                 return builder.buildFuture();

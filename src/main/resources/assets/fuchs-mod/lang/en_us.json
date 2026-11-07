@@ -50,6 +50,7 @@
   "fuchsmod.config.general.mouse_sensitivity_adjustment_multiplier.description": "Determine how the mouse sensitivity is adjusted. Higher values will result in higher sensitivity at the same zoom level.",
 
   "fuchsmod.config.general.server_resource_pack": "Server Resource Pack",
+  "fuchsmod.config.general.server_resource_pack.ignore": "Ignore",
   "fuchsmod.config.general.server_resource_pack.auto_ignore": "Auto Ignore",
   "fuchsmod.config.general.server_resource_pack.auto_ignore.description": "If enabled, the Server Resource Pack will be ignored automatically.",
   "fuchsmod.config.general.server_resource_pack.ignore_method": "Method",

@@ -53,13 +53,13 @@ public class PartyCommandUtils {
     - arguments: String[]
     */
 
-    public static TriFunction<Scope, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
+    public static final TriFunction<Scope, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
 
-    public static TriFunction<Scope, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
+    public static final TriFunction<Scope, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
 
-    public static TriFunction<Scope, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
+    public static final TriFunction<Scope, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
 
-    public static TriFunction<Scope, String, String[], String> diceRoll = (_, _, arguments) -> {
+    public static final TriFunction<Scope, String, String[], String> diceRoll = (_, _, arguments) -> {
         try {
             int a = Integer.parseInt(arguments[0]);
             int b = Integer.parseInt(arguments[1]);
@@ -69,7 +69,7 @@ public class PartyCommandUtils {
         }
     };
 
-    public static TriFunction<Scope, String, String[], String> getDream = (_, _, _) -> {
+    public static final TriFunction<Scope, String, String[], String> getDream = (_, _, _) -> {
         if (!CONFIG.partyCommandsBedwarsDreams.isEmpty())
             return CONFIG.partyCommandsBedwarsDreams.get((int) (((System.currentTimeMillis() / 1000 - CONFIG.dreamRotationOffsetSeconds) % (CONFIG.partyCommandsBedwarsDreams.size() * CONFIG.dreamRotationTimeSeconds)) / CONFIG.dreamRotationTimeSeconds));
         else {
@@ -81,7 +81,7 @@ public class PartyCommandUtils {
     private static String downtimeMessage;
     private static Scope downtimeScope;
 
-    public static TriFunction<Scope, String, String[], String> requestDowntime = (scope, senderName, arguments) -> {
+    public static final TriFunction<Scope, String, String[], String> requestDowntime = (scope, senderName, arguments) -> {
         if (arguments.length == 0)
             downtimeMessage = "Downtime requested by %s".formatted(senderName);
         String reason = String.join(" ", arguments);
