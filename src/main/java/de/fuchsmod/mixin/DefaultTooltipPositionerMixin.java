@@ -18,7 +18,7 @@ public class DefaultTooltipPositionerMixin {
     )
     private Vector2ic fuchsmod$moveTooltip(Vector2ic original) {
         if (CONFIG.enableTooltipScroll) {
-            return new Vector2i(original.x(), original.y()).add(TooltipScroll.getInstance().getOffset());
+            return new Vector2i(original.x(), original.y()).add(TooltipScroll.getTooltipOffset());
         } else {
             return original;
         }
