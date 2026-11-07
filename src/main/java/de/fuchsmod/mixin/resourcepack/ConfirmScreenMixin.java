@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.resourcepack;
 
 import de.fuchsmod.features.general.ResourcePackIgnore;
 import net.minecraft.client.gui.components.Button;

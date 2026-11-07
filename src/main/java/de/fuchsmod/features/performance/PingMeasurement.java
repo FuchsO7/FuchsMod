@@ -23,7 +23,7 @@ public class PingMeasurement {
     private Queue<Long> PingResults = new LinkedList<>();
 
     private PingMeasurement() {
-        ClientPacketEvents.PONG_RESPONSE_PACKET.register(packet -> {
+        ClientPacketEvents.ON_PONG_RESPONSE_PACKET.register(packet -> {
             INSTANCE.onPongResponsePacket(packet);
         });
         ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {

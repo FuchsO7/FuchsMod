@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.calculator;
 
 import de.fuchsmod.features.calculator.Calculator;
 import de.fuchsmod.features.calculator.CalculatorException;

@@ -187,7 +187,7 @@ public class Commands {
     }
 
     private static int executeGameEndTrigger(CommandContext<FabricClientCommandSource> context) {
-        GameEvents.GAME_ENDED.invoker().onGameEnd();
+        GameEvents.ON_GAME_END.invoker().onGameEnd();
         context.getSource().sendFeedback(FUCHSMOD_DEBUG_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.debug_game_end_trigger")));
         return Command.SINGLE_SUCCESS;

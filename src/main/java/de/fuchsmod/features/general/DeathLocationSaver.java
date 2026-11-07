@@ -14,7 +14,7 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 public class DeathLocationSaver {
 
     public static void init () {
-        GameEvents.NEW_DEATH_LOCATION.register((globalPos) -> {
+        GameEvents.ON_NEW_DEATH_LOCATION.register((globalPos) -> {
             LOGGER.info("Saved Death Location %s".formatted(getLastDeathLocationString(globalPos)));
             if (CONFIG.sendLastDeathLocationMessage && CLIENT.player != null)
                 CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted(globalPos));
