@@ -25,7 +25,7 @@ public class GeneralCategory {
                                         () -> config.enableTooltipScroll,
                                         newValue -> {
                                             config.enableTooltipScroll = newValue;
-                                            TooltipScroll.getInstance().resetOffset();
+                                            TooltipScroll.resetOffset();
                                         })
                                 .controller(opt -> BooleanControllerBuilder.create(opt)
                                         .coloured(true))
