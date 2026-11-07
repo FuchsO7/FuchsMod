@@ -14,6 +14,6 @@ public class MouseHandlerMixin {
             method = "turnPlayer"
     )
     private double fuchsmod$modifyMouseSensitivity(double sensitivity) {
-        return sensitivity * Zoom.getZoomModifier();
+        return Zoom.modifyMouseSensitivity(sensitivity);
     }
 }

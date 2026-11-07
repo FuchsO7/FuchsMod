@@ -96,26 +96,6 @@ public class GeneralCategory {
                         .build())
                 .group(OptionGroup.createBuilder()
                         .name(Component.translatable("fuchsmod.config.general.zoom"))
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.zoom.enable"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.zoom.enable.description")))
-                                .binding(defaults.enableZoom,
-                                        () -> config.enableZoom,
-                                        newValue -> config.enableZoom = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("fuchsmod.config.general.smooth_camera"))
-                                .description(OptionDescription.of(
-                                        Component.translatable("fuchsmod.config.general.smooth_camera.description")))
-                                .binding(defaults.smoothCameraOnZoom,
-                                        () -> config.smoothCameraOnZoom,
-                                        newValue -> config.smoothCameraOnZoom = newValue)
-                                .controller(opt -> BooleanControllerBuilder.create(opt)
-                                        .coloured(true))
-                                .build())
                         .option(Option.<Float>createBuilder()
                                 .name(Component.translatable("fuchsmod.config.general.immediate_zoom_factor"))
                                 .description(OptionDescription.of(
@@ -139,6 +119,38 @@ public class GeneralCategory {
                                         .range(0.0, 2.0)
                                         .step(0.01)
                                         .formatValue(value -> Component.literal("%.0f %%".formatted(100 * value))))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.smooth_camera"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.smooth_camera.description")))
+                                .binding(defaults.smoothCameraOnZoom,
+                                        () -> config.smoothCameraOnZoom,
+                                        newValue -> config.smoothCameraOnZoom = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.adjust_mouse_sensitivity"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.adjust_mouse_sensitivity.description")))
+                                .binding(defaults.adjustMouseSensitivityOnZoom,
+                                        () -> config.adjustMouseSensitivityOnZoom,
+                                        newValue -> config.adjustMouseSensitivityOnZoom = newValue)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                        .coloured(true))
+                                .build())
+                        .option(Option.<Double>createBuilder()
+                                .name(Component.translatable("fuchsmod.config.general.mouse_sensitivity_adjustment_multiplier"))
+                                .description(OptionDescription.of(
+                                        Component.translatable("fuchsmod.config.general.mouse_sensitivity_adjustment_multiplier.description")))
+                                .binding(defaults.mouseSensitivityAdjustmentMultiplier,
+                                        () -> config.mouseSensitivityAdjustmentMultiplier,
+                                        newValue -> config.mouseSensitivityAdjustmentMultiplier = newValue)
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt)
+                                        .range(0.5, 5.0)
+                                        .step(0.1)
+                                        .formatValue(value -> Component.literal("%.1fx".formatted(value))))
                                 .build())
                         .option(ButtonOption.createBuilder()
                                 .name(Component.translatable("controls.keybinds"))
