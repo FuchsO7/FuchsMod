@@ -85,9 +85,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.brightness.description")))
                                 .binding(defaults.customGamma,
                                         () -> config.customGamma,
-                                        newValue -> {
-                                            config.customGamma = newValue;
-                                        })
+                                        newValue -> config.customGamma = newValue)
                                 .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                         .range(0.0f, 15.0f)
                                         .step(0.1f)
@@ -155,9 +153,7 @@ public class GeneralCategory {
                         .option(ButtonOption.createBuilder()
                                 .name(Component.translatable("controls.keybinds"))
                                 .text(Component.literal(""))
-                                .action((screen, buttonOption) -> {
-                                    CLIENT.gui.setScreen(new KeyBindsScreen(screen, CLIENT.options));
-                                })
+                                .action((screen, buttonOption) -> CLIENT.gui.setScreen(new KeyBindsScreen(screen, CLIENT.options)))
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()

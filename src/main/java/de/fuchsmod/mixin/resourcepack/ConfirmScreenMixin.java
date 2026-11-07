@@ -18,8 +18,6 @@ import static de.fuchsmod.FuchsMod.CONFIG;
 @Mixin(ConfirmScreen.class)
 public class ConfirmScreenMixin {
     @Unique
-    protected Component ignoreButtonComponent = Component.literal("Ignore");
-    @Unique
     protected Button ignoreButton;
 
     @Inject(
@@ -33,7 +31,7 @@ public class ConfirmScreenMixin {
                 ResourcePackIgnore.imitateResourcePackDownload();
                 return;
             }
-            this.ignoreButton = buttonLayout.addChild(Button.builder(this.ignoreButtonComponent, button -> {
+            this.ignoreButton = buttonLayout.addChild(Button.builder(Component.translatable("fuchsmod.config.general.server_resource_pack.ignore"), button -> {
                 CLIENT.gui.setScreen(packConfirmScreen.parentScreen);
                 ResourcePackIgnore.imitateResourcePackDownload();
             }).build());
