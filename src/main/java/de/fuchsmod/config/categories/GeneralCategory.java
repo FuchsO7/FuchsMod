@@ -174,10 +174,7 @@ public class GeneralCategory {
                                         Component.translatable("fuchsmod.config.general.server_resource_pack.ignore_method.description")))
                                 .binding(defaults.serverResourcePackIgnoreMethod,
                                         () -> config.serverResourcePackIgnoreMethod,
-                                        newValue -> {
-                                            config.serverResourcePackIgnoreMethod = newValue;
-                                            TPSMeasurement.getInstance().reset();
-                                        })
+                                        newValue -> config.serverResourcePackIgnoreMethod = newValue)
                                 .controller(opt -> EnumControllerBuilder.create(opt)
                                         .enumClass(FuchsModConfig.ServerResourcePackIgnoreMethods.class))
                                 .build())

@@ -14,8 +14,8 @@ import de.fuchsmod.features.calculator.CalculatorException;
 import de.fuchsmod.features.calculator.CalculatorScreen;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommands;
-import de.fuchsmod.features.performance.PingMeasurement;
-import de.fuchsmod.features.performance.TPSMeasurement;
+import de.fuchsmod.features.performance.PingHud;
+import de.fuchsmod.features.performance.TPSHud;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -83,17 +83,15 @@ public class Commands {
     private static int executeGetTPSCommand(CommandContext<FabricClientCommandSource> context) {
         context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.tps",
-                        TPSMeasurement.getInstance().getCurrentTPSFormatted(),
-                        TPSMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
-                        TPSMeasurement.getInstance().getAverageTPSFormatted())));
+                        TPSHud.getCurrentTPSFormatted(),
+                        TPSHud.getAverageTPSFormatted())));
         return Command.SINGLE_SUCCESS;
     }
     private static int executeGetPingCommand(CommandContext<FabricClientCommandSource> context) {
         context.getSource().sendFeedback(FUCHSMOD_CHAT_MESSAGE_PREFIX.get()
                 .append(Component.translatable("fuchsmod.commands.ping",
-                        PingMeasurement.getInstance().getCurrentPingFormatted(),
-                        PingMeasurement.AVERAGE_SAMPLE_TIME_SECONDS,
-                        PingMeasurement.getInstance().getAveragePingFormatted())));
+                        PingHud.getCurrentPingFormatted(),
+                        PingHud.getAveragePingFormatted())));
         return Command.SINGLE_SUCCESS;
     }
 

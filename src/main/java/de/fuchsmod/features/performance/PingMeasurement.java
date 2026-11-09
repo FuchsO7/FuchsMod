@@ -2,110 +2,50 @@ package de.fuchsmod.features.performance;
 
 import de.fuchsmod.events.ClientPacketEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import static de.fuchsmod.FuchsMod.CONFIG;
-
-public class PingMeasurement {
+public class PingMeasurement extends AbstractMeasurement<Long> {
     private static final PingMeasurement INSTANCE = new PingMeasurement();
-    public static final int AVERAGE_SAMPLE_TIME_SECONDS = 5;
-
-    private long estimatedPing;
-    private long averagePing;
-    private Queue<Long> PingResults = new LinkedList<>();
 
     private PingMeasurement() {
-        ClientPacketEvents.ON_PONG_RESPONSE_PACKET.register(packet -> {
-            INSTANCE.onPongResponsePacket(packet);
-        });
-        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> {
-            INSTANCE.reset();
-        });
+        AVERAGING_SAMPLE_AMOUNT = 100;
     }
 
     public static PingMeasurement getInstance() {
         return INSTANCE;
     }
 
-    public void onPongResponsePacket(ClientboundPongResponsePacket packet) {
-        calculatePing(packet.time());
+    public static void init() {
+        ClientPacketEvents.ON_PONG_RESPONSE_PACKET.register(INSTANCE::onPongResponsePacket);
+        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, clientLevel) -> reset());
     }
 
-    private void calculatePing(long packetTime) {
-        this.estimatedPing = Util.getMillis() - packetTime;
-
-        this.PingResults.offer((this.estimatedPing));
-        if (this.PingResults.size() > 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
-            this.PingResults.poll();
-        }
-
-        long sum = 0L;
-        for (long ping : this.PingResults) {
-            sum += ping;
-        }
-        this.averagePing = sum / this.PingResults.size();
+    private void onPongResponsePacket(ClientboundPongResponsePacket packet) {
+        addSample(calculatePing(packet.time()), Util.getMillis());
     }
 
-    public void reset() {
-        this.averagePing = 0L;
-        this.PingResults = new LinkedList<>();
+    private long calculatePing(long packetTime) {
+        return Util.getMillis() - packetTime;
     }
 
-    private static TextColor getDiscretePingColor(long ping) {
-        if (ping < 50L) {
-            return TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN);
-        } else if (ping < 150L) {
-            return TextColor.fromLegacyFormat(ChatFormatting.GREEN);
-        } else if (ping < 250L) {
-            return TextColor.fromLegacyFormat(ChatFormatting.YELLOW);
-        } else if (ping < 400L) {
-            return TextColor.fromLegacyFormat(ChatFormatting.RED);
-        } else {
-            return TextColor.fromLegacyFormat(ChatFormatting.DARK_RED);
-        }
+    public static void reset() {
+        INSTANCE.clearSamples();
     }
 
-    private static int getContinuousPingColor(long ping) {
-        final int BREAKPOINT = 150;
-        final int DARK_GREEN = 0xFF00AA00;
-        final int YELLOW = 0xFFFFFF55;
-        final int DARK_RED = 0xFFAA0000;
-        if (ping <= BREAKPOINT) {
-            return ARGB.linearLerp((float) ping / BREAKPOINT, DARK_GREEN, YELLOW);
-        } else {
-            return ARGB.linearLerp(Float.min((float) (ping - BREAKPOINT) / 250, 1f), YELLOW, DARK_RED);
-        }
+    public static long getPing() {
+        return INSTANCE.getCurrent();
     }
 
-    private static int getPingColor(long ping) {
-        return CONFIG.useContinuousColorsForPingHud ? getContinuousPingColor(ping) : getDiscretePingColor(ping).getValue();
+    public static long getAveragePing() {
+        return (long) INSTANCE.getAverage();
     }
 
-    public long getPing() {
-        return this.estimatedPing;
+    public static long getMinimumPing() {
+        return (long) INSTANCE.getMinimum();
     }
 
-    public long getAveragePing() {
-        return this.averagePing;
-    }
-
-    public Component getCurrentPingFormatted() {
-        return Component.literal("%d".formatted(this.estimatedPing)).withColor(getPingColor(this.estimatedPing));
-    }
-
-    public Component getAveragePingFormatted() {
-        if (this.PingResults.size() >= 20 * AVERAGE_SAMPLE_TIME_SECONDS) {
-            return Component.literal("%d".formatted(this.averagePing)).withColor(getPingColor(this.averagePing));
-        } else {
-            return Component.literal("???").withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE).getValue());
-        }
+    public static long getMaximumPing() {
+        return (long) INSTANCE.getMaximum();
     }
 }
