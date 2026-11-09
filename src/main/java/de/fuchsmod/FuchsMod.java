@@ -8,9 +8,7 @@ import de.fuchsmod.events.GameEvents;
 import de.fuchsmod.features.general.*;
 import de.fuchsmod.features.partycommands.PartyCommandUtils;
 import de.fuchsmod.features.partycommands.PartyCommands;
-import de.fuchsmod.features.performance.FPSHud;
-import de.fuchsmod.features.performance.PingHud;
-import de.fuchsmod.features.performance.TPSHud;
+import de.fuchsmod.features.performance.*;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.ChatFormatting;
@@ -43,8 +41,10 @@ public class FuchsMod implements ClientModInitializer {
 		LOGGER.info("Initializing Fuchs Mod!");
 		GameEvents.register();
 		TPSHud.init();
+		TPSMeasurement.init();
 		FPSHud.init();
 		PingHud.init();
+		PingMeasurement.init();
 		TooltipScroll.init();
 		Zoom.init();
 		PartyCommandUtils.init();

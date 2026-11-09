@@ -12,8 +12,6 @@ import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class PartyCommandUtils {
-    private static final TPSMeasurement tps = TPSMeasurement.getInstance();
-    private static final PingMeasurement ping = PingMeasurement.getInstance();
 
     private static int getRandomInteger(int min, int max) {
         return (int) ((max - min + 1) * Math.random()) + min;
@@ -53,11 +51,11 @@ public class PartyCommandUtils {
     - arguments: String[]
     */
 
-    public static final TriFunction<Scope, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(tps.getAverageTPS());
+    public static final TriFunction<Scope, String, String[], String> getTPS = (_, _, _) -> "%.1f".formatted(TPSMeasurement.getAverageTPS());
 
     public static final TriFunction<Scope, String, String[], String> getFPS = (_, _, _) -> "%d".formatted(CLIENT.getFps());
 
-    public static final TriFunction<Scope, String, String[], String> getPing = (_, _, _) -> "%d".formatted(ping.getAveragePing());
+    public static final TriFunction<Scope, String, String[], String> getPing = (_, _, _) -> "%d".formatted(PingMeasurement.getAveragePing());
 
     public static final TriFunction<Scope, String, String[], String> diceRoll = (_, _, arguments) -> {
         try {
