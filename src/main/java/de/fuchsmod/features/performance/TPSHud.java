@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
 
@@ -45,10 +46,19 @@ public class TPSHud {
     }
 
     public static Component getAverageTPSFormatted() {
+        MutableComponent formattedTPS = Component.empty();
         if (!TPSMeasurement.getInstance().hasEnoughSamplesForSignificantAverage()) {
-            return Component.literal("???").withColor(TextColor.WHITE);
+            formattedTPS.append(Component.literal("???").withColor(TextColor.WHITE));
         } else {
-            return formatter.formatValue(TPSMeasurement.getAverageTPS(), CONFIG.useContinuousColorsForTPSHud);
+            formattedTPS.append(formatter.formatValue(TPSMeasurement.getAverageTPS(), CONFIG.useContinuousColorsForTPSHud));
         }
+        if (CLIENT.level != null) {
+            float tickRate = CLIENT.level.tickRateManager().tickrate();
+            if (tickRate != 20.0f)
+                formattedTPS.append(Component.literal(" [Tick Rate: %.1f]".formatted(tickRate)).withColor(TextColor.BLUE));
+            if (CLIENT.level.tickRateManager().isFrozen())
+                formattedTPS.append(Component.literal(" [FROZEN]").withColor(TextColor.AQUA));
+        }
+        return formattedTPS;
     }
 }
