@@ -47,15 +47,12 @@ public abstract class AbstractMeasurement<T extends Number> {
 
     public double getAverage(int sampleAmount) {
         double sum = 0.0;
-        List<Sample<T>> subSamples;
-        if (samples.size() > sampleAmount + 1)
-            subSamples = samples.subList(0, sampleAmount + 1);
-        else
-            subSamples = samples;
-        for (Sample<T> sample : subSamples) {
-            sum += sample.value().doubleValue();
+        int summands = 0;
+        for (int i = 0; i < samples.size() || i < sampleAmount; i++) {
+            sum += samples.get(i).value().doubleValue();
+            summands++;
         }
-        return sum / subSamples.size();
+        return sum / summands;
     }
 
     public double getMinimum() {
