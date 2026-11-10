@@ -2,13 +2,11 @@ package de.fuchsmod.features.performance;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 
 import static de.fuchsmod.FuchsMod.MOD_ID;
 import static de.fuchsmod.FuchsMod.LOGGER;
@@ -16,6 +14,12 @@ import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class FPSHud {
+    private static final Formatter formatter = new Formatter(
+            0,
+            new double[]{60.0, 30.0, 20.0, 10.0, 0.0},
+            (value, threshold) -> value >= threshold,
+            10.0, 20.0, 40.0
+    );
 
     public static void init() {
         HudElementRegistry.attachElementBefore(
@@ -35,37 +39,7 @@ public class FPSHud {
         graphics.text(CLIENT.font, text, x, y, 0xFFFFFFFF, true);
     }
 
-    private static TextColor getDiscreteFPSColor(int fps) {
-        if (fps >= 60) {
-            return TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN);
-        } else if (fps >= 30) {
-            return TextColor.fromLegacyFormat(ChatFormatting.GREEN);
-        } else if (fps >= 20) {
-            return TextColor.fromLegacyFormat(ChatFormatting.YELLOW);
-        } else if (fps >= 10) {
-            return TextColor.fromLegacyFormat(ChatFormatting.RED);
-        } else {
-            return TextColor.fromLegacyFormat(ChatFormatting.DARK_RED);
-        }
-    }
-
-    private static int getContinuousFPSColor(int fps) {
-        final int BREAKPOINT = 20;
-        final int DARK_GREEN = 0xFF00AA00;
-        final int YELLOW = 0xFFFFFF55;
-        final int DARK_RED = 0xFFAA0000;
-        if (fps <= BREAKPOINT) {
-            return ARGB.linearLerp((float) fps / BREAKPOINT, DARK_RED, YELLOW);
-        } else {
-            return ARGB.linearLerp(Float.min((float) (fps - BREAKPOINT) / 40, 1f), YELLOW, DARK_GREEN);
-        }
-    }
-
-    private static int getFPSColor(int fps) {
-        return CONFIG.useContinuousColorsForFPSHud ? getContinuousFPSColor(fps) : getDiscreteFPSColor(fps).getValue();
-    }
-
     public static Component getCurrentFPSFormatted() {
-        return Component.literal("%d".formatted(CLIENT.getFps())).withColor(getFPSColor(CLIENT.getFps()));
+        return formatter.formatValue(CLIENT.getFps(), CONFIG.useContinuousColorsForFPSHud);
     }
 }
