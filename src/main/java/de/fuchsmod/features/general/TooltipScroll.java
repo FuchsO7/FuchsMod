@@ -8,19 +8,16 @@ import static de.fuchsmod.FuchsMod.LOGGER;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class TooltipScroll {
-    private static final TooltipScroll INSTANCE = new TooltipScroll();
-
-    private int x = 0;
-    private int y = 0;
+    private static final Vector2i tooltipOffset = new Vector2i(0, 0);
 
     public static void init() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            TooltipScroll.getInstance().resetOffset();
+            resetOffset();
             if (!CONFIG.enableTooltipScroll || client.player == null)
                 return;
             ScreenMouseEvents.afterMouseScroll(screen).register((screenInstance, mouseX, mouseY, horizontalAmount, verticalAmount, consumed) -> {
                 if (!consumed) {
-                    getInstance().moveOffset((int) verticalAmount, client.hasShiftDown());
+                    moveOffset((int) verticalAmount, client.hasShiftDown());
                 }
                 return consumed;
             });
@@ -28,24 +25,19 @@ public class TooltipScroll {
         LOGGER.debug("Initialized Tooltip Scrolling!");
     }
 
-    public static TooltipScroll getInstance() {
-        return INSTANCE;
-    }
-
-    public void moveOffset(int distance, boolean moveVertical) {
+    public static void moveOffset(int distance, boolean moveVertical) {
         if (moveVertical) {
-            this.x += distance * CONFIG.scrollFactor * CONFIG.horizontalScrollDirection;
+            tooltipOffset.add(distance * CONFIG.scrollFactor * CONFIG.horizontalScrollDirection, 0);
         } else {
-            this.y += distance * CONFIG.scrollFactor * CONFIG.verticalScrollDirection;
+            tooltipOffset.add(0, distance * CONFIG.scrollFactor * CONFIG.verticalScrollDirection);
         }
     }
 
-    public Vector2i getOffset() {
-        return new Vector2i(this.x, this.y);
+    public static void resetOffset() {
+        tooltipOffset.set(0, 0);
     }
 
-    public void resetOffset() {
-        this.x = 0;
-        this.y = 0;
+    public static Vector2i getTooltipOffset() {
+        return tooltipOffset;
     }
 }

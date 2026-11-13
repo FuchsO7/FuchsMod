@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.events;
 
 import de.fuchsmod.events.ClientPacketEvents;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -12,12 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientCommonPacketListenerImpl.class)
 public class ClientCommonPacketListenerImplMixin{
+
     @Inject(
             at = @At("RETURN"),
             method = "handlePing"
     )
     private void fuchsmod$handlePing(ClientboundPingPacket packet, CallbackInfo info) {
-        ClientPacketEvents.PING_PACKET.invoker().onPingPacket(packet);
+        ClientPacketEvents.ON_PING_PACKET.invoker().onPingPacket(packet);
     }
 
     @Inject(
@@ -25,7 +26,7 @@ public class ClientCommonPacketListenerImplMixin{
             method = "handleResourcePackPush"
     )
     private void fuchsmod$onResourcePackPush(ClientboundResourcePackPushPacket packet, CallbackInfo ci) {
-        ClientPacketEvents.RESOURCE_PACK_PUSH_PACKET.invoker().onResourcePackPushPacket(packet);
+        ClientPacketEvents.ON_RESOURCE_PACK_PUSH_PACKET.invoker().onResourcePackPushPacket(packet);
     }
 
     @Inject(
@@ -33,6 +34,6 @@ public class ClientCommonPacketListenerImplMixin{
             method = "handleResourcePackPop"
     )
     private void fuchsmod$onResourcePackPop(ClientboundResourcePackPopPacket packet, CallbackInfo ci) {
-        ClientPacketEvents.RESOURCE_PACK_POP_PACKET.invoker().onResourcePackPopPacket(packet);
+        ClientPacketEvents.ON_RESOURCE_PACK_POP_PACKET.invoker().onResourcePackPopPacket(packet);
     }
 }

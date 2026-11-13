@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.events;
 
 import de.fuchsmod.events.ClientPacketEvents;
 import io.netty.channel.ChannelFutureListener;
@@ -14,12 +14,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Connection.class)
 public class ConnectionMixin {
+
     @Inject(
             at = @At("RETURN"),
             method = "<init>"
     )
     private void fuchsmod$onNewConnection(PacketFlow receiving, CallbackInfo ci) {
-        ClientPacketEvents.NEW_CONNECTION.invoker().onNewConnection((Connection) (Object) this);
+        ClientPacketEvents.ON_NEW_CONNECTION.invoker().onNewConnection((Connection) (Object) this);
     }
 
     @Inject(
@@ -28,7 +29,7 @@ public class ConnectionMixin {
     )
     private void fuchsmod$onPacketSend(Packet<?> packet, @Nullable ChannelFutureListener listener, boolean flush, CallbackInfo ci) {
         if (packet instanceof ServerboundResourcePackPacket resourcePackPacket) {
-            ClientPacketEvents.RESOURCE_PACK_ACTION_PACKET.invoker().onResourcePackActionPacket(resourcePackPacket);
+            ClientPacketEvents.ON_RESOURCE_PACK_ACTION_PACKET.invoker().onResourcePackActionPacket(resourcePackPacket);
         }
     }
 }

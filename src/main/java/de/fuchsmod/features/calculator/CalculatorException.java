@@ -3,7 +3,7 @@ package de.fuchsmod.features.calculator;
 import com.mojang.brigadier.StringReader;
 
 public class CalculatorException extends Exception {
-    public StringReader reader;
+    public final StringReader reader;
 
     public CalculatorException(String message) {
         this(message, null);

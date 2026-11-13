@@ -12,43 +12,43 @@ import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
 
 public class ClientPacketEvents {
 
-    public static final Event<NewConnection> NEW_CONNECTION = EventFactory.createArrayBacked(NewConnection.class, callbacks -> connection -> {
+    public static final Event<NewConnection> ON_NEW_CONNECTION = EventFactory.createArrayBacked(NewConnection.class, callbacks -> connection -> {
         for (NewConnection event : callbacks) {
             event.onNewConnection(connection);
         }
     });
 
-    public static final Event<SetTimePacket> SET_TIME_PACKET = EventFactory.createArrayBacked(SetTimePacket.class, callbacks -> packet -> {
+    public static final Event<SetTimePacket> ON_SET_TIME_PACKET = EventFactory.createArrayBacked(SetTimePacket.class, callbacks -> packet -> {
         for (SetTimePacket event : callbacks) {
             event.onSetTimePacket(packet);
         }
     });
 
-    public static final Event<PongResponsePacket> PONG_RESPONSE_PACKET = EventFactory.createArrayBacked(PongResponsePacket.class, callbacks -> packet -> {
+    public static final Event<PongResponsePacket> ON_PONG_RESPONSE_PACKET = EventFactory.createArrayBacked(PongResponsePacket.class, callbacks -> packet -> {
         for (PongResponsePacket event : callbacks) {
             event.onPongResponsePacket(packet);
         }
     });
 
-    public static final Event<PingPacket> PING_PACKET = EventFactory.createArrayBacked(PingPacket.class, callbacks -> packet -> {
+    public static final Event<PingPacket> ON_PING_PACKET = EventFactory.createArrayBacked(PingPacket.class, callbacks -> packet -> {
         for (PingPacket event : callbacks) {
             event.onPingPacket(packet);
         }
     });
 
-    public static final Event<ResourcePackPushPacket> RESOURCE_PACK_PUSH_PACKET = EventFactory.createArrayBacked(ResourcePackPushPacket.class, callbacks -> packet -> {
+    public static final Event<ResourcePackPushPacket> ON_RESOURCE_PACK_PUSH_PACKET = EventFactory.createArrayBacked(ResourcePackPushPacket.class, callbacks -> packet -> {
         for (ResourcePackPushPacket event : callbacks) {
             event.onResourcePackPushPacket(packet);
         }
     });
 
-    public static final Event<ResourcePackPopPacket> RESOURCE_PACK_POP_PACKET = EventFactory.createArrayBacked(ResourcePackPopPacket.class, callbacks -> packet -> {
+    public static final Event<ResourcePackPopPacket> ON_RESOURCE_PACK_POP_PACKET = EventFactory.createArrayBacked(ResourcePackPopPacket.class, callbacks -> packet -> {
         for (ResourcePackPopPacket event : callbacks) {
             event.onResourcePackPopPacket(packet);
         }
     });
 
-    public static final Event<ResourcePackActionPacket> RESOURCE_PACK_ACTION_PACKET = EventFactory.createArrayBacked(ResourcePackActionPacket.class, callbacks -> packet -> {
+    public static final Event<ResourcePackActionPacket> ON_RESOURCE_PACK_ACTION_PACKET = EventFactory.createArrayBacked(ResourcePackActionPacket.class, callbacks -> packet -> {
         for (ResourcePackActionPacket event : callbacks) {
             event.onResourcePackActionPacket(packet);
         }
