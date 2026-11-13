@@ -22,7 +22,7 @@ public class PingMeasurement extends AbstractMeasurement<Long> {
     }
 
     private void onPongResponsePacket(ClientboundPongResponsePacket packet) {
-        addSample(calculatePing(packet.time()), Util.getMillis());
+        addSample(calculatePing(packet.time()));
     }
 
     private long calculatePing(long packetTime) {
