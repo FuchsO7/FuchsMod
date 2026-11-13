@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.events;
 
 import de.fuchsmod.events.ChatEvents;
 import net.minecraft.client.gui.components.ChatComponent;
@@ -10,11 +10,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatComponent.class)
 public class ChatComponentMixin {
+
     @Inject(
             at = @At("RETURN"),
             method = "logChatMessage"
     )
     private void fuchsmod$onChatMessage(GuiMessage message, CallbackInfo ci) {
-        ChatEvents.MESSAGE.invoker().onMessage(message);
+        ChatEvents.ON_MESSAGE.invoker().onMessage(message);
     }
 }

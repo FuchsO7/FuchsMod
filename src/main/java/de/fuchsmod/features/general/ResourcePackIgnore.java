@@ -29,11 +29,11 @@ public class ResourcePackIgnore {
     private static Connection connection;
 
     public static void init() {
-        ClientPacketEvents.RESOURCE_PACK_PUSH_PACKET.register(packet -> {
+        ClientPacketEvents.ON_RESOURCE_PACK_PUSH_PACKET.register(packet -> {
             packID = packet.id();
             url = packet.url();
         });
-        ClientPacketEvents.NEW_CONNECTION.register(newConnection -> {
+        ClientPacketEvents.ON_NEW_CONNECTION.register(newConnection -> {
             connection = newConnection;
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

@@ -27,7 +27,7 @@ public class PartyCommands {
 
     public static void init() {
         loadCommands();
-        ChatEvents.MESSAGE.register(message -> {
+        ChatEvents.ON_MESSAGE.register(message -> {
             String messageString = message.content().getString()
                     .replaceAll("\r", "\\\\r")
                     .replaceAll("\n", "\\\\n")

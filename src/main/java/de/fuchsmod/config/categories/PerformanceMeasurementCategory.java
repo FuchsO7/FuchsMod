@@ -68,7 +68,7 @@ public class PerformanceMeasurementCategory {
                                         () -> config.packetTypeForTPSMeasurement,
                                         newValue -> {
                                             config.packetTypeForTPSMeasurement = newValue;
-                                            TPSMeasurement.getInstance().reset();
+                                            TPSMeasurement.reset();
                                         })
                                 .controller(opt -> EnumControllerBuilder.create(opt)
                                         .enumClass(FuchsModConfig.TPSPacketTypes.class))
@@ -78,7 +78,7 @@ public class PerformanceMeasurementCategory {
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
                                         Component.translatable("fuchsmod.config.performance_measurement.tps.reset.description")))
-                                .action((screen, buttonOption) -> TPSMeasurement.getInstance().reset())
+                                .action((screen, buttonOption) -> TPSMeasurement.reset())
                                 .build())
                         .build())
                 .group(OptionGroup.createBuilder()
@@ -189,7 +189,7 @@ public class PerformanceMeasurementCategory {
                                 .text(Component.literal(""))
                                 .description(OptionDescription.of(
                                         Component.translatable("fuchsmod.config.performance_measurement.ping.reset.description")))
-                                .action((screen, buttonOption) -> PingMeasurement.getInstance().reset())
+                                .action((screen, buttonOption) -> PingMeasurement.reset())
                                 .build())
                         .build())
                 .build();

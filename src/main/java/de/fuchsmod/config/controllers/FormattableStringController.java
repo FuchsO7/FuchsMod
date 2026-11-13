@@ -1,6 +1,5 @@
 package de.fuchsmod.config.controllers;
 
-import de.fuchsmod.commands.Debug;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.ValueFormatter;
 import dev.isxander.yacl3.gui.controllers.string.IStringController;

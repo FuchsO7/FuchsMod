@@ -1,4 +1,4 @@
-package de.fuchsmod.mixin;
+package de.fuchsmod.mixin.zoom;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import de.fuchsmod.features.general.Zoom;
@@ -14,6 +14,6 @@ public class MouseHandlerMixin {
             method = "turnPlayer"
     )
     private double fuchsmod$modifyMouseSensitivity(double sensitivity) {
-        return sensitivity * Zoom.getZoomModifier();
+        return Zoom.modifyMouseSensitivity(sensitivity);
     }
 }

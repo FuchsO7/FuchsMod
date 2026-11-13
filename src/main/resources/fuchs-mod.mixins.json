@@ -9,17 +9,19 @@
     "requireAnnotations": true
   },
   "client": [
-    "AbstractContainerScreenMixin",
-    "CameraMixin",
-    "ChatComponentMixin",
-    "ClientCommonPacketListenerImplMixin",
-    "ClientPacketListenerMixin",
-    "ConfirmScreenMixin",
-    "ConnectionMixin",
-    "CreativeModeInventoryScreenMixin",
-    "DefaultTooltipPositionerMixin",
-    "LightmapRenderStateExtractorMixin",
-    "MouseHandlerMixin",
-    "ServerReconfigScreenMixin"
+    "calculator.AbstractContainerScreenMixin",
+    "calculator.CreativeModeInventoryScreenMixin",
+    "commands.ClientPacketListenerMixin",
+    "events.ChatComponentMixin",
+    "events.ClientCommonPacketListenerImplMixin",
+    "events.ClientPacketListenerMixin",
+    "events.ConnectionMixin",
+    "fullbright.LightmapRenderStateExtractorMixin",
+    "performance.ClientPacketListenerMixin",
+    "resourcepack.ConfirmScreenMixin",
+    "resourcepack.ServerReconfigScreenMixin",
+    "tooltipscroll.DefaultTooltipPositionerMixin",
+    "zoom.CameraMixin",
+    "zoom.MouseHandlerMixin"
   ]
 }

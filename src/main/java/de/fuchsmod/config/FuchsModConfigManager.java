@@ -18,7 +18,7 @@ import static de.fuchsmod.FuchsMod.LOGGER;
 public class FuchsModConfigManager {
     private static final Minecraft client = Minecraft.getInstance();
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("fuchsmod.json5");
-    protected static ConfigClassHandler<FuchsModConfig> HANDLER = ConfigClassHandler.createBuilder(FuchsModConfig.class)
+    protected static final ConfigClassHandler<FuchsModConfig> HANDLER = ConfigClassHandler.createBuilder(FuchsModConfig.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(PATH)
                     .setJson5(true)
