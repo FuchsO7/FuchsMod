@@ -1,5 +1,6 @@
 package de.fuchsmod.features.general;
 
+import de.fuchsmod.FuchsMod;
 import de.fuchsmod.events.GameEvents;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.ClickEvent;
@@ -8,7 +9,6 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 
 import static de.fuchsmod.FuchsMod.LOGGER;
-import static de.fuchsmod.FuchsMod.CLIENT;
 import static de.fuchsmod.FuchsMod.CONFIG;
 
 public class DeathLocationSaver {
@@ -16,8 +16,8 @@ public class DeathLocationSaver {
     public static void init () {
         GameEvents.ON_NEW_DEATH_LOCATION.register((globalPos) -> {
             LOGGER.info("Saved Death Location %s".formatted(getLastDeathLocationString(globalPos)));
-            if (CONFIG.sendLastDeathLocationMessage && CLIENT.player != null)
-                CLIENT.player.sendSystemMessage(getLastDeathLocationFormatted(globalPos));
+            if (CONFIG.sendLastDeathLocationMessage)
+                FuchsMod.sendClientMessage(getLastDeathLocationFormatted(globalPos));
         });
         LOGGER.debug("initialized Death Location Saver!");
     }
