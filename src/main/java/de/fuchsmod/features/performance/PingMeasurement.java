@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.network.protocol.ping.ClientboundPongResponsePacket;
 import net.minecraft.util.Util;
 
-
 public class PingMeasurement extends AbstractMeasurement<Long> {
     private static final PingMeasurement INSTANCE = new PingMeasurement();
 
@@ -23,7 +22,7 @@ public class PingMeasurement extends AbstractMeasurement<Long> {
     }
 
     private void onPongResponsePacket(ClientboundPongResponsePacket packet) {
-        addSample(calculatePing(packet.time()), Util.getMillis());
+        addSample(calculatePing(packet.time()));
     }
 
     private long calculatePing(long packetTime) {

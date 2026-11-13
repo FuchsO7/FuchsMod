@@ -3,7 +3,6 @@ package de.fuchsmod.features.performance;
 import net.minecraft.util.Util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractMeasurement<T extends Number> {
     protected final ArrayList<Sample<T>> samples = new ArrayList<>();
@@ -48,7 +47,7 @@ public abstract class AbstractMeasurement<T extends Number> {
     public double getAverage(int sampleAmount) {
         double sum = 0.0;
         int summands = 0;
-        for (int i = 0; i < samples.size() || i < sampleAmount; i++) {
+        for (int i = 0; i < samples.size() && i < sampleAmount; i++) {
             sum += samples.get(i).value().doubleValue();
             summands++;
         }
