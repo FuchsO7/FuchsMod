@@ -2,6 +2,7 @@ package de.fuchsmod.features.performance;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -44,7 +45,7 @@ public class PingHud {
 
     public static Component getAveragePingFormatted() {
         if (!PingMeasurement.getInstance().hasEnoughSamplesForSignificantAverage()) {
-            return Component.literal("???").withColor(TextColor.WHITE);
+            return Component.literal("???").withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE).getValue());
         } else {
             return formatter.formatValue(PingMeasurement.getAveragePing(), CONFIG.useContinuousColorsForPingHud);
         }

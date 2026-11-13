@@ -1,5 +1,6 @@
 package de.fuchsmod.features.performance;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.ARGB;
@@ -24,22 +25,28 @@ public class Formatter {
     }
 
     private TextColor getDiscreteColor(double value) {
-        final TextColor[] textColors = {TextColor.DARK_GREEN, TextColor.GREEN, TextColor.YELLOW, TextColor.RED, TextColor.DARK_RED};
+        final TextColor[] textColors = {
+                TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN),
+                TextColor.fromLegacyFormat(ChatFormatting.GREEN),
+                TextColor.fromLegacyFormat(ChatFormatting.YELLOW),
+                TextColor.fromLegacyFormat(ChatFormatting.RED),
+                TextColor.fromLegacyFormat(ChatFormatting.DARK_RED)
+        };
         for (int i = 0; i < textColors.length; i++) {
             if (discreteComparator.apply(value, discreteThresholds[i]))
                 return textColors[i];
         }
-        return TextColor.WHITE;
+        return TextColor.fromLegacyFormat(ChatFormatting.WHITE);
     }
 
     private TextColor getContinuousColor(double value) {
         int color;
         if (this.discreteComparator.apply(value, this.continuousMid)) {
             float alpha = (float) Math.clamp((value - this.continuousMid) / (this.continuousMax - this.continuousMid), 0.0, 1.0);
-            color = ARGB.linearLerp(alpha, TextColor.YELLOW.getValue(), TextColor.DARK_GREEN.getValue());
+            color = ARGB.linearLerp(alpha, TextColor.fromLegacyFormat(ChatFormatting.YELLOW).getValue(), TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN).getValue());
         } else {
             float alpha = (float) Math.clamp((value - this.continuousMin) / (this.continuousMid - this.continuousMin), 0.0, 1.0);
-            color = ARGB.linearLerp(alpha, TextColor.DARK_RED.getValue(), TextColor.YELLOW.getValue());
+            color = ARGB.linearLerp(alpha, TextColor.fromLegacyFormat(ChatFormatting.DARK_RED).getValue(), TextColor.fromLegacyFormat(ChatFormatting.YELLOW).getValue());
         }
         return TextColor.fromRgb(color);
     }
@@ -49,6 +56,6 @@ public class Formatter {
     }
 
     public Component formatValue(double value, boolean useContinuousColor) {
-        return Component.literal(String.format("%." + this.precision + "f", value)).withColor(getColor(value, useContinuousColor));
+        return Component.literal(String.format("%." + this.precision + "f", value)).withColor(getColor(value, useContinuousColor).getValue());
     }
 }

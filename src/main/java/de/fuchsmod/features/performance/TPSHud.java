@@ -2,6 +2,7 @@ package de.fuchsmod.features.performance;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -48,16 +49,16 @@ public class TPSHud {
     public static Component getAverageTPSFormatted() {
         MutableComponent formattedTPS = Component.empty();
         if (!TPSMeasurement.getInstance().hasEnoughSamplesForSignificantAverage()) {
-            formattedTPS.append(Component.literal("???").withColor(TextColor.WHITE));
+            formattedTPS.append(Component.literal("???").withColor(TextColor.fromLegacyFormat(ChatFormatting.WHITE).getValue()));
         } else {
             formattedTPS.append(formatter.formatValue(TPSMeasurement.getAverageTPS(), CONFIG.useContinuousColorsForTPSHud));
         }
         if (CLIENT.level != null) {
             float tickRate = CLIENT.level.tickRateManager().tickrate();
             if (tickRate != 20.0f)
-                formattedTPS.append(Component.literal(" [Tick Rate: %.1f]".formatted(tickRate)).withColor(TextColor.BLUE));
+                formattedTPS.append(Component.literal(" [Tick Rate: %.1f]".formatted(tickRate)).withColor(TextColor.fromLegacyFormat(ChatFormatting.BLUE).getValue()));
             if (CLIENT.level.tickRateManager().isFrozen())
-                formattedTPS.append(Component.literal(" [FROZEN]").withColor(TextColor.AQUA));
+                formattedTPS.append(Component.literal(" [FROZEN]").withColor(TextColor.fromLegacyFormat(ChatFormatting.AQUA).getValue()));
         }
         return formattedTPS;
     }
